@@ -1,19 +1,28 @@
 {
-  "name": "iot-proximity-refinery",
+  "name": "hw-iot-proximity",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/extraction-refineries/iot-proximity-refinery/src",
+  "sourceRoot": "libs/hardware-refineries/iot-proximity/src",
   "projectType": "library",
-  "tags": ["layer:extraction-refinery", "domain:system-core", "iso:27001"],
+  "tags": [
+    "layer:extraction-refinery",
+    "domain:system-core",
+    "iso:27001",
+    "env:surface"
+  ],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/extraction-refineries/iot-proximity-refinery",
-        "main": "libs/extraction-refineries/iot-proximity-refinery/src/index.ts",
-        "tsConfig": "libs/extraction-refineries/iot-proximity-refinery/tsconfig.lib.json",
-        "assets": ["libs/extraction-refineries/iot-proximity-refinery/*.md"]
+        "outputPath": "dist/libs/hardware-refineries/iot-proximity",
+        "main": "libs/hardware-refineries/iot-proximity/src/index.ts",
+        "tsConfig": "libs/hardware-refineries/iot-proximity/tsconfig.lib.json",
+        "assets": ["libs/hardware-refineries/iot-proximity/*.md"],
+        "clean": true
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
     }
   }
 }

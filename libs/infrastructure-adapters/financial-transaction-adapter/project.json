@@ -1,9 +1,15 @@
 {
-  "name": "financial-transaction-adapter",
+  "name": "adapter-financial-gateway",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/infrastructure-adapters/financial-transaction-adapter/src",
   "projectType": "library",
-  "tags": ["layer:adapter", "role:financial-gateway", "iso:27001"],
+  "tags": [
+    "layer:adapter",
+    "domain:finance",
+    "iso:27001",
+    "env:surface",
+    "env:acid"
+  ],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
@@ -12,10 +18,12 @@
         "outputPath": "dist/libs/infrastructure-adapters/financial-transaction-adapter",
         "main": "libs/infrastructure-adapters/financial-transaction-adapter/src/index.ts",
         "tsConfig": "libs/infrastructure-adapters/financial-transaction-adapter/tsconfig.lib.json",
-        "assets": [
-          "libs/infrastructure-adapters/financial-transaction-adapter/*.md"
-        ]
+        "assets": ["libs/infrastructure-adapters/financial-transaction-adapter/*.md"],
+        "clean": true
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
     }
   }
 }

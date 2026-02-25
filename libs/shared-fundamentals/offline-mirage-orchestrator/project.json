@@ -1,9 +1,14 @@
 {
-  "name": "offline-mirage-orchestrator",
+  "name": "shared-offline-mirage",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared-fundamentals/offline-mirage-orchestrator/src",
   "projectType": "library",
-  "tags": ["layer:fundamentals", "domain:system-core", "iso:25010"],
+  "tags": [
+    "layer:fundamentals",
+    "domain:system-core",
+    "iso:25010",
+    "env:surface"
+  ],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
@@ -12,8 +17,12 @@
         "outputPath": "dist/libs/shared-fundamentals/offline-mirage-orchestrator",
         "main": "libs/shared-fundamentals/offline-mirage-orchestrator/src/index.ts",
         "tsConfig": "libs/shared-fundamentals/offline-mirage-orchestrator/tsconfig.lib.json",
-        "assets": ["libs/shared-fundamentals/offline-mirage-orchestrator/*.md"]
+        "assets": ["libs/shared-fundamentals/offline-mirage-orchestrator/*.md"],
+        "clean": true
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
     }
   }
 }

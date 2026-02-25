@@ -1,12 +1,22 @@
 {
   "name": "@razwritecore/nsk-shared-offline-mirage",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "main": "./src/index.ts",
   "author": "Raz Podestá <MetaShark Tech>",
-  "description": "[ROLE: OFFLINE_ORCHESTRATOR] Gestor de resiliencia y modo mirage.",
+  "description": "[ROLE: RESILIENCE_ORCHESTRATOR] Orquestador de modo espejismo y persistencia offline de alta disponibilidad.",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
   "dependencies": {
     "tslib": "^2.3.0"
+  },
+  "peerDependencies": {
+    "zod": "^4.3.6",
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-shared-metabolic-scheduler": "workspace:*",
+    "@razwritecore/nsk-unit-persistence": "workspace:*"
   }
 }

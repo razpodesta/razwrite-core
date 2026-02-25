@@ -1,19 +1,28 @@
 {
-  "name": "quantum-state-manager",
+  "name": "unit-quantum-state",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/modularpnpm-units/quantum-state-manager/src",
+  "sourceRoot": "libs/modular-units/quantum-state/src",
   "projectType": "library",
-  "tags": ["layer:modular-unit", "role:state-orchestrator", "iso:27001"],
+  "tags":[
+    "layer:modular-unit",
+    "domain:system-core",
+    "iso:27001",
+    "env:deep-pulse"
+  ],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/modularpnpm-units/quantum-state-manager",
-        "main": "libs/modularpnpm-units/quantum-state-manager/src/index.ts",
-        "tsConfig": "libs/modularpnpm-units/quantum-state-manager/tsconfig.lib.json",
-        "assets": ["libs/modularpnpm-units/quantum-state-manager/*.md"]
+        "outputPath": "dist/libs/modular-units/quantum-state",
+        "main": "libs/modular-units/quantum-state/src/index.ts",
+        "tsConfig": "libs/modular-units/quantum-state/tsconfig.lib.json",
+        "assets":["libs/modular-units/quantum-state/*.md"],
+        "clean": true
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
     }
   }
 }

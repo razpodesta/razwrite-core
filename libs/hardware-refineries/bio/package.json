@@ -5,8 +5,17 @@
   "type": "module",
   "main": "./src/index.ts",
   "author": "Raz Podestá <MetaShark Tech>",
-  "description": "[ROLE: BIO_SENSOR] Refinería de biometría y estado de hardware.",
+  "description": "[ROLE: BIO_SENSOR] Refinería de signos vitales del hardware y estado metabólico del dispositivo.",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
   "dependencies": {
     "tslib": "^2.3.0"
+  },
+  "peerDependencies": {
+    "zod": "^4.3.6",
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-shared-metabolic-scheduler": "workspace:*"
   }
 }

@@ -3,21 +3,20 @@
  * @role Puerta de enlace Rosetta, ensamblador Bitwise y registro de compresión sistémica ZTM.
  * @location libs/shared-fundamentals/matrix-neural-bridge/src/lib/neural-bridge.logic.ts
  * @status <SEALED_PRODUCTION>
- * @version 8.5.0
+ * @version 8.6.0
  * @protocol OEDP-V8.5 Lattice
  * @hilo Deep-Pulse / Surface-Pulse
  */
 
-import { 
+import {
   type IDialectRegistrationPayload,
   type IApparatusLookupPayload,
   type IOperationLookupPayload,
   type IReverseLookupPayload,
   type ICompoundOpCodePayload,
-  type IOperationOpCode, 
-  type ISeverityOpCode, 
+  type IOperationOpCode,
+  type ISeverityOpCode,
   type IApparatusOpCode,
-  type ILayerOpCode,
   type ICompoundOpCode,
   type ISeverityLevel,
   DialectRegistrationPayloadSchema,
@@ -28,8 +27,13 @@ import {
 } from './neural-bridge.schema';
 
 /**
- * ESTADOS CUÁNTICOS INTERNOS (Memoria de Registro)
+ * @context_prompt [LIA Legacy - AI-Audit]
+ * DIRECTIVA: Inyección de Dialectos Fundacionales y Optimización Bitwise.
+ * JUSTIFICACIÓN: El sistema requería un vocabulario base para evitar OpCodes '9999'.
+ * Se ha estructurado la máscara de bits para soportar hasta 1024 aparatos y 16,384 operaciones cada uno.
+ * IMPACTO: Observabilidad omnisciente desde el arranque (T0).
  */
+
 let isMatrixSealedState = false;
 
 const internalSeverityMatrix: Record<ISeverityLevel, number> = {
@@ -37,35 +41,52 @@ const internalSeverityMatrix: Record<ISeverityLevel, number> = {
 };
 
 interface IRegisteredApparatus {
-  apparatusOpCode: number;
-  layerOpCode: number;
-  operationDialect: Record<string, number>;
+  readonly apparatusOpCode: number;
+  readonly layerOpCode: number;
+  readonly operationDialect: Record<string, number>;
 }
 
+/**
+ * ONTOLOGÍA FUNDACIONAL (CAPA ZERO)
+ * Registro inmutable de los órganos vitales del RazWrite Core.
+ */
 const internalApparatusRegistry: Record<string, IRegisteredApparatus> = {
-  // Búnkeres de la Capa Zero (Foundation) pre-registrados para evitar colapso de arranque.
-  SovereignLogger: { apparatusOpCode: 101, layerOpCode: 0, operationDialect: {} },
-  SovereignErrorEngine: { apparatusOpCode: 102, layerOpCode: 0, operationDialect: {} },
-  MatrixNeuralBridge: { apparatusOpCode: 103, layerOpCode: 0, operationDialect: {} }
+  SovereignLogger: {
+    apparatusOpCode: 101, layerOpCode: 0,
+    operationDialect: { SYSTEM_READY: 1, PULSE_EMITTED: 2, BUFFER_DRAINED: 3, INVALID_PAYLOAD: 4 }
+  },
+  SovereignErrorEngine: {
+    apparatusOpCode: 102, layerOpCode: 0,
+    operationDialect: { ERROR_TRANSMUTED: 1, RECOVERY_ACTION_TRIGGERED: 2, SCRUBBING_COMPLETED: 3 }
+  },
+  MatrixNeuralBridge: {
+    apparatusOpCode: 103, layerOpCode: 0,
+    operationDialect: { DIALECT_REGISTERED: 1, MATRIX_SEALED: 2, LOOKUP_FAILED: 3 }
+  },
+  MetabolicScheduler: {
+    apparatusOpCode: 104, layerOpCode: 0,
+    operationDialect: { METABOLIC_MODE_SHIFT: 1, EXECUTION_PERMIT_DENIED: 2, BIOSENSOR_IGNITED: 3 }
+  },
+  IdentityMutantEngine: {
+    apparatusOpCode: 105, layerOpCode: 2, // Reside en Modular Units
+    operationDialect: { IDENTITY_FORGED: 1, IDENTITY_ROTATED: 2, ACCESS_DENIED: 3 }
+  }
 };
 
-/**
- * @section FACHADA SOBERANA (M-010)
- */
 export const MatrixNeuralBridgeGateway = {
-  
+
   /**
    * @method registerApparatusDialect
-   * @description Permite a un módulo inyectar su ontología numérica durante la ignición.
+   * @description Registra un nuevo dialecto numérico. Solo permitido antes del sellado.
    */
   registerApparatusDialect: (registrationPayload: IDialectRegistrationPayload): void => {
     if (isMatrixSealedState) {
-      console.warn('[RWC-MNB] Registro denegado: La Matriz Cognitiva ya ha sido sellada.');
+      console.warn('[RWC-MNB] Registro denegado: Matriz Sellada.');
       return;
     }
     const validatedPayload = DialectRegistrationPayloadSchema.parse(registrationPayload);
-    
-    internalApparatusRegistry[validatedPayload.apparatusIdentifier] = {
+
+    (internalApparatusRegistry as any)[validatedPayload.apparatusIdentifier] = {
       apparatusOpCode: validatedPayload.apparatusOpCode,
       layerOpCode: validatedPayload.layerOpCode,
       operationDialect: validatedPayload.operationDialect
@@ -74,17 +95,22 @@ export const MatrixNeuralBridgeGateway = {
 
   /**
    * @method sealMatrixCognitiveState
-   * @description Congela el registro en memoria, garantizando inmutabilidad estricta (ISO 27001).
+   * @description Bloquea el registro para garantizar inmutabilidad ISO 27001.
    */
   sealMatrixCognitiveState: (): void => {
     isMatrixSealedState = true;
-    Object.freeze(internalApparatusRegistry);
     Object.freeze(internalSeverityMatrix);
+    // Congelamiento profundo manual del registro
+    Object.keys(internalApparatusRegistry).forEach(key => {
+      Object.freeze(internalApparatusRegistry[key].operationDialect);
+      Object.freeze(internalApparatusRegistry[key]);
+    });
+    Object.freeze(internalApparatusRegistry);
   },
 
   /**
    * @method getSeverityOpCode
-   * @description Transmuta el nivel semántico a su equivalente numérico.
+   * @description Retorna el OpCode de severidad (Rango: 1-5).
    */
   getSeverityOpCode: (lookupPayload: { severityLevel: string }): ISeverityOpCode => {
     return (internalSeverityMatrix[lookupPayload.severityLevel as ISeverityLevel] || 1) as ISeverityOpCode;
@@ -92,7 +118,7 @@ export const MatrixNeuralBridgeGateway = {
 
   /**
    * @method getApparatusOpCode
-   * @description Transmuta el identificador del aparato a su equivalente numérico.
+   * @description Retorna el OpCode del aparato (Rango: 1-1023).
    */
   getApparatusOpCode: (lookupPayload: IApparatusLookupPayload): IApparatusOpCode => {
     const validatedPayload = ApparatusLookupPayloadSchema.parse(lookupPayload);
@@ -102,50 +128,50 @@ export const MatrixNeuralBridgeGateway = {
 
   /**
    * @method getOperationOpCode
-   * @description Transmuta la intención a su equivalente numérico según el dialecto del aparato.
+   * @description Retorna el OpCode de la operación específica (Rango: 1-16383).
    */
   getOperationOpCode: (lookupPayload: IOperationLookupPayload): IOperationOpCode => {
     const validatedPayload = OperationLookupPayloadSchema.parse(lookupPayload);
     const apparatus = internalApparatusRegistry[validatedPayload.apparatusIdentifier];
     if (!apparatus) return 9999 as IOperationOpCode;
-    
+
     return (apparatus.operationDialect[validatedPayload.operationIdentifier] || 9999) as IOperationOpCode;
   },
 
   /**
    * @method forgeCompoundOpCode
-   * @description Genera una Máscara de Bits (Int32) combinando Severidad, Capa, Aparato y Operación.
-   * Estructura: Severidad(3 bits) | Capa(3 bits) | Aparato(10 bits) | Operacion(15 bits)
+   * @description Genera un identificador Bitwise Int32 único.
+   * Estructura: Severidad(4) | Capa(4) | Aparato(10) | Operación(14)
    */
   forgeCompoundOpCode: (lookupPayload: ICompoundOpCodePayload): ICompoundOpCode => {
     const validatedPayload = CompoundOpCodePayloadSchema.parse(lookupPayload);
     const apparatus = internalApparatusRegistry[validatedPayload.apparatusIdentifier];
-    
+
     const severityBits = MatrixNeuralBridgeGateway.getSeverityOpCode({ severityLevel: validatedPayload.severityLevel });
     const layerBits = apparatus ? apparatus.layerOpCode : 0;
     const apparatusBits = apparatus ? apparatus.apparatusOpCode : 999;
     const operationBits = apparatus ? (apparatus.operationDialect[validatedPayload.operationIdentifier] || 9999) : 9999;
 
-    // Fusión Bitwise asegurando un entero de 32 bits estricto y positivo.
-    const compoundOpCode = (severityBits << 28) | (layerBits << 25) | (apparatusBits << 15) | operationBits;
-    
-    return compoundOpCode as ICompoundOpCode;
+    // Fusión Bitwise O(1)
+    const compoundValue = (severityBits << 28) | (layerBits << 24) | (apparatusBits << 14) | operationBits;
+
+    return compoundValue as ICompoundOpCode;
   },
 
   /**
    * @method resolveSemanticOperationIdentifier
-   * @description Mapeo inverso para la reconstrucción forense en el Neural Sentinel.
+   * @description Reconstrucción inversa para rastro forense.
    */
   resolveSemanticOperationIdentifier: (lookupPayload: IReverseLookupPayload): string => {
     const validatedPayload = ReverseLookupPayloadSchema.parse(lookupPayload);
     const apparatus = internalApparatusRegistry[validatedPayload.apparatusIdentifier];
-    
+
     if (!apparatus) return 'UNKNOWN_APPARATUS_DIALECT';
 
     const semanticIdentifier = Object.keys(apparatus.operationDialect).find(
       key => apparatus.operationDialect[key] === validatedPayload.operationOpCode
     );
-    
+
     return semanticIdentifier || 'UNKNOWN_OPERATION_IDENTIFIER';
   }
 };

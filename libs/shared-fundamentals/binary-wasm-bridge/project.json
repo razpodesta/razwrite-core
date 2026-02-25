@@ -1,9 +1,14 @@
 {
-  "name": "binary-wasm-bridge",
+  "name": "shared-binary-bridge",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared-fundamentals/binary-wasm-bridge/src",
   "projectType": "library",
-  "tags": ["layer:fundamentals", "role:binary-interface", "iso:25010"],
+  "tags": [
+    "layer:fundamentals",
+    "domain:system-core",
+    "iso:25010",
+    "env:deep-pulse"
+  ],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
@@ -12,8 +17,12 @@
         "outputPath": "dist/libs/shared-fundamentals/binary-wasm-bridge",
         "main": "libs/shared-fundamentals/binary-wasm-bridge/src/index.ts",
         "tsConfig": "libs/shared-fundamentals/binary-wasm-bridge/tsconfig.lib.json",
-        "assets": ["libs/shared-fundamentals/binary-wasm-bridge/*.md"]
+        "assets": ["libs/shared-fundamentals/binary-wasm-bridge/*.md"],
+        "clean": true
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
     }
   }
 }

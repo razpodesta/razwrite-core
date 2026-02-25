@@ -5,12 +5,19 @@
   "type": "module",
   "main": "./src/index.ts",
   "author": "Raz Podestá <MetaShark Tech>",
-  "description": "[ROLE: GEO_SENSOR] Refinería de geolocalización y contexto espacial.",
+  "description": "[ROLE: GEO_REFINERY] Refinería de hardware para extracción de contexto geográfico y geofencing ético.",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
   "dependencies": {
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
     "zod": "^4.3.6",
-    "@razwritecore/nsk-shared-logger": "workspace:*"
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-shared-nervous-system": "workspace:*",
+    "@razwritecore/nsk-shared-metabolic-scheduler": "workspace:*",
+    "@razwritecore/unit-compliance": "workspace:*"
   }
 }

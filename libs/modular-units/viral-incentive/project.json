@@ -1,19 +1,28 @@
 {
-  "name": "viral-incentive-engine",
+  "name": "unit-viral-incentive",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/modular-units/viral-incentive-engine/src",
+  "sourceRoot": "libs/modular-units/viral-incentive/src",
   "projectType": "library",
-  "tags": ["layer:modular-unit", "domain:finance", "iso:27001"],
+  "tags": [
+    "layer:modular-unit",
+    "domain:finance",
+    "iso:27001",
+    "env:deep-pulse"
+  ],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/modular-units/viral-incentive-engine",
-        "main": "libs/modular-units/viral-incentive-engine/src/index.ts",
-        "tsConfig": "libs/modular-units/viral-incentive-engine/tsconfig.lib.json",
-        "assets": ["libs/modular-units/viral-incentive-engine/*.md"]
+        "outputPath": "dist/libs/modular-units/viral-incentive",
+        "main": "libs/modular-units/viral-incentive/src/index.ts",
+        "tsConfig": "libs/modular-units/viral-incentive/tsconfig.lib.json",
+        "assets": ["libs/modular-units/viral-incentive/*.md"],
+        "clean": true
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
     }
   }
 }

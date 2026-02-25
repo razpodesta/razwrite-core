@@ -1,16 +1,23 @@
 {
   "name": "@razwritecore/nsk-adapter-sentinel-tether",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "main": "./src/index.ts",
   "author": "Raz Podestá <MetaShark Tech>",
-  "description": "[ROLE: FORENSIC_TUNNEL] Adaptador de transmisión hacia el Neural Sentinel.",
+  "description": "[ROLE: FORENSIC_TUNNEL] Adaptador de transmisión y sellado de telemetría hacia el Neural Sentinel.",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
   "dependencies": {
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
+    "zod": "^4.3.6",
     "@razwritecore/nsk-shared-logger": "workspace:*",
-    "@razwritecore/nsk-shared-error-engine": "workspace:*"
+    "@razwritecore/nsk-shared-error-engine": "workspace:*",
+    "@razwritecore/nsk-shared-nervous-system": "workspace:*",
+    "@razwritecore/unit-sync-osmosis": "workspace:*"
   }
 }

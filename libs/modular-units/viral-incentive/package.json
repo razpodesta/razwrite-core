@@ -1,11 +1,19 @@
 {
   "name": "@razwritecore/unit-viral-incentive",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
-  "type": "commonjs",
-  "main": "./src/index.js",
-  "types": "./src/index.d.ts",
+  "type": "module",
+  "main": "./src/index.ts",
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: INCENTIVE_TREE_ENGINE] Orquestador de propagación viral y árboles de recompensa Zero-Knowledge (M-034).",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
   "dependencies": {
     "tslib": "^2.3.0"
+  },
+  "peerDependencies": {
+    "zod": "^4.0.0"
   }
 }
