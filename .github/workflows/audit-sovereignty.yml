@@ -24,8 +24,6 @@ jobs:
 
       - name: 📦 Instalando pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10.26.1
 
       - name: 🟢 Configurando Node.js con Caché
         uses: actions/setup-node@v4
