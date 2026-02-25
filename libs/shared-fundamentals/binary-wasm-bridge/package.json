@@ -1,0 +1,12 @@
+{
+  "name": "@razwritecore/nsk-shared-binary-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: BINARY_INTERFACE] Puente de ejecución para núcleos Rust/WASM.",
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

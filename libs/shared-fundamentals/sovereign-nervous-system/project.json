@@ -1,0 +1,28 @@
+{
+  "name": "nsk-shared-nervous-system",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared-fundamentals/sovereign-nervous-system/src",
+  "projectType": "library",
+  "tags": [
+    "layer:fundamentals",
+    "domain:system-core",
+    "iso:25010",
+    "env:surface",
+    "env:deep-pulse"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "options": {
+        "outputPath": "dist/libs/shared-fundamentals/sovereign-nervous-system",
+        "main": "libs/shared-fundamentals/sovereign-nervous-system/src/index.ts",
+        "tsConfig": "libs/shared-fundamentals/sovereign-nervous-system/tsconfig.lib.json",
+        "assets": [
+          "libs/shared-fundamentals/sovereign-nervous-system/*.md",
+          "libs/shared-fundamentals/sovereign-nervous-system/src/lib/**/i18n/*.json"
+        ],
+        "clean": true
+      }
+    }
+  }
+}

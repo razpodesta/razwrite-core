@@ -1,0 +1,9 @@
+node_modules
+dist
+coverage
+.next
+.nx
+.docs/manifiestos
+.husky
+pnpm-lock.yaml
+*.log

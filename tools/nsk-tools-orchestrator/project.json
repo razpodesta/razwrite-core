@@ -1,0 +1,20 @@
+{
+  "name": "nsk-tools-orchestrator",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/nsk-tools-orchestrator/src",
+  "projectType": "library",
+  "tags": ["type:util", "scope:tools", "role:forge-master"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/tools/nsk-tools-orchestrator",
+        "main": "tools/nsk-tools-orchestrator/src/index.ts",
+        "tsConfig": "tools/nsk-tools-orchestrator/tsconfig.lib.json",
+        "assets": ["tools/nsk-tools-orchestrator/*.md"],
+        "clean": true
+      }
+    }
+  }
+}

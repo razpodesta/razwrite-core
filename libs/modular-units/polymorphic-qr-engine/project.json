@@ -1,0 +1,19 @@
+{
+  "name": "polymorphic-qr-engine",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/modular-units/polymorphic-qr-engine/src",
+  "projectType": "library",
+  "tags": ["layer:modular-unit", "domain:telemetry", "iso:25010"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/modular-units/polymorphic-qr-engine",
+        "main": "libs/modular-units/polymorphic-qr-engine/src/index.ts",
+        "tsConfig": "libs/modular-units/polymorphic-qr-engine/tsconfig.lib.json",
+        "assets": ["libs/modular-units/polymorphic-qr-engine/*.md"]
+      }
+    }
+  }
+}

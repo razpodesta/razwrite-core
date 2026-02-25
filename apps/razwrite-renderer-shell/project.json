@@ -1,0 +1,51 @@
+{
+  "name": "razwrite-renderer-shell",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/razwrite-renderer-shell",
+  "projectType": "application",
+  "tags": [
+    "layer:application-shell",
+    "domain:system-core",
+    "iso:25010",
+    "env:surface"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/razwrite-renderer-shell"
+      },
+      "configurations": {
+        "development": {
+          "outputPath": "apps/razwrite-renderer-shell"
+        },
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "razwrite-renderer-shell:build",
+        "dev": true,
+        "port": 7860
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "razwrite-renderer-shell:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "razwrite-renderer-shell:build:production",
+          "dev": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  }
+}

@@ -1,0 +1,43 @@
+name: 🛡️ RWC - Auditoría de Soberanía
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Motivo de la auditoría'
+        required: true
+        default: 'Validación de integridad Lattice v8.5'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality_gate:
+    name: 🔎 Aduana y Pruebas
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Clonando ADN
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📦 Instalando pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.26.1
+
+      - name: 🟢 Configurando Node.js con Caché
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+          cache: 'pnpm'
+
+      - name: 🛠️ Instalando Dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: 👮 Ejecutando Aduana Global (Full Scan)
+        run: pnpm aduana:global:total
+
+      - name: 🧪 Ejecutando Pruebas Espejo (Affected)
+        run: pnpm nx affected -t test --base=main --head=HEAD --parallel=3

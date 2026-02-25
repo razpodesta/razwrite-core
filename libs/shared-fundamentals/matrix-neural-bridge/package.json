@@ -1,0 +1,13 @@
+{
+  "name": "@razwritecore/nsk-shared-matrix-neural-bridge",
+  "version": "8.5.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: ROSETTA_STONE] Córtex de traducción cognitiva, registro dinámico y forja de OpCodes Bitwise.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "peerDependencies": {
+    "zod": "^3.23.0"
+  }
+}

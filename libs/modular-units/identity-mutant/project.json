@@ -1,0 +1,20 @@
+{
+  "name": "unit-identity-mutant",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "modular-units/identity-mutant-engine/src",
+  "projectType": "library",
+  "tags": ["type:bunker", "scope:bunker", "role:identity-orchestrator"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/modular-units/identity-mutant-engine",
+        "main": "modular-units/identity-mutant-engine/src/index.ts",
+        "tsConfig": "modular-units/identity-mutant-engine/tsconfig.lib.json",
+        "assets": ["modular-units/identity-mutant-engine/*.md"],
+        "clean": true
+      }
+    }
+  }
+}

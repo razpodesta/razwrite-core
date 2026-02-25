@@ -1,0 +1,28 @@
+{
+  "name": "nsk-shared-crypto",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared-fundamentals/crypto/src",
+  "projectType": "library",
+  "tags": [
+    "layer:fundamentals",
+    "domain:system-core",
+    "iso:27001",
+    "env:deep-pulse"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared-fundamentals/crypto",
+        "main": "libs/shared-fundamentals/crypto/src/index.ts",
+        "tsConfig": "libs/shared-fundamentals/crypto/tsconfig.lib.json",
+        "assets": ["libs/shared-fundamentals/crypto/*.md"],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

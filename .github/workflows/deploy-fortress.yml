@@ -1,0 +1,51 @@
+name: 🚀 RWC - Proyección a la Fortaleza
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Entorno de destino'
+        required: true
+        default: 'HuggingFace-Production'
+
+concurrency:
+  group: deployment-production
+  cancel-in-progress: false
+
+jobs:
+  audit_and_deploy:
+    name: 🏗️ Sellado y Transmisión
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Clonando ADN
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📦 Instalando pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.26.1
+
+      - name: 🟢 Configurando Node.js con Caché
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+          cache: 'pnpm'
+
+      - name: 🛠️ Instalando Dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: 👮 Aduana de Pre-Vuelo
+        run: pnpm aduana:global:total
+
+      - name: 🐳 Transmisión Soberana a Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+          HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
+        run: |
+          git config --global user.email "bot@metashark.tech"
+          git config --global user.name "RWC Deployment Bot"
+          git remote add hf https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME
+          git push --force hf main

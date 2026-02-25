@@ -1,0 +1,28 @@
+{
+  "name": "shared-scene-projector",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared-fundamentals/atomic-scene-projector/src",
+  "projectType": "library",
+  "tags": [
+    "layer:fundamentals",
+    "domain:system-core",
+    "iso:25010",
+    "env:surface"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared-fundamentals/atomic-scene-projector",
+        "main": "libs/shared-fundamentals/atomic-scene-projector/src/index.ts",
+        "tsConfig": "libs/shared-fundamentals/atomic-scene-projector/tsconfig.lib.json",
+        "assets": ["libs/shared-fundamentals/atomic-scene-projector/*.md"],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

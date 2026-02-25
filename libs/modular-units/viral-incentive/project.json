@@ -1,0 +1,19 @@
+{
+  "name": "viral-incentive-engine",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/modular-units/viral-incentive-engine/src",
+  "projectType": "library",
+  "tags": ["layer:modular-unit", "domain:finance", "iso:27001"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/modular-units/viral-incentive-engine",
+        "main": "libs/modular-units/viral-incentive-engine/src/index.ts",
+        "tsConfig": "libs/modular-units/viral-incentive-engine/tsconfig.lib.json",
+        "assets": ["libs/modular-units/viral-incentive-engine/*.md"]
+      }
+    }
+  }
+}

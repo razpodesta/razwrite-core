@@ -1,0 +1,14 @@
+{
+  "SharedFundamentals": {
+    "MetabolicScheduler": {
+      "modeTransition": {
+        "semanticContent": "System metabolic state transited to [{{newMode}}]. Reason: {{reason}}.",
+        "semanticVersion": "8.5.0"
+      },
+      "resourceConstraintWarning": {
+        "semanticContent": "Execution denied for QoS [{{qosTier}}]. Insufficient metabolic resources.",
+        "semanticVersion": "8.5.0"
+      }
+    }
+  }
+}

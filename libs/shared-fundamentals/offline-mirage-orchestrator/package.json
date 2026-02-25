@@ -1,0 +1,12 @@
+{
+  "name": "@razwritecore/nsk-shared-offline-mirage",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: OFFLINE_ORCHESTRATOR] Gestor de resiliencia y modo mirage.",
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

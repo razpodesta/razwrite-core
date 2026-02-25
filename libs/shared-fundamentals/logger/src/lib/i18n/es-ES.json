@@ -1,0 +1,18 @@
+{
+  "SharedFundamentals": {
+    "SovereignLogger": {
+      "pulseEmittedMessage": {
+        "semanticContent": "Pulso de telemetría emitido con éxito.",
+        "semanticVersion": "8.5.0"
+      },
+      "criticalOmissionMessage": {
+        "semanticContent": "Fallo crítico en el motor de registro. Telemetría perdida.",
+        "semanticVersion": "8.5.0"
+      },
+      "invalidPayloadMessage": {
+        "semanticContent": "Cargamento de telemetría corrupto interceptado.",
+        "semanticVersion": "8.5.0"
+      }
+    }
+  }
+}

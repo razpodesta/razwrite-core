@@ -1,0 +1,28 @@
+{
+  "name": "unit-sync-osmosis",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/modular-units/sync-osmosis/src",
+  "projectType": "library",
+  "tags": [
+    "layer:modular-unit", 
+    "role:traffic-controller", 
+    "iso:25010",
+    "domain:telemetry"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/modular-units/sync-osmosis",
+        "main": "libs/modular-units/sync-osmosis/src/index.ts",
+        "tsConfig": "libs/modular-units/sync-osmosis/tsconfig.lib.json",
+        "assets": ["libs/modular-units/sync-osmosis/*.md"],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

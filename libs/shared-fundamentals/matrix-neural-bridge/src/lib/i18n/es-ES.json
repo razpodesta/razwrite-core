@@ -1,0 +1,14 @@
+{
+  "SharedFundamentals": {
+    "MatrixNeuralBridge": {
+      "matrixSealedWarning": {
+        "semanticContent": "El Matrix Neural Bridge ha sido sellado. Quedan estrictamente prohibidos los registros de dialectos adicionales.",
+        "semanticVersion": "8.5.0"
+      },
+      "unregisteredApparatusWarning": {
+        "semanticContent": "Fallo de búsqueda. El dialecto del aparato no está registrado en la Matriz.",
+        "semanticVersion": "8.5.0"
+      }
+    }
+  }
+}

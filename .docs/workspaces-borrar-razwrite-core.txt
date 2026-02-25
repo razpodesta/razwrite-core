@@ -1,0 +1,34 @@
+pnpm add comlink nanoid @preact/signals-react cborg
+
+pnpm nx g @nx/js:lib libs/shared-fundamentals/metabolic-scheduler --tags=layer:fundamentals,role:resource-orchestrator,iso:25010 --bundler=tsc --importPath=@razwritecore/shared-metabolic-scheduler
+pnpm nx g @nx/js:lib libs/shared-fundamentals/binary-wasm-bridge --tags=layer:fundamentals,role:binary-interface,iso:25010 --bundler=tsc --importPath=@razwritecore/shared-binary-bridge
+pnpm nx g @nx/js:lib libs/modular-units/quantum-state-manager --tags=layer:modular-unit,role:state-orchestrator,iso:27001 --bundler=tsc --importPath=@razwritecore/unit-quantum-state
+pnpm nx g @nx/js:lib libs/modular-units/synchronization-osmosis-engine --tags=layer:modular-unit,role:traffic-controller,iso:27001 --bundler=tsc --importPath=@razwritecore/unit-sync-osmosis
+pnpm nx g @nx/js:lib libs/infrastructure-adapters/sentinel-forensic-tether --tags=layer:adapter,role:forensic-tunnel,iso:27001 --bundler=tsc --importPath=@razwritecore/adapter-sentinel-tether
+pnpm nx g @nx/js:lib libs/infrastructure-adapters/financial-transaction-adapter --tags=layer:adapter,role:financial-gateway,iso:27001 --bundler=tsc --importPath=@razwritecore/adapter-financial-gateway
+
+pnpm nx g @nx/workspace:move --project nsk-shared-bridge-bus --destination shared-fundamentals/sovereign-nervous-system --newProjectName shared-nervous-system --importPath @razwritecore/shared-nervous-system
+pnpm nx g @nx/workspace:move --project nsk-shared-kernel-runtime --destination shared-fundamentals/metabolic-scheduler --newProjectName shared-metabolic-scheduler --importPath @razwritecore/shared-metabolic-scheduler
+pnpm nx g @nx/workspace:move --project nsk-bunker-identity --destination modular-units/identity-mutant-engine --newProjectName unit-identity-mutant --importPath @razwritecore/unit-identity-mutant
+pnpm nx g @nx/workspace:move --project nsk-bunker-sync --destination modular-units/synchronization-osmosis-engine --newProjectName unit-sync-osmosis --importPath @razwritecore/unit-sync-osmosis
+pnpm nx g @nx/workspace:move --project nsk-shared-telemetry-matrix --destination shared-fundamentals/matrix-neural-bridge --newProjectName shared-matrix-neural-bridge --importPath @razwritecore/shared-matrix-neural-bridge
+pnpm nx g @nx/workspace:move --project nsk-shared-sdui-engine --destination shared-fundamentals/atomic-scene-projector --newProjectName shared-scene-projector --importPath @razwritecore/shared-scene-projector
+
+pnpm nx g @nx/js:lib libs/modular-units/polymorphic-qr-engine --tags=layer:modular-unit,domain:telemetry,iso:25010 --bundler=tsc --importPath=@razwritecore/unit-polymorphic-qr
+pnpm nx g @nx/js:lib libs/modular-units/viral-incentive-engine --tags=layer:modular-unit,domain:finance,iso:27001 --bundler=tsc --importPath=@razwritecore/unit-viral-incentive
+pnpm nx g @nx/js:lib libs/extraction-refineries/iot-proximity-refinery --tags=layer:extraction-refinery,domain:system-core,iso:27001 --bundler=tsc --importPath=@razwritecore/refinery-iot-proximity
+pnpm nx g @nx/js:lib libs/shared-fundamentals/offline-mirage-orchestrator --tags=layer:fundamentals,domain:system-core,iso:25010 --bundler=tsc --importPath=@razwritecore/shared-offline-mirage
+
+
+
+
+
+
+
+
+
+
+
+
+
+

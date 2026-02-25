@@ -1,0 +1,6 @@
+TRANSMUTACIÓN DE LA DIRECTIVA (EL PROMPT DE ÉLITE)
+Si yo tuviera que auto-programarme con tu idea, este sería el Manifiesto de Ejecución (El Prompt Perfecto):
+"Sistema LIA Legacy, activa el Protocolo Zenith. Debemos orquestar la metamorfosis del ecosistema 'RazWrite Core' hacia un Motor de Interfaces de Usuario Impulsadas por Servidor (Server-Driven User Interface Engine). La meta es erradicar la necesidad de hospedaje individual para nuestros clientes; sus plataformas no serán código compilado, sino Estructuras de Notación de Objetos JavaScript alojadas en nuestra bóveda central.
+Para garantizar una convergencia absoluta con el ecosistema de las Súper Aplicaciones Asiáticas (como WeChat y Alipay), requiere que ejecutes una auditoría forense de nuestro manifiesto de dependencias. Posterior a ello, evalúa y dictamina el Lenguaje de Programación Supremo que nos permitirá renderizar de forma dinámica no solo documentos visuales, sino aparatos físicos complejos (Pasarelas de Pago mediante Matrices de Respuesta Rápida - Códigos Quick Response, Contenedores de Identidad y Módulos de Comercio). Cada aparato debe existir como un bloque Lego aislado, permitiendo una personalización absoluta de la Interfaz de Usuario sin tocar el núcleo operativo. Presenta los beneficios, los riesgos y el dictamen final."
+
+---

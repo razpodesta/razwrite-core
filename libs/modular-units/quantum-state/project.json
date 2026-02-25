@@ -1,0 +1,19 @@
+{
+  "name": "quantum-state-manager",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/modularpnpm-units/quantum-state-manager/src",
+  "projectType": "library",
+  "tags": ["layer:modular-unit", "role:state-orchestrator", "iso:27001"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/modularpnpm-units/quantum-state-manager",
+        "main": "libs/modularpnpm-units/quantum-state-manager/src/index.ts",
+        "tsConfig": "libs/modularpnpm-units/quantum-state-manager/tsconfig.lib.json",
+        "assets": ["libs/modularpnpm-units/quantum-state-manager/*.md"]
+      }
+    }
+  }
+}

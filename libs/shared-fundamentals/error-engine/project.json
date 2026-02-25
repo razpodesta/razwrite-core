@@ -1,0 +1,24 @@
+{
+  "name": "nsk-shared-error-engine",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared-fundamentals/error-engine/src",
+  "projectType": "library",
+  "tags": [
+    "layer:fundamentals",
+    "domain:system-core",
+    "iso:27001",
+    "env:deep-pulse"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "options": {
+        "outputPath": "dist/libs/shared-fundamentals/error-engine",
+        "main": "libs/shared-fundamentals/error-engine/src/index.ts",
+        "tsConfig": "libs/shared-fundamentals/error-engine/tsconfig.lib.json",
+        "assets": ["libs/shared-fundamentals/error-engine/*.md"],
+        "clean": true
+      }
+    }
+  }
+}

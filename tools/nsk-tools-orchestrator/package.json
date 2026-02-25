@@ -1,0 +1,17 @@
+{
+  "name": "@razwritecore/nsk-tools-orchestrator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: FORGE_MASTER] Orquestador de herramientas internas, scripts de mantenimiento y automatización de la infraestructura RazWrite Core.",
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "peerDependencies": {
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-shared-error-engine": "workspace:*"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "shared-metabolic-scheduler",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared-fundamentals/metabolic-scheduler/src",
+  "projectType": "library",
+  "tags": [
+    "layer:fundamentals", 
+    "domain:system-core",
+    "iso:25010",
+    "env:surface"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared-fundamentals/metabolic-scheduler",
+        "main": "libs/shared-fundamentals/metabolic-scheduler/src/index.ts",
+        "tsConfig": "libs/shared-fundamentals/metabolic-scheduler/tsconfig.lib.json",
+        "assets": [
+          "libs/shared-fundamentals/metabolic-scheduler/*.md",
+          "libs/shared-fundamentals/metabolic-scheduler/src/lib/**/i18n/*.json"
+        ],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

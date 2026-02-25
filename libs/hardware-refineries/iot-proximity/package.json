@@ -1,0 +1,12 @@
+{
+  "name": "@razwritecore/nsk-hw-iot-proximity",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: IOT_SENSOR] Refinería de proximidad, NFC y Bluetooth Low Energy.",
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@razwritecore/unit-sync-osmosis",
+  "version": "8.6.1",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: OSMOTIC_MEMBRANE] Controlador de tráfico de datos inteligente. Gestiona la presión de red basándose en el estado metabólico y la supervivencia de la página.",
+  "peerDependencies": {
+    "zod": "^4.3.6",
+    "tslib": "^2.3.0",
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-shared-metabolic-scheduler": "workspace:*",
+    "@razwritecore/nsk-shared-nervous-system": "workspace:*"
+  }
+}

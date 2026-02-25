@@ -1,0 +1,19 @@
+{
+  "name": "sentinel-forensic-tether",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/infrastructure-adapters/sentinel-forensic-tether/src",
+  "projectType": "library",
+  "tags": ["layer:adapter", "role:forensic-tunnel", "iso:27001"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/infrastructure-adapters/sentinel-forensic-tether",
+        "main": "libs/infrastructure-adapters/sentinel-forensic-tether/src/index.ts",
+        "tsConfig": "libs/infrastructure-adapters/sentinel-forensic-tether/tsconfig.lib.json",
+        "assets": ["libs/infrastructure-adapters/sentinel-forensic-tether/*.md"]
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "persistence",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/modular-units/persistence/src",
+  "projectType": "library",
+  "tags": [
+    "layer:modular-unit",
+    "role:memory-vault",
+    "iso:27001",
+    "domain:system-core"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/modular-units/persistence",
+        "main": "libs/modular-units/persistence/src/index.ts",
+        "tsConfig": "libs/modular-units/persistence/tsconfig.lib.json",
+        "assets": ["libs/modular-units/persistence/*.md"]
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+/**
+ * @apparatus VaultAdminStyles
+ * @role Estilos base para el panel administrativo (Diferenciación Visual).
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Temática Acid: Enfoque en supervisión y advertencia */
+  --primary-brand: #dc2626; /* Rojo de autoridad */
+  --font-main: 'JetBrains Mono', 'Inter', monospace;
+}
+
+html {
+  font-family: var(--font-main);
+  background-color: #020617; /* Sombra más profunda para el admin */
+  color: #f1f5f9;
+}
+
+/* Scrollbar de elite para visualización de logs */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-slate-950;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-800 rounded-full hover:bg-red-600 transition-colors;
+}

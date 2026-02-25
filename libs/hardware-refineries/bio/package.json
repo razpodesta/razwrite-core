@@ -1,0 +1,12 @@
+{
+  "name": "@razwritecore/nsk-hw-bio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: BIO_SENSOR] Refinería de biometría y estado de hardware.",
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}
