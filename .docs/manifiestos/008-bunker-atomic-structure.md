@@ -58,3 +58,21 @@ Optimización IA: Una IA puede procesar una sola carpeta y tener el contexto tot
 Proyección Inmediata: El ALP puede cargar el .contract.ts de forma independiente antes de hidratar el .tsx, permitiendo una conexión al sistema nervioso en milisegundos.
 Firma de Autoridad:
 Raz Podestá - Arquitecto Jefe
+
+---
+
+---
+## ADÉNDUM A: PROHIBICIÓN DE ESTRUCTURA PLANA (THE VOID POLICY)
+
+Ningún archivo de lógica (`.ts` o `.tsx`) puede residir directamente en la raíz de `src/lib/`. 
+1. Todo aparato debe poseer su propio subdirectorio con su nombre PascalCase.
+2. Esta estructura es obligatoria incluso para unidades con un solo archivo de lógica, para permitir la expansión inmediata hacia la Penta-Estructura (ADN, Cuerpo, Nexo, Cerebro, Alma) sin mover archivos en el futuro.
+
+---
+
+ADÉNDUM B: LEY DE SIMETRÍA FÍSICO-LÓGICA
+Para garantizar la transparencia forense, el archivo de lógica principal (.logic.ts) debe heredar el nombre exacto de su carpeta contenedora (Aparato).
+Estructura: [AparatoName]/[AparatoName].logic.ts
+El incumplimiento de esta simetría invalida el aparato para el sellado de producción.
+
+---

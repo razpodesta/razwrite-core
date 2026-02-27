@@ -1,0 +1,19 @@
+{
+    "name":  "@razwritecore/nsk-bunker-identity-mutant",
+    "version":  "1.0.0",
+    "private":  true,
+    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
+    "description":  "[ROLE: IDENTITY_FORGE] Unidad Modular para la generación determinística y rotación de pasaportes mutantes en el hilo del núcleo (Deep-Pulse).",
+    "type":  "module",
+    "sideEffects":  false,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+                         "tslib":  "^2.8.1",
+                         "@razwritecore/nsk-shared-crypto":  "workspace:*",
+                         "@razwritecore/nsk-shared-nervous-system":  "workspace:*"
+                     },
+    "peerDependencies":  {
+                             "zod":  "^3.24.2",
+                             "react":  "^19.0.0"
+                         }
+}

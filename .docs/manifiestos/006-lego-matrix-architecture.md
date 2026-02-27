@@ -48,3 +48,31 @@ onMetabolicPeak(): Activación de alta fidelidad.
 onHibernation(): Volcado de estado a L2 y cese de hilos.
 Firma de Autoridad:
 Raz Podestá - Arquitecto Jefe
+
+---
+
+---
+## ADÉNDUM A: SOBERANÍA DE DIRECTORIOS (REGLA DE DIRECTORIO ÚNICO)
+
+A partir de la versión Zenith V8.5, la jerarquía física en el sistema de archivos debe ser un espejo exacto de la Capa de Soberanía. Se prohíbe el uso de carpetas contenedoras genéricas (ej. `shared-fundamentals`, `modular-units`).
+
+1. **Estructura de Rutas Mandatoria:**
+   - Capa 0 (ADN) ⮕ `libs/shared/[bunker-name]`
+   - Capa 1 (Sensores) ⮕ `libs/hardware/[bunker-name]`
+   - Capa 2 (Inteligencia) ⮕ `libs/bunkers/[bunker-name]`
+   - Capa 3 (Puentes) ⮕ `libs/integrations/[bunker-name]`
+   - Capa 4 (Superficie) ⮕ `apps/nsk-app-[name]`
+
+Esta nivelación elimina la entropía de ruta y garantiza que el `tsconfig.base.json` sea la única fuente de verdad para la resolución de módulos.
+
+---.
+
+---
+## ADÉNDUM B: SIMPLICIDAD DE DOMINIO Y RUTEO CANÓNICO (V8.5.1)
+
+A partir de esta revisión, el nombre físico de la carpeta de un búnker debe representar exclusivamente el **Dominio Raíz**.
+- Prohibido: `libs/bunkers/identity-mutant-engine`.
+- Soberano: `libs/bunkers/identity`.
+Esta regla reduce la verbosidad en los mapeos de `tsconfig` y facilita la memorización de rutas para el Neural Sentinel. La descripción técnica completa reside en el `package.json` y el Pasaporte (README.md).
+---
+

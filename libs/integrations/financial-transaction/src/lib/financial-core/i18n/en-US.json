@@ -1,0 +1,9 @@
+{
+  "FinancialTransaction": {
+    "Execution": {
+      "Success": "Payment processed successfully. Transaction secured.",
+      "Error": "Financial transaction failed. Please verify your payment method.",
+      "Pending": "Awaiting authorization from the financial institution."
+    }
+  }
+}

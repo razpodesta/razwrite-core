@@ -1,0 +1,17 @@
+/* [RUTA: libs/shared/logger/tsconfig.lib.json] */
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "declaration": true,
+    "composite": true,
+    "noEmit": false,
+    "tsBuildInfoFile": "../../../dist/out-tsc/tsbuildinfo/nsk-shared-logger.tsbuildinfo",
+    "types": ["node"]
+  },
+  "references": [
+    { "path": "../matrix-neural-bridge" }
+  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "test.ts"]
+}

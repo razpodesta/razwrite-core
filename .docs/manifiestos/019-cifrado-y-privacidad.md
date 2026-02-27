@@ -45,4 +45,12 @@ Bajo el estándar Lattice V8.5, el cifrado extremo (Zero-Knowledge) rige para en
 
 ---
 
+Aplica a: Manifiesto 015 y 019
+Directiva: Blindaje total de Server Actions contra la visibilidad de datos.
+Protocolo de Relevo Ciego: Las Next.js Server Actions operan como túneles de transporte. El servidor de aplicaciones tiene prohibido descifrar payloads que contengan PII (Información Personal Identificable).
+Validación Stateless: El servidor solo valida la firma HMAC del paquete y la vigencia del MutantPassportIdentifier. Si la firma es válida, el paquete se releva directamente a la capa de base de datos cifrada o al Neural Sentinel.
+Robustez: Esto garantiza que incluso ante un compromiso total del servidor de aplicaciones, los datos del usuario permanezcan cifrados (Zero-Knowledge Architecture).
+
+---
+
 

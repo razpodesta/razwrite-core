@@ -1,0 +1,24 @@
+{
+  "AtomicSceneProjector": {
+    "initializationStatus": {
+      "semanticContent": "Montando cena sintética baseada no manifesto do inquilino...",
+      "semanticVersion": "9.2.0"
+    },
+    "validationError": {
+      "semanticContent": "Detectada discrepância no ADN genético. Projeção de cena abortada para proteger a integridade do sistema.",
+      "semanticVersion": "9.2.0"
+    },
+    "resourceConstraint": {
+      "semanticContent": "Renderização de alta fidelidade suspensa por otimização de recursos metabólicos.",
+      "semanticVersion": "9.2.0"
+    },
+    "apparatusMissing": {
+      "semanticContent": "Aparelho modular [{identifier}] não localizado no registro local.",
+      "semanticVersion": "9.2.0"
+    },
+    "stabilizationComplete": {
+      "semanticContent": "Realidade visual estabilizada a 60fps.",
+      "semanticVersion": "9.2.0"
+    }
+  }
+}

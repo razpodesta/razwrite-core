@@ -1,0 +1,19 @@
+{
+    "name":  "@razwritecore/nsk-hw-motion",
+    "version":  "1.0.0",
+    "private":  true,
+    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
+    "description":  "[ROLE: KINETIC_REFINERY] Refinería de hardware para extracción de telemetría inercial (Acelerómetro/Giroscopio) y detección de gestos físicos.",
+    "type":  "module",
+    "sideEffects":  false,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+                         "tslib":  "^2.3.0",
+                         "@razwritecore/nsk-shared-logger":  "workspace:*",
+                         "@razwritecore/nsk-shared-metabolic-scheduler":  "workspace:*",
+                         "@razwritecore/nsk-bunker-compliance":  "workspace:*"
+                     },
+    "peerDependencies":  {
+                             "zod":  "^3.24.1"
+                         }
+}

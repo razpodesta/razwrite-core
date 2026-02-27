@@ -1,0 +1,16 @@
+{
+  "SovereignErrorEngine": {
+    "defaultFailsafeMessage": {
+      "semanticContent": "Anomalia sistêmica [{{errorCode}}] neutralizada e contida pela autoridade do Kernel.",
+      "semanticVersion": "9.0.0"
+    },
+    "recoveryIntentMessage": {
+      "semanticContent": "Iniciando protocolo de autocura preditiva para a anomalia [{{errorCode}}].",
+      "semanticVersion": "9.0.0"
+    },
+    "forensicSealed": {
+      "semanticContent": "Rastro forense selado criptograficamente e despachado para o Sentinel.",
+      "semanticVersion": "9.0.0"
+    }
+  }
+}

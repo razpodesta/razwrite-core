@@ -1,0 +1,23 @@
+/* [RUTA RELATIVA: libs/shared/atomic-scene-projector/tsconfig.json] */
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "composite": true,
+    "declaration": true,
+    "tsBuildInfoFile": "../../../dist/libs/shared/atomic-scene-projector/tsconfig.tsbuildinfo"
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
+}

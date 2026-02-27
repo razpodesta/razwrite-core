@@ -1,0 +1,8 @@
+{
+  "HashingEngine": {
+    "computationError": {
+      "semanticContent": "Failed to compute digital fingerprint. Cryptographic provider unavailable.",
+      "semanticVersion": "9.0.0"
+    }
+  }
+}

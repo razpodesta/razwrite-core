@@ -1,0 +1,14 @@
+{
+  "NervousSystem": {
+    "IntentionRouter": {
+      "intentionDispatched": {
+        "semanticContent": "Intención [{{intentionOpCode}}] despachada con nivel QoS {{qosLevel}}.",
+        "semanticVersion": "9.0.0"
+      },
+      "membraneCongestion": {
+        "semanticContent": "Congestión en el Sistema Nervioso. Descartando pulsos conductuales de baja prioridad.",
+        "semanticVersion": "9.0.0"
+      }
+    }
+  }
+}

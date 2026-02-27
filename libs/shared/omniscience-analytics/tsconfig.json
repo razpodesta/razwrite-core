@@ -1,0 +1,27 @@
+/* [RUTA RELATIVA: libs/shared/omniscience-analytics/tsconfig.json] */
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    /* Sello de Potencia: ESM es el único lenguaje del Kernel */
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "importHelpers": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "composite": true,
+    "declaration": true,
+    "tsBuildInfoFile": "../../../dist/libs/shared/omniscience-analytics/tsconfig.tsbuildinfo"
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "./tsconfig.lib.json" },
+    { "path": "./tsconfig.spec.json" }
+  ]
+}

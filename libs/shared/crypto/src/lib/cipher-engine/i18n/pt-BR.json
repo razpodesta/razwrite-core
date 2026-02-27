@@ -1,0 +1,12 @@
+{
+  "CipherEngine": {
+    "integrityViolation": {
+      "semanticContent": "Falha na verificação de integridade criptográfica. Os dados podem ter sido adulterados ou a chave é inválida.",
+      "semanticVersion": "9.0.0"
+    },
+    "encryptionSuccess": {
+      "semanticContent": "Carga de informação transmutada com sucesso em Matéria Escura.",
+      "semanticVersion": "9.0.0"
+    }
+  }
+}

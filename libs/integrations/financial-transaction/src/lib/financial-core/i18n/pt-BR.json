@@ -1,0 +1,9 @@
+{
+  "FinancialTransaction": {
+    "Execution": {
+      "Success": "Pagamento processado com sucesso. Transação garantida.",
+      "Error": "A transação financeira falhou. Verifique seu método de pagamento.",
+      "Pending": "Aguardando autorização da instituição financeira."
+    }
+  }
+}

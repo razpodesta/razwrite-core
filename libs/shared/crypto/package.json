@@ -1,0 +1,19 @@
+{
+  "name": "@razwritecore/nsk-shared-crypto",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: BIO_SECURITY_VAULT] Clúster de criptografía nativa (Web Crypto API). Motores de cifrado AES-GCM, derivación PBKDF2 y algoritmos de hashing seguro.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "peerDependencies": {
+    "zod": "^3.24.2"
+  }
+}

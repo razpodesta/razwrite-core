@@ -79,3 +79,12 @@ Raz Podestá - Arquitecto Jefe
 
 ---
 
+---
+## ADÉNDUM B: EVIDENCIA FÍSICA DE FRONTERAS (PATH-BASED AUDIT)
+
+La ubicación de una unidad modular en el disco constituye la primera evidencia forense de su cumplimiento normativo. 
+- Cualquier archivo cuya ruta no inicie con el prefijo de su capa asignada (ej: un Bunker en `/shared/`) será invalidado automáticamente por el Neural Sentinel.
+- El comando `move` de Nx es el único vehículo autorizado para la transmutación de ubicación, asegurando que los metadatos de `project.json` se mantengan síncronos con el árbol de dependencias.
+
+---
+

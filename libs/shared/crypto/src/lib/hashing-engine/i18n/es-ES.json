@@ -1,0 +1,8 @@
+{
+  "HashingEngine": {
+    "computationError": {
+      "semanticContent": "Error al calcular la huella digital. Proveedor criptográfico no disponible.",
+      "semanticVersion": "9.0.0"
+    }
+  }
+}

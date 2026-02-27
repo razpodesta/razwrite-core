@@ -1,0 +1,21 @@
+{
+  "name": "@razwritecore/nsk-shared-nervous-system",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: KERNEL_MEDIATOR] Clúster del mediador soberano: Enrutador de Intenciones (Intention Router), Puente Cuántico (Quantum Bridge) y Susurro Silencioso (Silent Whisperer).",
+  "type": "module",
+  "main": "./src/index.ts",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "peerDependencies": {
+    "zod": "^3.24.2",
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-shared-matrix-neural-bridge": "workspace:*"
+  }
+}

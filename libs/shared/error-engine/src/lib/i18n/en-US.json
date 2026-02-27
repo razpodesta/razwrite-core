@@ -1,0 +1,8 @@
+{
+  "SovereignErrorEngine": {
+    "defaultFailsafeMessage": {
+      "semanticContent": "An anomaly was detected and neutralized. Error Code: [{{errorCode}}].",
+      "semanticVersion": "9.3.0"
+    }
+  }
+}

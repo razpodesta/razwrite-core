@@ -1,0 +1,14 @@
+{
+  "NervousSystem": {
+    "QuantumBridge": {
+      "allocationSuccess": {
+        "semanticContent": "Búfer compartido [{{id}}] asignado con éxito ({{size}} bytes).",
+        "semanticVersion": "9.0.0"
+      },
+      "noSharedMemorySupport": {
+        "semanticContent": "SharedArrayBuffer no disponible. No se cumplen los requisitos de aislamiento de hardware.",
+        "semanticVersion": "9.0.0"
+      }
+    }
+  }
+}

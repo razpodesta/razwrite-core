@@ -1,0 +1,12 @@
+{
+  "KeyForgeEngine": {
+    "derivationError": {
+      "semanticContent": "Cryptographic forge failed. Unable to derive secure session key from provided material.",
+      "semanticVersion": "9.0.0"
+    },
+    "securityWarning": {
+      "semanticContent": "Unauthorized key extraction attempt detected. Key is locked in volatile memory.",
+      "semanticVersion": "9.0.0"
+    }
+  }
+}

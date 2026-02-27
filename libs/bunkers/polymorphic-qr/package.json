@@ -1,0 +1,17 @@
+{
+    "name":  "@razwritecore/nsk-bunker-polymorphic-qr",
+    "version":  "1.0.0",
+    "private":  true,
+    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
+    "description":  "[ROLE: QR_VECTOR_ENGINE] Motor de generación de vectores de intención cifrados y respuesta cuántica (M-033).",
+    "type":  "module",
+    "sideEffects":  false,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+                         "tslib":  "^2.3.0",
+                         "@razwritecore/nsk-shared-crypto":  "workspace:*"
+                     },
+    "peerDependencies":  {
+                             "zod":  "^3.24.1"
+                         }
+}

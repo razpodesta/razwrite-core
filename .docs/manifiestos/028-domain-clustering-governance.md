@@ -38,3 +38,14 @@ El archivo `src/index.ts` del Workspace actuará como el **Ministerio de Relacio
 export { IdentityCoreEngine } from './lib/identity-core/identity.logic';
 export { OblivionEngine } from './lib/oblivion-engine/oblivion.logic';
 export type { IMutantPassport } from './lib/identity-core/identity.schema';
+
+---
+
+---
+## ADÉNDUM A: SUB-CLÚSTERES EN CAPA ZERO (SHARED COHESION)
+
+Las unidades modulares de la Capa Shared (ej: `nervous-system`) deben operar como micro-clústeres. 
+- Cada responsabilidad (ej: `IntentionRouter`, `QuantumBridge`) debe poseer su propio subdirectorio interno con su respectiva lógica aislada.
+- El archivo `index.ts` de la librería compartida actuará como el único "Broker" de estas capacidades hacia el resto del Lattice.
+
+---

@@ -71,3 +71,19 @@ async function dispatchGeographicContextRequest(mutantPassportIdentifier: IMutan
 }
 Firma de Autoridad:
 Raz Podestá - Arquitecto Jefe
+
+---
+
+Adéndum para MANIFIESTO 004 (Soberanía de Nomenclatura)
+ADÉNDUM C: PROHIBICIÓN DE SINÉCDOQUE TÉCNICA (V8.11)
+Queda terminantemente prohibido el uso de fragmentos de dominio en la nomenclatura. La identidad debe ser completa y absoluta.
+Prohibido: geo, bio, sync, auth, pld.
+Soberano: geographic, biometric, synchronization, authentication, payload.
+Esta regla aplica tanto a carpetas como a los campos name en el package.json.
+
+---
+
+
+
+---
+

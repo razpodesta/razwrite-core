@@ -1,0 +1,16 @@
+{
+  "BinaryBridge": {
+    "ignitionSuccess": {
+      "semanticContent": "Núcleo binario [{{moduleIdentifier}}] encendido y aislado con éxito.",
+      "semanticVersion": "1.0.0"
+    },
+    "ignitionError": {
+      "semanticContent": "Fallo crítico durante la instanciación de WebAssembly. Lógica de alto rendimiento suspendida.",
+      "semanticVersion": "1.0.0"
+    },
+    "ignitionDenied": {
+      "semanticContent": "Carga WASM denegada. Recursos metabólicos insuficientes para cómputo binario.",
+      "semanticVersion": "1.0.0"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+/* [RUTA RELATIVA: libs/shared/omniscience-analytics/tsconfig.lib.json] */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "declaration": true,
+    "composite": true,
+    "noEmit": false,
+    "tsBuildInfoFile": "../../../dist/out-tsc/tsbuildinfo/nsk-shared-omniscience-analytics.tsbuildinfo",
+    "types": ["node"]
+  },
+  "references": [
+    { "path": "../logger" },
+    { "path": "../crypto" },
+    { "path": "../matrix-neural-bridge" }
+  ],
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts"
+  ]
+}

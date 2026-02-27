@@ -1,0 +1,21 @@
+/* [RUTA RELATIVA: libs/shared/binary-bridge/tsconfig.lib.json] */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "declaration": true,
+    "composite": true,
+    "noEmit": false,
+    /* Sincronização Crítica para import.meta */
+    "module": "esnext",
+    "target": "esnext",
+    "tsBuildInfoFile": "../../../dist/out-tsc/tsbuildinfo/nsk-shared-binary-bridge.tsbuildinfo",
+    "types": ["node"]
+  },
+  "references": [
+    { "path": "../logger" },
+    { "path": "../metabolic-scheduler" }
+  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+}

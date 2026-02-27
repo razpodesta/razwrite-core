@@ -1,0 +1,8 @@
+{
+  "EncodingEngine": {
+    "transmutationError": {
+      "semanticContent": "Corrupción de datos detectada durante la transmutación de binario a texto.",
+      "semanticVersion": "9.0.0"
+    }
+  }
+}

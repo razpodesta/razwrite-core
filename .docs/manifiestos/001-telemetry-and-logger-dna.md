@@ -73,3 +73,15 @@ Refine: El Worker realiza la compresión ZTM (traducción a números), el cifrad
 Buffer: Se almacena en el PersistenceBunker (L2) hasta que el Sync-Osmosis detecte la presión necesaria para el volcado a la nube.
 Firma de Autoridad:
 Raz Podestá - Arquitecto Jefe 
+
+---
+
+ADÉNDUM 001-A: PROTOCOLO "CONTEXT-SNAPPING" (TELEMETRÍA FORENSE)
+Aplica a: Manifiesto 001 y 021
+Directiva: Captura de rastro de alta fidelidad pre-fallo.
+Snap de Seguridad: El SovereignLogger, al detectar un error de severidad CRITICAL o FATAL, debe adjuntar automáticamente un snapshot de los últimos 5 segundos del Quantum-State (Estado de Memoria Compartida).
+Rastro Forense: El snapshot debe incluir el MetabolicMode y el NetworkPressure del momento exacto del fallo.
+Misión: Proporcionar al Neural Sentinel el contexto exacto para la reconstrucción del error en el entorno de pruebas espejo, acelerando la auto-sanación.
+
+---
+

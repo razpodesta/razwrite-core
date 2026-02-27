@@ -1,0 +1,44 @@
+{
+  "name": "shared-logger",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/logger/src",
+  "projectType": "library",
+  "tags": [
+    "layer:fundamentals",
+    "domain:telemetry",
+    "iso:25010",
+    "iso:27001",
+    "env:surface",
+    "env:deep-pulse",
+    "env:acid"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/logger",
+        "main": "libs/shared/logger/src/index.ts",
+        "tsConfig": "libs/shared/logger/tsconfig.lib.json",
+        "assets": [
+          "libs/shared/logger/*.md",
+          {
+            "input": "libs/shared/logger/src/lib/logger-core/i18n",
+            "glob": "**/*.json",
+            "output": "./i18n"
+          }
+        ],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/shared/logger/jest.config.ts"
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "HashingEngine": {
+    "computationError": {
+      "semanticContent": "Falha ao calcular a impressão digital. Provedor criptográfico indisponível.",
+      "semanticVersion": "9.0.0"
+    }
+  }
+}

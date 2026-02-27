@@ -1,0 +1,22 @@
+{
+  "Shared": {
+    "OfflineMirage": {
+      "status_REALITY_SYNCED": {
+        "semanticContent": "Realidade sincronizada com sucesso. Conexão estável estabelecida.",
+        "semanticVersion": "1.0.0"
+      },
+      "status_MIRAGE_ACTIVE": {
+        "semanticContent": "Modo Espelhamento ativo. Operando com persistência local devido a restrições de rede.",
+        "semanticVersion": "1.0.0"
+      },
+      "status_RECONCILIATION": {
+        "semanticContent": "Sinal recuperado. Iniciando reconciliação de dados entre o disco local e a nuvem.",
+        "semanticVersion": "1.0.0"
+      },
+      "transitionError": {
+        "semanticContent": "Falha crítica na transmutação de fase da realidade offline.",
+        "semanticVersion": "1.0.0"
+      }
+    }
+  }
+}

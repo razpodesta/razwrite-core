@@ -1,0 +1,23 @@
+{
+  "name": "@razwritecore/nsk-app-vault-admin",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: APPLICATION_SHELL] Interfaz de orquestación y auditoría de estado para la gestión de inquilinos y bóvedas (Acid-Pulse).",
+  "type": "module",
+  "sideEffects": false,
+  "dependencies": {
+    "next": "15.1.6",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.7",
+    "@types/react": "19.0.7",
+    "@types/react-dom": "19.0.3"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

@@ -48,3 +48,11 @@ La calidad no es estática. El Linter es un organismo vivo.
 
 ---
 
+ADÉNDUM A: INMUTABILIDAD DE LAS ARTERIAS (V8.12)
+El mapeo de paths en el tsconfig.base.json se considera Infraestructura Crítica.
+Queda prohibido el uso de abreviaturas en los alias (@geo, @bio, @sync).
+Cada entrada debe ser un espejo exacto de la jerarquía definida en el Manifiesto 006.
+Cualquier adición de una nueva biblioteca debe ser notificada al Metabolic Scheduler para auditar el peso del grafo de dependencias antes de ser aceptada en el mapa maestro.
+
+---
+

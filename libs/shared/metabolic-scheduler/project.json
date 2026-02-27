@@ -1,0 +1,38 @@
+{
+  "name": "@razwritecore/nsk-shared-metabolic-scheduler",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/metabolic-scheduler/src",
+  "projectType": "library",
+  "tags": [
+    "layer:fundamentals",
+    "domain:system-core",
+    "iso:25010",
+    "env:surface"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/metabolic-scheduler",
+        "main": "libs/shared/metabolic-scheduler/src/index.ts",
+        "tsConfig": "libs/shared/metabolic-scheduler/tsconfig.lib.json",
+        "assets": [
+          "libs/shared/metabolic-scheduler/*.md",
+          "libs/shared/metabolic-scheduler/src/lib/**/i18n/*.json"
+        ],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/shared/metabolic-scheduler/jest.config.ts"
+      }
+    }
+  }
+}

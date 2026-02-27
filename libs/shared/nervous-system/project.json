@@ -1,0 +1,39 @@
+{
+  "name": "@razwritecore/nsk-shared-nervous-system",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/nervous-system/src",
+  "projectType": "library",
+  "tags": [
+    "layer:fundamentals",
+    "domain:system-core",
+    "iso:25010",
+    "env:surface",
+    "env:deep-pulse"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/nervous-system",
+        "main": "libs/shared/nervous-system/src/index.ts",
+        "tsConfig": "libs/shared/nervous-system/tsconfig.lib.json",
+        "assets": [
+          "libs/shared/nervous-system/*.md",
+          "libs/shared/nervous-system/src/lib/**/i18n/*.json"
+        ],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/shared/nervous-system/jest.config.ts"
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+    "name":  "@razwritecore/nsk-hw-geographic",
+    "version":  "1.0.0",
+    "private":  true,
+    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
+    "description":  "[ROLE: GEOGRAPHIC_REFINERY] Refinería de hardware para extracción de contexto geográfico y ejecución de cumplimiento de fronteras (Geofencing).",
+    "type":  "module",
+    "sideEffects":  false,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+                         "tslib":  "^2.8.1",
+                         "@razwritecore/nsk-shared-logger":  "workspace:*",
+                         "@razwritecore/nsk-shared-nervous-system":  "workspace:*",
+                         "@razwritecore/nsk-shared-metabolic-scheduler":  "workspace:*",
+                         "@razwritecore/nsk-bunker-compliance":  "workspace:*"
+                     },
+    "peerDependencies":  {
+                             "zod":  "^3.24.2"
+                         }
+}

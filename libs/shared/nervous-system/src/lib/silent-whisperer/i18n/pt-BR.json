@@ -1,0 +1,22 @@
+{
+  "NervousSystem": {
+    "SilentWhisperer": {
+      "registrationSuccess": {
+        "semanticContent": "Silent Whisperer ativado com sucesso. Escopo: [{{scope}}].",
+        "semanticVersion": "9.0.0"
+      },
+      "registrationError": {
+        "semanticContent": "Falha ao registrar o thread de fundo. As capacidades offline podem estar degradadas.",
+        "semanticVersion": "9.0.0"
+      },
+      "updatePending": {
+        "semanticContent": "Evolução do sistema detectada. Nova versão pronta para instalação.",
+        "semanticVersion": "9.0.0"
+      },
+      "syncScheduled": {
+        "semanticContent": "Sincronização de fundo [{{tag}}] enfileirada para a próxima janela de conexão.",
+        "semanticVersion": "9.0.0"
+      }
+    }
+  }
+}

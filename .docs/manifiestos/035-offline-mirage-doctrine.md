@@ -32,3 +32,14 @@ El ecosistema debe interactuar con el mundo físico sin depender de servidores e
 
 ---
 
+ADÉNDUM 035-A: RESOLUCIÓN CUÁNTICA DE CONFLICTOS (OFFLINE MIRAGE)
+Aplica a: Manifiesto 035
+Directiva: Integración de determinismo en la sincronización de datos.
+Soberanía CRDT (Conflict-free Replicated Data Types): El Sync Osmosis Engine implementará estructuras LWW-Element-Set (Last-Write-Wins).
+Jerarquía de Verdad: En caso de conflicto de tiempo idéntico (colisión de milisegundos):
+Prioridad 1: Reputación del MutantID (Tier del usuario).
+Prioridad 2: Integridad del Device Fingerprint (Dispositivos conocidos > Dispositivos nuevos).
+Garantía: Los datos nunca se pierden; se fusionan determinísticamente sin necesidad de intervención del servidor central.
+
+---
+

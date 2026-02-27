@@ -1,0 +1,28 @@
+{
+  "name": "@razwritecore/nsk-shared-omniscience-analytics",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/omniscience-analytics/src",
+  "projectType": "library",
+  "tags": [
+    "layer:fundamentals",
+    "domain:telemetry",
+    "iso:27001",
+    "env:acid"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/omniscience-analytics",
+        "main": "libs/shared/omniscience-analytics/src/index.ts",
+        "tsConfig": "libs/shared/omniscience-analytics/tsconfig.lib.json",
+        "assets": ["libs/shared/omniscience-analytics/*.md"],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

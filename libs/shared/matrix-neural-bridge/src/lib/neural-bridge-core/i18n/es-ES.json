@@ -1,0 +1,12 @@
+{
+  "MatrixNeuralBridge": {
+    "matrixSealedProtocolViolation": {
+      "semanticContent": "La Matriz Cognitiva ha sido sellada criptográficamente. La inyección de nuevos dialectos está estrictamente prohibida por ley sistémica.",
+      "semanticVersion": "9.0.0"
+    },
+    "unregisteredApparatusLookupFailure": {
+      "semanticContent": "Fallo de resolución Rosetta. El aparato solicitado no posee un vocabulario registrado en la Matriz.",
+      "semanticVersion": "9.0.0"
+    }
+  }
+}

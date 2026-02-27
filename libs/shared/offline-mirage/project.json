@@ -1,0 +1,29 @@
+{
+  "name": "@razwritecore/nsk-shared-offline-mirage",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/offline-mirage/src",
+  "projectType": "library",
+  "tags": [
+    "layer:fundamentals",
+    "domain:system-core",
+    "iso:25010",
+    "env:surface"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/offline-mirage",
+        "main": "libs/shared/offline-mirage/src/index.ts",
+        "tsConfig": "libs/shared/offline-mirage/tsconfig.lib.json",
+        "assets": [
+          "libs/shared/offline-mirage/*.md",
+          "libs/shared/offline-mirage/src/lib/**/i18n/*.json"
+        ],
+        "clean": true
+      }
+    },
+    "lint": { "executor": "@nx/eslint:lint" }
+  }
+}

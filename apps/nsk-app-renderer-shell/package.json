@@ -1,0 +1,23 @@
+{
+  "name": "@razwritecore/nsk-app-renderer-shell",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: APPLICATION_SHELL] Superficie de implementación visual (Surface-Pulse) y Proyector de Escenas Bio-Sintéticas (SDUI).",
+  "type": "module",
+  "sideEffects": false,
+  "dependencies": {
+    "next": "15.1.6",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.7",
+    "@types/react": "19.0.7",
+    "@types/react-dom": "19.0.3"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

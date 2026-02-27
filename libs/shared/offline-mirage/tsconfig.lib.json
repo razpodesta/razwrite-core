@@ -1,0 +1,21 @@
+/* [RUTA RELATIVA: libs/shared/offline-mirage/tsconfig.lib.json] */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "declaration": true,
+    "composite": true,
+    "noEmit": false,
+    "module": "esnext",
+    "target": "esnext",
+    "tsBuildInfoFile": "../../../dist/out-tsc/tsbuildinfo/nsk-shared-offline-mirage.tsbuildinfo",
+    "types": ["node"]
+  },
+  "references": [
+    { "path": "../logger" },
+    { "path": "../matrix-neural-bridge" },
+    { "path": "../metabolic-scheduler" }
+  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+}

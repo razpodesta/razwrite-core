@@ -1,0 +1,16 @@
+{
+  "BinaryBridge": {
+    "ignitionSuccess": {
+      "semanticContent": "Núcleo binário [{{moduleIdentifier}}] inicializado e isolado com sucesso no Deep-Pulse.",
+      "semanticVersion": "1.0.0"
+    },
+    "ignitionError": {
+      "semanticContent": "Falha crítica durante a instanciação do WebAssembly. Lógica de alto desempenho suspensa.",
+      "semanticVersion": "1.0.0"
+    },
+    "ignitionDenied": {
+      "semanticContent": "Carga WASM negada. Recursos metabólicos insuficientes para computação binária.",
+      "semanticVersion": "1.0.0"
+    }
+  }
+}

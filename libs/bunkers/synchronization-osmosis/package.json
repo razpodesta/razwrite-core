@@ -1,0 +1,19 @@
+{
+    "name":  "@razwritecore/nsk-bunker-synchronization-osmosishronization-osmosis",
+    "version":  "1.0.0",
+    "private":  true,
+    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
+    "description":  "[ROLE: OSMOTIC_MEMBRANE] Controlador de tráfico de datos inteligente basado en presión de red y estado metabólico.",
+    "type":  "module",
+    "sideEffects":  false,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+                         "tslib":  "^2.8.1",
+                         "@razwritecore/nsk-shared-logger":  "workspace:*",
+                         "@razwritecore/nsk-shared-metabolic-scheduler":  "workspace:*",
+                         "@razwritecore/nsk-shared-nervous-system":  "workspace:*"
+                     },
+    "peerDependencies":  {
+                             "zod":  "^3.24.2"
+                         }
+}

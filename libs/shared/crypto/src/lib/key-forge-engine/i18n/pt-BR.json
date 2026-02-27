@@ -1,0 +1,12 @@
+{
+  "KeyForgeEngine": {
+    "derivationError": {
+      "semanticContent": "Falha na forja criptográfica. Não foi possível derivar uma chave de sessão segura do material fornecido.",
+      "semanticVersion": "9.0.0"
+    },
+    "securityWarning": {
+      "semanticContent": "Tentativa de extração de chave não autorizada detectada. A chave está bloqueada na memória volátil.",
+      "semanticVersion": "9.0.0"
+    }
+  }
+}

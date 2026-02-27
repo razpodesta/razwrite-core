@@ -1,0 +1,24 @@
+{
+  "name": "@razwritecore/nsk-shared-matrix-neural-bridge",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/shared/matrix-neural-bridge/src",
+  "tags": [
+    "layer:fundamentals",
+    "domain:system-core",
+    "iso:25010",
+    "env:deep-pulse"
+  ],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/shared/matrix-neural-bridge/jest.config.ts"
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "defaultBase": "master",
+  "defaultBase": "main",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
@@ -9,12 +9,31 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s",
-      "!{projectRoot}/test-setup.[jt]s"
+      "!{projectRoot}/test-setup.[jt]s",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.mjs"
     ],
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+    "sharedGlobals": [
+      "{workspaceRoot}/.github/workflows/audit-sovereignty.yml",
+      "{workspaceRoot}/.github/workflows/deploy-fortress.yml",
+      "{workspaceRoot}/tsconfig.base.json"
+    ]
   },
   "nxCloudId": "69970b9297ab6906876f2359",
   "targetDefaults": {
+    "build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "lint": {
+      "cache": true,
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/eslint.config.mjs"]
+    },
+    "test": {
+      "cache": true,
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
+    },
     "@nx/js:tsc": {
       "cache": true,
       "dependsOn": ["^build"],
@@ -50,8 +69,15 @@
     "@nx/next": {
       "application": {
         "style": "tailwind",
-        "linter": "eslint"
+        "linter": "eslint",
+        "appDir": true,
+        "src": true
       }
+    },
+    "@nx/js:library": {
+      "bundler": "tsc",
+      "unitTestRunner": "jest",
+      "linter": "eslint"
     }
   }
 }

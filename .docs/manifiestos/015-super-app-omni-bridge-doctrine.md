@@ -57,3 +57,33 @@ nervous-core.worker.ts: El corazón que cifra y descifra en segundo plano.
 quantum-bridge.ts: Gestión de SharedArrayBuffer para latencia cero.
 Firma de Autoridad:
 Raz Podestá - Arquitecto Jefe
+
+---
+
+Aplica a: Manifiesto 015 y 019
+Directiva: Blindaje total de Server Actions contra la visibilidad de datos.
+Protocolo de Relevo Ciego: Las Next.js Server Actions operan como túneles de transporte. El servidor de aplicaciones tiene prohibido descifrar payloads que contengan PII (Información Personal Identificable).
+Validación Stateless: El servidor solo valida la firma HMAC del paquete y la vigencia del MutantPassportIdentifier. Si la firma es válida, el paquete se releva directamente a la capa de base de datos cifrada o al Neural Sentinel.
+Robustez: Esto garantiza que incluso ante un compromiso total del servidor de aplicaciones, los datos del usuario permanezcan cifrados (Zero-Knowledge Architecture).
+
+---
+
+ADÉNDUM 015-B: UMBRAL DE MASA CRÍTICA (QUANTUM STATE PERFORMANCE)
+Aplica a: Manifiesto 015
+Directiva: Gestión inteligente de la memoria compartida.
+Ley de los 1024 Bytes:
+Cargamento < 1KB: Se procesa vía Structured Clone (postMessage estándar) por su simplicidad y bajo costo de gestión.
+Cargamento > 1KB o Frecuencia > 60Hz: Uso mandatorio de SharedArrayBuffer y Atomics a través del Quantum Bridge.
+Estabilidad: Esto evita la sobrecarga del bus de mensajes por datos minúsculos y elimina el jitter en la UI cuando se procesan flujos de alta densidad (ej. telemetría de sensores).
+
+---
+
+ADÉNDUM 015-C: METABOLISMO PREDICTIVO (AI-THROTTLING)
+Aplica a: Manifiesto 015
+Directiva: Anticipación al agotamiento de recursos.
+Throttling Anticipatorio: El Metabolic Scheduler no esperará a que la batería baje del 10%. Si el Geo-Refinery detecta una zona de "Sombra de Red" frecuente o el Motion-Refinery detecta inactividad prolongada, el sistema forzará el modo ECO preventivamente.
+Estabilidad de Sesión: Esto prolonga la disponibilidad del aparato en condiciones críticas, asegurando que el Sync Osmosis tenga energía suficiente para el "Último Suspiro" de datos antes de un apagado.
+
+---
+
+

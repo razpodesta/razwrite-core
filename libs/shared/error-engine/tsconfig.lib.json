@@ -1,0 +1,18 @@
+/* [RUTA RELATIVA: libs/shared/error-engine/tsconfig.lib.json] */
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "declaration": true,
+    "composite": true,
+    "noEmit": false,
+    "tsBuildInfoFile": "../../../dist/out-tsc/tsbuildinfo/nsk-shared-error-engine.tsbuildinfo",
+    "types": ["node"]
+  },
+  "references": [
+    { "path": "../logger" },
+    { "path": "../matrix-neural-bridge" }
+  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "test.ts"]
+}

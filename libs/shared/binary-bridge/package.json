@@ -1,0 +1,22 @@
+{
+  "name": "@razwritecore/nsk-shared-binary-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: BINARY_INTERFACE] Ponte de execução para núcleos Rust/WASM e orquestação de cómputo intensivo.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "comlink": "^4.4.2"
+  },
+  "peerDependencies": {
+    "zod": "^3.24.1",
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-shared-metabolic-scheduler": "workspace:*"
+  }
+}

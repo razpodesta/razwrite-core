@@ -1,0 +1,22 @@
+{
+  "NervousSystem": {
+    "SilentWhisperer": {
+      "registrationSuccess": {
+        "semanticContent": "Silent Whisperer successfully ignited. Scope: [{{scope}}].",
+        "semanticVersion": "9.0.0"
+      },
+      "registrationError": {
+        "semanticContent": "Failed to register background thread. Offline capabilities may be degraded.",
+        "semanticVersion": "9.0.0"
+      },
+      "updatePending": {
+        "semanticContent": "System evolution detected. New worker version ready for installation.",
+        "semanticVersion": "9.0.0"
+      },
+      "syncScheduled": {
+        "semanticContent": "Background synchronization [{{tag}}] queued for next connectivity window.",
+        "semanticVersion": "9.0.0"
+      }
+    }
+  }
+}

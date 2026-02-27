@@ -1,0 +1,23 @@
+{
+  "name": "@razwritecore/nsk-shared-logger",
+  "version": "9.1.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: CIRCULATORY_SYSTEM] Córtex de telemetría, rastro forense y gestión de pulsos vitales isomórficos.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "peerDependencies": {
+    "@razwritecore/nsk-shared-matrix-neural-bridge": "workspace:*",
+    "zod": "^3.24.2"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

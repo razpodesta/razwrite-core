@@ -1,0 +1,14 @@
+{
+  "NervousSystem": {
+    "MetabolicScheduler": {
+      "modeTransition": {
+        "semanticContent": "O estado metabólico do sistema transitou para [{{newMode}}]. Razão: {{reason}}.",
+        "semanticVersion": "9.0.0"
+      },
+      "resourceConstraintWarning": {
+        "semanticContent": "Execução negada para QoS [{{qosTier}}]. Recursos metabólicos insuficientes.",
+        "semanticVersion": "9.0.0"
+      }
+    }
+  }
+}

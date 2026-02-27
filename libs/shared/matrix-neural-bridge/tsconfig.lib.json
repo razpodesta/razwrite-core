@@ -1,0 +1,14 @@
+/* [RUTA RELATIVA: libs/shared/matrix-neural-bridge/tsconfig.lib.json] */
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "declaration": true,
+    "composite": true,
+    "noEmit": false,
+    "tsBuildInfoFile": "../../../dist/out-tsc/tsbuildinfo/nsk-shared-matrix-neural-bridge.tsbuildinfo",
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "test.ts"]
+}

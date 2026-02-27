@@ -1,0 +1,17 @@
+{
+    "name":  "@razwritecore/nsk-bunker-viral-incentive",
+    "version":  "1.0.0",
+    "private":  true,
+    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
+    "description":  "[ROLE: INCENTIVE_TREE_ENGINE] Orquestador de propagación viral y árboles de recompensa Zero-Knowledge (M-034).",
+    "type":  "module",
+    "sideEffects":  false,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+                         "tslib":  "^2.3.0",
+                         "@razwritecore/nsk-shared-crypto":  "workspace:*"
+                     },
+    "peerDependencies":  {
+                             "zod":  "^3.24.1"
+                         }
+}

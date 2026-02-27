@@ -1,0 +1,16 @@
+{
+  "BinaryBridge": {
+    "ignitionSuccess": {
+      "semanticContent": "Binary core [{{moduleIdentifier}}] successfully ignited and isolated in Deep-Pulse.",
+      "semanticVersion": "1.0.0"
+    },
+    "ignitionError": {
+      "semanticContent": "Critical failure during WebAssembly instantiation. High-performance logic suspended.",
+      "semanticVersion": "1.0.0"
+    },
+    "ignitionDenied": {
+      "semanticContent": "WASM load denied. Insufficient metabolic resources for binary compute.",
+      "semanticVersion": "1.0.0"
+    }
+  }
+}
