@@ -1,16 +1,26 @@
-
+/**
+ * @apparatus PolymorphicQRInfrastructure
+ * @role Configuración de compilación para la generación de vectores impresos cifrados.
+ * @location libs/bunkers/polymorphic-qr/tsconfig.lib.json
+ * @status <SEALED_PRODUCTION>
+ * @version 9.1.0
+ */
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
+    "rootDir": "src",
+    "types": ["node"],
+    "composite": true,
     "declaration": true,
-    "types": ["node"]
+    "noEmit": false,
+    "tsBuildInfoFile": "../../../dist/out-tsc/libs/bunkers/polymorphic-qr/tsconfig.lib.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
-  "exclude": [
-    "jest.config.ts",
-    "jest.config.cts",
-    "src/**/*.spec.ts",
-    "src/**/*.test.ts"
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "references": [
+    { "path": "../../shared/crypto" },
+    { "path": "../../shared/logger" },
+    { "path": "../../shared/error-engine" }
   ]
 }

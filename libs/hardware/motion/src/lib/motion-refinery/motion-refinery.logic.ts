@@ -1,57 +1,115 @@
 /**
  * @apparatus KineticMotionLogic
- * @role Orquestador de listeners inerciales con filtrado metabólico de eventos.
- * @location libs/hardware-refineries/motion/src/lib/motion-refinery.logic.ts
- * @status <SEALED_PRODUCTION>
+ * @role Orquestador de listeners inerciales con filtrado metabólico y gestión de permisos.
+ * @location libs/hardware/motion/src/lib/motion-refinery/motion-refinery.logic.ts
+ * @status <STABILIZED>
+ * @version 1.1.0
+ * @protocol OEDP-V8.5 Lattice
  * @hilo Surface-Pulse
  */
 
 import * as Comlink from 'comlink';
 import { SovereignLogger } from '@razwritecore/nsk-shared-logger';
 import { MetabolicScheduler } from '@razwritecore/nsk-shared-metabolic-scheduler';
-import { type IMotionBrain } from './motion-refinery.worker';
+import { type IKineticMotionBrain } from './motion-refinery.worker';
 import { type IMotionContextSnapshot } from './motion-refinery.schema';
 
-let brainProxy: Comlink.Remote<IMotionBrain> | null = null;
+// Identificador absoluto para el rastro forense (M-004)
+const APPARATUS_IDENTIFIER = 'KineticMotionRefinery' as never;
+
+// Estado volátil del puente con el Deep-Pulse
+let inertialBrainProxy: Comlink.Remote<IKineticMotionBrain> | null = null;
 
 export const KineticMotionLogic = {
   /**
    * @method igniteRefinery
-   * @description Activa la escucha de DeviceMotion bajo vigilancia metabólica.
+   * @description Activa la escucha de hardware inercial bajo vigilancia metabólica.
+   * @policy Gestiona la solicitud de permisos explícitos para entornos iOS/Project Fugu.
    */
-  igniteRefinery: async (onPulse: (snapshot: IMotionContextSnapshot) => void): Promise<void> => {
-    if (typeof window === 'undefined' || !window.DeviceMotionEvent) return;
+  igniteRefinery: async (
+    onPulseCaptured: (snapshot: IMotionContextSnapshot) => void
+  ): Promise<void> => {
 
-    // 1. Inicialización de Cerebro
-    const worker = new Worker(new URL('./motion-refinery.worker.ts', import.meta.url), { type: 'module' });
-    brainProxy = Comlink.wrap<IMotionBrain>(worker);
+    // 1. Isomorfía y Soporte de Hardware
+    const isSupported = typeof window !== 'undefined' && 'DeviceMotionEvent' in window;
+    if (!isSupported) {
+      throw new Error('KineticMotionRefinery.Errors.Unsupported');
+    }
 
-    // 2. Listener Pasivo con Throttling Natural
-    let isProcessing = false;
-    window.addEventListener('devicemotion', async (event) => {
-      const mode = MetabolicScheduler.getCurrentMode();
-      if (mode === 'EMERGENCY' || isProcessing) return;
-
-      isProcessing = true;
-      const acc = event.accelerationIncludingGravity;
-
-      if (acc && brainProxy) {
-        const refinedPulse = await brainProxy.refineKineticSignal(
-          acc.x || 0, acc.y || 0, acc.z || 0
-        );
-        onPulse(refinedPulse);
+    try {
+      /**
+       * @step GESTIÓN_DE_DIPLOMACIA (iOS 13+)
+       * Si el SO requiere permiso explícito, lo solicitamos antes de instanciar hilos.
+       */
+      const motionPermissionProvider = (DeviceMotionEvent as any).requestPermission;
+      if (typeof motionPermissionProvider === 'function') {
+        const permissionStatus = await motionPermissionProvider();
+        if (permissionStatus !== 'granted') {
+          throw new Error('KineticMotionRefinery.Errors.PermissionDenied');
+        }
       }
 
-      // Throttling dinámico basado en Metabolismo
-      const delay = mode === 'PEAK' ? 16 : 100;
-      setTimeout(() => { isProcessing = false; }, delay);
-    }, { passive: true });
+      // 2. Inicialización del Cerebro en Deep-Pulse
+      if (!inertialBrainProxy) {
+        const inertialWorker = new Worker(
+          new URL('./motion-refinery.worker.ts', import.meta.url),
+          { type: 'module' }
+        );
+        inertialBrainProxy = Comlink.wrap<IKineticMotionBrain>(inertialWorker);
+      }
 
-    SovereignLogger.buffer({
-      severity: 'INFO',
-      apparatusIdentifier: 'KineticMotionRefinery',
-      operationCode: 'REFINERY_IGNITED',
-      semanticKey: 'Hardware.Motion.ignitionSuccess'
-    });
+      // 3. Listener Pasivo con Throttling Natural (M-021)
+      let isRefining = false;
+
+      window.addEventListener('devicemotion', async (event: DeviceMotionEvent) => {
+        const metabolicMode = MetabolicScheduler.getCurrentMode();
+
+        // Failsafe energético y control de concurrencia
+        if (metabolicMode === 'EMERGENCY' || isRefining) return;
+
+        isRefining = true;
+        const rawAcceleration = event.accelerationIncludingGravity;
+
+        if (rawAcceleration && inertialBrainProxy) {
+          /**
+           * @step REFINAMIENTO_ASÍNCRONO
+           * Enviamos las señales crudas al Cerebro para cálculo vectorial y truncamiento.
+           */
+          const refinedSnapshot = await inertialBrainProxy.refineInertialSignal(
+            rawAcceleration.x || 0,
+            rawAcceleration.y || 0,
+            rawAcceleration.z || 0
+          );
+
+          onPulseCaptured(refinedSnapshot);
+        }
+
+        /**
+         * @policy THROTTLING_METABÓLICO_DINÁMICO
+         * PEAK: 60Hz (16ms) | ECO: 10Hz (100ms)
+         */
+        const throttleDelay = metabolicMode === 'PEAK' ? 16 : 100;
+        setTimeout(() => { isRefining = false; }, throttleDelay);
+
+      }, { passive: true });
+
+      // 4. Rastro Forense de Ignición (M-001)
+      SovereignLogger.emit({
+        severity: 'INFO',
+        apparatusIdentifier: APPARATUS_IDENTIFIER,
+        operationCode: 'INERTIAL_REFINERY_IGNITED' as never,
+        semanticKey: 'KineticMotionRefinery.Status.IgnitionSuccess'
+      });
+
+    } catch (caughtError) {
+      SovereignLogger.emit({
+        severity: 'ERROR',
+        apparatusIdentifier: APPARATUS_IDENTIFIER,
+        operationCode: 'INERTIAL_IGNITION_FAILED' as never,
+        semanticKey: 'KineticMotionRefinery.Errors.InitializationFailed',
+        forensicMetadata: { caughtError }
+      });
+      throw caughtError;
+    }
   }
 };

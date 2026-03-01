@@ -1,8 +1,8 @@
 /**
  * @apparatus LoggerCoreLogic
- * @role Motor de interceptación isomórfico, gestión de Ring Buffer y transmutación ZTM.
+ * @role Motor de interceptación isomórfico, gestão de Ring Buffer e transmutação ZTM.
  * @location libs/shared/logger/src/lib/logger-core/logger-core.logic.ts
- * @status <SEALED_PRODUCTION>
+ * @status <STABILIZED>
  * @version 9.3.2
  * @protocol OEDP-V8.5 Lattice
  * @hilo Surface-Pulse | Acid-Pulse
@@ -16,7 +16,12 @@ import {
   ApparatusIdentifierSchema,
   OperationIdentifierSchema
 } from '@razwritecore/nsk-shared-matrix-neural-bridge';
-import { ContextRefinery } from './context-refinery/context-refinery.logic';
+
+/**
+ * @section Sincronia_NodeNext
+ * M-019: Uso obrigatório de extensões .js para resolução de rastro local.
+ */
+import { ContextRefinery } from './context-refinery/context-refinery.logic.js';
 import {
   type ITelemetryPulseInput,
   type ICompressedTelemetryPulse,
@@ -26,10 +31,10 @@ import {
   CorrelationIdentifierSchema,
   TenantIdentifierSchema,
   MutantPassportIdentifierSchema
-} from './logger-core.schema';
+} from './logger-core.schema.js';
 
 /**
- * @section CONFIGURACIÓN DE MOTOR (ISO 25010)
+ * @section CONFIGURAÇÃO DE MOTOR (ISO 25010)
  */
 const pinoEngine = pino({
   level: 'trace',
@@ -54,13 +59,18 @@ function serializeForensicInformation(
   try {
     const payloadObject = {
       ...forensicMetadata,
+      /**
+       * @section Isomorfia_de_Borda
+       * Transmuta o rastro binário para Base64 compatível com Edge Runtime.
+       */
       quantumSnapshot: quantumStateSnapshot
-        ? btoa(String.fromCharCode(...quantumStateSnapshot))
+        ? btoa(Array.from(quantumStateSnapshot).map(byte => String.fromCharCode(byte)).join(''))
         : undefined
     };
 
     const serializedPayload = JSON.stringify(payloadObject);
 
+    // M-015-B: Proteção de massa crítica (10KB limit)
     return serializedPayload.length > 10240
       ? '{"error":"CRITICAL_MASS_EXCEEDED"}'
       : serializedPayload;
@@ -80,6 +90,7 @@ let isMetabolicDrainActive = false;
 
 /**
  * @function executeMetabolicDrain
+ * @description Realiza o esvaziamento do buffer em períodos de inatividade.
  */
 function executeMetabolicDrain(): void {
   while (bufferTailPointer !== bufferHeadPointer) {
@@ -99,24 +110,20 @@ function executeMetabolicDrain(): void {
 
 /**
  * @apparatus SovereignLogger
- * @description Fachada única para la emisión de telemetría forense.
+ * @description Fachada única para a emissão de telemetría forense.
  */
 export const SovereignLogger = {
 
   /**
    * @method emit
-   * @description Ignición de un pulso vital con resolución de contexto blindada (M-001).
+   * @description Ignição de um pulso vital com resolução de contexto blindada (M-001).
    */
   emit: (telemetryPulseInput: ITelemetryPulseInput): void => {
     try {
       // 1. Aduana de Entrada (M-005)
       const validatedInformation = TelemetryPulseInputSchema.parse(telemetryPulseInput);
 
-      /**
-       * 2. Resolución de Contexto (Aduana de Bioseguridad)
-       * Se resuelve el error TS2322 mediante la normalización del store fragmentado.
-       * Se utiliza el Schema.parse() para garantizar que el fallback sea nominalmente válido.
-       */
+      // 2. Resolução de Contexto (Aduana de Biosegurança)
       const rawStoreSnapshot = ContextRefinery.getStore();
 
       const sovereignExecutionContext: ISovereignExecutionContext = SovereignExecutionContextSchema.parse({
@@ -125,18 +132,16 @@ export const SovereignLogger = {
         mutantPassportIdentifier: rawStoreSnapshot?.mutantPassportIdentifier ?? MutantPassportIdentifierSchema.parse('ANONYMOUS_SUBJECT')
       });
 
-      /**
-       * 3. Transmutación Nominal (M-004)
-       */
-      const apparatusId = ApparatusIdentifierSchema.parse(validatedInformation.apparatusIdentifier);
-      const operationId = OperationIdentifierSchema.parse(validatedInformation.operationCode);
+      // 3. Transmutação Nominal (M-004)
+      const apparatusIdentifier = ApparatusIdentifierSchema.parse(validatedInformation.apparatusIdentifier);
+      const operationCode = OperationIdentifierSchema.parse(validatedInformation.operationCode);
 
       const compressedPulse: ICompressedTelemetryPulse = {
         s: MatrixNeuralBridgeGateway.getSeverityOpCode(validatedInformation.severity),
-        a: MatrixNeuralBridgeGateway.getApparatusOpCode(apparatusId),
+        a: MatrixNeuralBridgeGateway.getApparatusOpCode(apparatusIdentifier),
         o: MatrixNeuralBridgeGateway.getOperationOpCode({
-          apparatusIdentifier: apparatusId,
-          operationIdentifier: operationId
+          apparatusIdentifier: apparatusIdentifier,
+          operationIdentifier: operationCode
         }),
         c: sovereignExecutionContext.correlationIdentifier,
         u: sovereignExecutionContext.mutantPassportIdentifier,
@@ -149,21 +154,21 @@ export const SovereignLogger = {
         ),
       };
 
-      // 4. Despacho a Motor de Salida Isomórfico
+      // 4. Despacho Isomórfico
       const pinoLevel = mapSeverityToPino(validatedInformation.severity);
       pinoEngine[pinoLevel](compressedPulse);
 
     } catch (caughtError) {
-      // 5. Blindaje de Rastro
       console.error('CRITICAL_LOGGER_DISPATCH_FAILURE', caughtError);
     }
   },
 
   /**
    * @method buffer
-   * @description Almacenamiento temporal de pulsos para evitar bloqueos en el Main Thread.
+   * @description Armazenamento temporário para proteger a fluidez (60fps).
    */
   buffer: (rawInformationPayload: unknown): void => {
+    // Aduana de rastro behaviorista (QoS 3)
     telemetryRingBuffer[bufferHeadPointer] = rawInformationPayload as ITelemetryPulseInput;
     bufferHeadPointer = (bufferHeadPointer + 1) % RING_BUFFER_CAPACITY;
 

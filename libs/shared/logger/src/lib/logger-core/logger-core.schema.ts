@@ -1,18 +1,19 @@
 /**
  * @apparatus LoggerCoreDNA
- * @role Especificación genética para pulsos de telemetría, rastro forense y snapshots cuánticos.
+ * @role Especificação genética para pulsos de telemetria, rastro forense e snapshots cuánticos.
  * @location libs/shared/logger/src/lib/logger-core/logger-core.schema.ts
  * @status <STABILIZED>
- * @version 9.3.0
+ * @version 9.3.2
  * @protocol OEDP-V8.5 Lattice
  * @structure ADN
+ * @compliance ISO_25010 | ISO_27001
  */
 
 import { z } from 'zod';
 
 /**
  * @section DIMENSIONES NOMINALES (M-005)
- * Sellado de identificadores para evitar radiación de tipos primitivos.
+ * Sellado de identificadores para evitar radiación de tipos primitivos y colisiones de dominio.
  */
 export const CorrelationIdentifierSchema = z.string().uuid().brand<'CorrelationIdentifier'>();
 export const TenantIdentifierSchema = z.string().min(3).brand<'TenantIdentifier'>();
@@ -22,13 +23,13 @@ export const OperationCodeSchema = z.string().min(3).regex(/^[A-Z_]+$/).brand<'O
 
 /**
  * @section GOBERNANZA DE SEVERIDAD
- * Niveles determinísticos para la gestión de QoS y filtrado del Sentinel.
+ * Niveles determinísticos para la gestión de QoS y filtrado del Neural Sentinel.
  */
 export const SeverityLevelSchema = z.enum(['INFO', 'WARN', 'ERROR', 'CRITICAL', 'FATAL']);
 
 /**
  * @section CONTEXTO SOBERANO (ISOMORFÍA)
- * Define el contrato de identidad mínima para cada hilo de ejecución.
+ * Define el contrato de identidad mínima inyectado silenciosamente en cada hilo de ejecución.
  */
 export const SovereignExecutionContextSchema = z.object({
   correlationIdentifier: CorrelationIdentifierSchema,
@@ -42,17 +43,35 @@ export const SovereignExecutionContextSchema = z.object({
  */
 export const TelemetryPulseInputSchema = z.object({
   severity: SeverityLevelSchema,
-  apparatusIdentifier: ApparatusIdentifierSchema,
-  operationCode: OperationCodeSchema,
-  semanticKey: z.string().describe('Ruta absoluta en el diccionario Alma (i18n).'),
+
+  apparatusIdentifier: ApparatusIdentifierSchema
+    .describe('Identificador PascalCase del aparato emisor.'),
+
+  operationCode: OperationCodeSchema
+    .describe('Código de operación registrado en la Matrix Neural Bridge.'),
+
+  semanticKey: z.string()
+    .min(1)
+    .describe('Ruta absoluta en el diccionario Alma (i18n) para resolución de mensajes.'),
+
   interpolationVariables: z.record(
     z.string(),
     z.union([z.string(), z.number(), z.boolean()])
-  ).optional(),
-  forensicMetadata: z.record(z.string(), z.unknown()).optional(),
+  ).optional().describe('Variables para inyectar en el mensaje semántico.'),
+
+  forensicMetadata: z.record(z.string(), z.unknown())
+    .optional()
+    .describe('Carga útil de rastro forense libre de PII.'),
+
   // Adéndum 001-A: Captura del estado de memoria compartida en fallos críticos.
-  quantumStateSnapshot: z.instanceof(Uint8Array).optional().describe('Snapshot binario de la memoria atómica.'),
-  executionLatencyInMilliseconds: z.number().nonnegative().optional(),
+  quantumStateSnapshot: z.instanceof(Uint8Array)
+    .optional()
+    .describe('Snapshot binario de la memoria atómica capturado pre-fallo.'),
+
+  executionLatencyInMilliseconds: z.number()
+    .nonnegative()
+    .optional()
+    .describe('Latencia de ejecución medida por el cronômetro del aparato.'),
 }).readonly();
 
 /**
@@ -67,16 +86,16 @@ export type ITelemetryPulseInput = z.infer<typeof TelemetryPulseInputSchema>;
 /**
  * @section MATERIA OSCURA (ZTM)
  * Interfaz para el transporte comprimido hacia el Neural Sentinel.
- * M-001: Se mantiene nomenclatura corta solo para el paquete binario final.
+ * M-001: Se mantiene nomenclatura corta solo para el paquete binario final de red.
  */
 export interface ICompressedTelemetryPulse {
-  readonly s: number;  // Severity OpCode
-  readonly a: number;  // Apparatus OpCode
-  readonly o: number;  // Operation OpCode
-  readonly c: string;  // Correlation Identifier
+  readonly s: number;  // Severity OpCode (ZTM)
+  readonly a: number;  // Apparatus OpCode (ZTM)
+  readonly o: number;  // Operation OpCode (ZTM)
+  readonly c: string;  // Correlation Identifier (UUID)
   readonly u: string;  // Mutant Passport Identifier (M-022)
-  readonly t?: string; // Tenant Identifier
-  readonly l?: number; // Latency In Milliseconds
-  readonly k: string;  // Semantic Key
-  readonly m?: string; // Serialized Forensic Metadata + Quantum Snapshot (JWE)
+  readonly t?: string; // Tenant Identifier (Context)
+  readonly l?: number; // Latency In Milliseconds (Performance)
+  readonly k: string;  // Semantic Key (Alma)
+  readonly m?: string; // Serialized Forensic Metadata + Base64 Quantum Snapshot
 }

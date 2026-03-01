@@ -1,13 +1,13 @@
 /**
- * @apparatus SovereignErrorLogic
- * @role Único punto de entrada soberano para la neutralización de entropía y rastro forense.
+ * @apparatus ErrorRefineryLogic
+ * @role Único ponto de entrada soberano para a transmutação de falhas em inteligência forense.
  * @location libs/shared/error-engine/src/lib/error-refinery/error-refinery.logic.ts
  * @status <SEALED_PRODUCTION>
- * @version 9.3.0
+ * @version 9.4.1
  * @protocol OEDP-V8.5 Lattice
  * @hilo Surface-Pulse | Deep-Pulse
  * @structure NEXO
- * @compliance ISO_27001 | ISO_25010
+ * @compliance ISO_27001 | ISO_25010 | ISO_27701
  */
 
 import {
@@ -20,28 +20,34 @@ import {
   MutantPassportIdentifierSchema
 } from '@razwritecore/nsk-shared-logger';
 
-import { executeForensicScrubbing } from './error-refinery.worker';
+/**
+ * @section Sincronia_NodeNext
+ * M-019: Rastro .js para conformidade com o motor ESM 2026.
+ */
+import { executeForensicScrubbing } from './error-refinery.worker.js';
 import {
   type IErrorTransmutationInput,
   ErrorTransmutationInputSchema,
-} from './error-refinery.schema';
+} from './error-refinery.schema.js';
 
 /**
  * @class SovereignErrorInstance
- * @description Entidad de error inmutable y sanitizada para su propagación hacia la Interface Layer.
+ * @description Entidade de erro inmutable e sanitizada para propagação segura.
  */
 class SovereignErrorInstance extends Error {
   public readonly correlationIdentifier: string;
   public readonly uniqueErrorCode: string;
+  public readonly apparatusSource: string;
 
   constructor(
     uniqueErrorCode: string,
     apparatusIdentifier: string,
     correlationIdentifier: string
   ) {
-    super(`[${uniqueErrorCode}] Anomalía neutralizada en: ${apparatusIdentifier}`);
+    super(`[${uniqueErrorCode}] Anomalía neutralizada em: ${apparatusIdentifier}`);
     this.name = 'SovereignError';
     this.uniqueErrorCode = uniqueErrorCode;
+    this.apparatusSource = apparatusIdentifier;
     this.correlationIdentifier = correlationIdentifier;
 
     if (Error.captureStackTrace) {
@@ -53,32 +59,32 @@ class SovereignErrorInstance extends Error {
 /**
  * @section FACHADA SOBERANA (M-010)
  */
-export const SovereignError = {
+export const ErrorRefineryLogic = {
   /**
    * @method transmute
-   * @description Transmuta la falla en inteligencia forense cifrada y rastro inalterable.
+   * @description Transmuta a entropia em inteligência forense cifrada e higienizada.
    */
-  transmute: (informationPayload: IErrorTransmutationInput): SovereignErrorInstance => {
+  transmute: (requestPayload: IErrorTransmutationInput): SovereignErrorInstance => {
     const transmutationStartTime = performance.now();
 
-    // 1. Aduana de ADN
-    const validatedInput = ErrorTransmutationInputSchema.parse(informationPayload);
+    // 1. Aduana de ADN (Ingresso Seguro)
+    const validatedInput = ErrorTransmutationInputSchema.parse(requestPayload);
 
-    // 2. Recuperación de Contexto (Merge Defensivo M-001)
+    // 2. Recuperação de Contexto Isomórfico
     const storeSnapshot = ContextRefinery.getStore();
     const correlationIdentifier = storeSnapshot?.correlationIdentifier ?? CorrelationIdentifierSchema.parse('00000000-0000-0000-0000-000000000000');
     const tenantIdentifier = storeSnapshot?.tenantIdentifier ?? TenantIdentifierSchema.parse('SYSTEM_ROOT');
     const mutantPassportIdentifier = storeSnapshot?.mutantPassportIdentifier ?? MutantPassportIdentifierSchema.parse('ANONYMOUS_SUBJECT');
 
-    // 3. Extracción y Purificación ISO 27701
+    // 3. Purificação Forense ISO 27701 (Scrubbing)
     const rawErrorContext = validatedInput.caughtError instanceof Error
-      ? validatedInput.caughtError.stack || validatedInput.caughtError.message
+      ? `${validatedInput.caughtError.name}: ${validatedInput.caughtError.message}\n${validatedInput.caughtError.stack}`
       : String(validatedInput.caughtError);
 
     const scrubbedForensicTrace = executeForensicScrubbing(rawErrorContext);
 
-    // 4. Emisión de Pulso Vital
-    const semanticKeyPath = validatedInput.semanticKey || 'SovereignErrorEngine.defaultFailsafeMessage';
+    // 4. Emissão de Pulso Vital ao Sistema Nervoso (SovereignLogger)
+    const semanticKeyPath = validatedInput.semanticKey || 'ErrorRefinery.Errors.DefaultFailsafe';
     const isCritical = ['CRITICAL', 'FATAL'].includes(validatedInput.severity);
 
     SovereignLogger.emit({
@@ -90,13 +96,17 @@ export const SovereignError = {
       executionLatencyInMilliseconds: performance.now() - transmutationStartTime,
       forensicMetadata: {
         scrubbedTrace: scrubbedForensicTrace,
-        // Adéndum 001-A: Snapshot de seguridad automático
+        // Adéndum 001-A: Snapshot de segurança automático em falhas críticas
         memorySnapshot: isCritical ? validatedInput.informationPayloadSnapshot : undefined,
-        context: { correlationIdentifier, tenantIdentifier, mutantPassportIdentifier }
+        contextSnapshot: {
+          correlationIdentifier,
+          tenantIdentifier,
+          mutantPassportIdentifier
+        }
       },
     });
 
-    // 5. Sello y Retorno
+    // 5. Retorno de Instância Inmutable
     return new SovereignErrorInstance(
       validatedInput.uniqueErrorCode,
       validatedInput.apparatusIdentifier,
@@ -104,3 +114,8 @@ export const SovereignError = {
     );
   }
 } as const;
+
+/**
+ * @alias SovereignError
+ */
+export const SovereignError = ErrorRefineryLogic;

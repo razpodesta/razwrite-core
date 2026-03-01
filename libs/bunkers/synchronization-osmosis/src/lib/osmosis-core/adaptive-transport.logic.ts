@@ -1,88 +1,140 @@
 /**
  * @apparatus AdaptiveTransportLogic
- * @role Selector de vehículo de red (Fetch vs Beacon) según el estado de supervivencia del cliente.
- * @location libs/modular-units/sync-osmosis/src/lib/osmosis-core/adaptive-transport.logic.ts
+ * @role Selector de vehículo de red (Fetch vs Beacon) optimizado para cargamentos binarios normalizados.
+ * @location libs/bunkers/synchronization-osmosis/src/lib/osmosis-core/adaptive-transport.logic.ts
  * @status <SEALED_PRODUCTION>
- * @version 8.6.1
+ * @version 9.2.1
  * @protocol OEDP-V8.5 Lattice
+ * @hilo Surface-Pulse
+ * @structure NEXO
+ * @compliance ISO_25010 | ISO_27001
  */
 
-import { SovereignLogger } from '@razwritecore/nsk-shared-logger';
-import { type IOsmoticPulse } from './osmosis-core.schema';
+import {
+  SovereignLogger,
+  ApparatusIdentifierSchema,
+  OperationCodeSchema
+} from '@razwritecore/nsk-shared-logger';
+import { z } from 'zod';
 
 /**
- * @context_prompt [LIA Legacy - AI-Audit]
- * DIRECTIVA: Enriquecimiento de Logs y Fallback de Beacon.
- * JUSTIFICACIÓN: 
- * 1. Se corrigió la variable no usada 'caughtError' integrándola en la metadata forense.
- * 2. Se añadió lógica defensiva para 'sendBeacon': si el blob supera los 64kb (límite común),
- *    el navegador rechaza el envío. El sistema ahora detecta el 'false' y hace fallback a 'fetch-keepalive'.
- * IMPACTO: Mayor tasa de entrega de datos en payloads grandes y observabilidad real de fallos de red.
+ * @section DIMENSIONES NOMINALES (M-005)
  */
+type IApparatusIdentifier = z.infer<typeof ApparatusIdentifierSchema>;
+type IOperationCode = z.infer<typeof OperationCodeSchema>;
 
-export const AdaptiveTransport = {
-  
+/**
+ * @constant VAULT_BASE_URL
+ * @private
+ */
+const VAULT_BASE_URL = process.env['NEXT_PUBLIC_VAULT_URL'] || 'https://vault.razwrite.core';
+
+export const AdaptiveTransportLogic = {
+
   /**
    * @method dispatchPayload
-   * @description Decide el mecanismo de transporte y dispara el cargamento.
+   * @description Decide el vehículo de transporte y ejecuta el despacho hacia la Bóveda Cloud.
+   * @requirement M-018 (Estrategia de Supervivencia)
    */
-  dispatchPayload: async (pulse: IOsmoticPulse, isPageTerminating: boolean): Promise<boolean> => {
-    const endpoint = pulse.targetVaultEndpoint;
-    
-    try {
-      const payloadString = typeof pulse.opaquePayload === 'string' 
-        ? pulse.opaquePayload 
-        : JSON.stringify(pulse.opaquePayload);
+  dispatchPayload: async (
+    informationMaterial: Uint8Array | string,
+    isPageTerminating: boolean,
+    targetPath = '/api/v1/telemetry/osmosis'
+  ): Promise<boolean> => {
+    const requestStartTime = performance.now();
+    const destinationUrl = `${VAULT_BASE_URL}${targetPath}`;
 
-      // ESTRATEGIA DE SUPERVIVENCIA (QoS 0/1 o Muerte de Página)
-      if (isPageTerminating || pulse.qualityOfServiceTier <= 1) {
-        
-        // 1. Intento Primario: Beacon (No bloqueante, ideal para unload)
-        if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
-          const blob = new Blob([payloadString], { type: 'application/json' });
-          // sendBeacon retorna false si el payload es demasiado grande (aprox > 64kb) o cola llena
-          const beaconAccepted = navigator.sendBeacon(endpoint, blob);
-          
-          if (beaconAccepted) return true;
-          // Si retorna false, caemos al fallback inmediatamente...
-        }
-        
-        // 2. Fallback: Fetch con Keepalive (Permite payloads mayores y sobrevive al cierre)
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          body: payloadString,
-          headers: { 'Content-Type': 'application/json' },
-          keepalive: true, 
-        });
-        return response.ok;
+    try {
+      /**
+       * @step Normalización de Memoria (Resolución TS2322)
+       * El constructor de Blob exige BlobPart[]. Refinamos el material para
+       * asegurar que no contenga SharedArrayBuffer (ilegal para transporte).
+       */
+      const transportSafeMaterial = AdaptiveTransportLogic.refineMaterialForTransport(informationMaterial);
+
+      const binaryBlob = new Blob([transportSafeMaterial], {
+        type: typeof informationMaterial === 'string' ? 'application/json' : 'application/octet-stream'
+      });
+
+      // 1. Selección de Vehículo (M-035)
+      if (isPageTerminating) {
+        return await AdaptiveTransportLogic.executeSurvivalDispatch(destinationUrl, binaryBlob);
       }
 
-      // ESTRATEGIA ESTÁNDAR (QoS 2/3 - Vida Normal)
-      const response = await fetch(endpoint, {
+      // 2. Transporte Estándar
+      const responseSnapshot = await fetch(destinationUrl, {
         method: 'POST',
-        body: payloadString,
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      return response.ok;
-
-    } catch (caughtError) {
-      // Captura forense del motivo de fallo (NetworkError, CORS, etc.)
-      const errorDetails = caughtError instanceof Error ? caughtError.message : String(caughtError);
-
-      SovereignLogger.buffer({
-        severity: 'WARN',
-        apparatusIdentifier: 'AdaptiveTransport',
-        operationCode: 'TRANSPORT_FAILED',
-        semanticKey: 'ModularUnits.SyncOsmosis.transportDeliveryFailed',
-        forensicMetadata: { 
-          endpoint: endpoint,
-          errorReason: errorDetails,
-          payloadSizeEstimate: JSON.stringify(pulse.opaquePayload).length
+        body: binaryBlob,
+        headers: {
+          'X-RWC-Protocol': 'OEDP-V8.5-ZENITH',
+          'X-Correlation-ID': crypto.randomUUID()
         }
       });
-      
+
+      return responseSnapshot.ok;
+
+    } catch (caughtError) {
+      SovereignLogger.emit({
+        severity: 'WARN',
+        apparatusIdentifier: 'AdaptiveTransport' as unknown as IApparatusIdentifier,
+        operationCode: 'NETWORK_DISRUPTION' as unknown as IOperationCode,
+        semanticKey: 'Osmosis.Errors.TransportDeliveryFailed',
+        executionLatencyInMilliseconds: performance.now() - requestStartTime,
+        forensicMetadata: {
+          destinationUrl,
+          caughtErrorSnapshot: caughtError instanceof Error ? caughtError.message : String(caughtError)
+        }
+      });
+
       return false;
     }
+  },
+
+  /**
+   * @method executeSurvivalDispatch
+   * @private
+   */
+  executeSurvivalDispatch: async (url: string, payloadBlob: Blob): Promise<boolean> => {
+    if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+      // El Blob ya está normalizado y es una BlobPart legal.
+      const isAcceptedByQueue = navigator.sendBeacon(url, payloadBlob);
+      if (isAcceptedByQueue) return true;
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: payloadBlob,
+        keepalive: true,
+      });
+      return response.ok;
+    } catch {
+      return false;
+    }
+  },
+
+  /**
+   * @method refineMaterialForTransport
+   * @private
+   * @description Asegura que el material binario sea compatible con BlobPart (ArrayBuffer estándar).
+   * @fix_error TS2322: Normalización de SharedArrayBuffer a ArrayBuffer.
+   */
+  refineMaterialForTransport: (material: Uint8Array | string): BlobPart => {
+    if (typeof material === 'string') return material;
+
+    // Si es un Uint8Array, verificamos si su buffer es compartido (SharedArrayBuffer)
+    const isShared = (material.buffer as any).constructor.name === 'SharedArrayBuffer';
+
+    if (!isShared) {
+      // Retorno directo si la memoria es privada
+      return material as Uint8Array<ArrayBuffer>;
+    }
+
+    // Transmutación atómica: Copia de memoria compartida a memoria privada de transporte
+    const privateBuffer = new ArrayBuffer(material.byteLength);
+    const privateView = new Uint8Array(privateBuffer);
+    privateView.set(material);
+
+    return privateView;
   }
-};
+} as const;

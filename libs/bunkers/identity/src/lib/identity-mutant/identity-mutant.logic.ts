@@ -1,97 +1,117 @@
 /**
  * @apparatus IdentityMutantLogic
- * @role Orquestador de superficie para la ignición y recuperación de la identidad.
- * @location libs/modular-units/identity-mutant/src/lib/identity-core/identity-mutant.logic.ts
+ * @role Orquestador de superficie para la ignición, forja y recuperación de la identidad mutante.
+ * @location libs/bunkers/identity/src/lib/identity-mutant/identity-mutant.logic.ts
  * @status <SEALED_PRODUCTION>
- * @version 8.6.1
+ * @version 9.0.0
  * @protocol OEDP-V8.5 Lattice
  * @hilo Surface-Pulse
+ * @structure NEXO
+ * @compliance ISO_27701 | ISO_25010
  */
 
-import { SovereignLogger } from '@razwritecore/nsk-shared-logger';
 import { 
-  SovereignErrorRefinery, 
+  SovereignLogger, 
+  ApparatusIdentifierSchema, 
+  OperationCodeSchema 
+} from '@razwritecore/nsk-shared-logger';
+import { 
+  ErrorRefineryLogic, 
   SystemErrorCodeSchema 
 } from '@razwritecore/nsk-shared-error-engine';
 import { IdentityMutantBrain } from './identity-mutant.worker';
-import { 
-  type IMutantPassportIdentifier, 
+import {
+  type IMutantPassportIdentifier,
   MutantPassportIdentifierSchema,
   GeoContextPayloadSchema
 } from './identity-mutant.schema';
+import { z } from 'zod';
 
 /**
- * @context_prompt [LIA Legacy - AI-Audit]
- * DIRECTIVA: Inyección de Cerrojo de Ignición (Singleton Promise) y Corrección Nominal.
- * JUSTIFICACIÓN: 
- * 1. Se detectó riesgo de 'Race Condition' si múltiples búnkeres solicitan identidad al unísono.
- * 2. Se corrigió la violación de tipo M-005 usando `SystemErrorCodeSchema.parse()`.
- * IMPACTO: Garantía de que solo se genera 1 pasaporte por sesión (ahorro CPU) y cumplimiento estricto de TS.
+ * @section DIMENSIONES NOMINALES (M-005)
+ * Casting de bioseguridad para el rastro forense del Sistema Nervioso.
  */
+type IApparatusIdentifier = z.infer<typeof ApparatusIdentifierSchema>;
+type IOperationCode = z.infer<typeof OperationCodeSchema>;
 
-// Memoria L1 (Volátil)
+/**
+ * @section ESTADO CUÁNTICO LOCAL
+ * Gestión de memoria L1 y cerrojo de ignición atómica.
+ */
 let activeMutantPassport: IMutantPassportIdentifier | null = null;
-
-// Cerrojo de Concurrencia (Promise Singleton)
 let ignitionLock: Promise<IMutantPassportIdentifier> | null = null;
 
 export const IdentityMutantEngine = {
-
   /**
    * @method igniteSovereignIdentity
-   * @description Despierta o forja el pasaporte del usuario actual (Idempotente).
+   * @description Activa el protocolo de identidad. Recupera de L2 o delega la forja al Worker.
+   * @requirement ISO_25010 (Eficiencia: Anti-Race Condition Singleton)
    */
   igniteSovereignIdentity: (): Promise<IMutantPassportIdentifier> => {
-    // 1. Retorno Inmediato si ya existe identidad (Cache L1)
+    const ignitionStartTime = performance.now();
+
+    // 1. Verificación de Memoria Caliente (L1)
     if (activeMutantPassport) {
       return Promise.resolve(activeMutantPassport);
     }
 
-    // 2. Retorno de Promesa en Vuelo si ya se está forjando (Anti-Race Condition)
+    // 2. Intercepción de Concurrencia (Ignición en Vuelo)
     if (ignitionLock) {
       return ignitionLock;
     }
 
-    // 3. Inicio del Proceso de Forja (Atomicidad)
+    // 3. Inicio de Forja de Realidad Identitaria
     ignitionLock = (async () => {
       try {
-        // [Futuro] Aquí iría la recuperación L2 (IndexedDB / Cookie)
-        // const recoveredId = await PersistenceBunker.retrieve('MUTANT_ID');
+        /**
+         * @todo Implementar recuperación desde PersistenceBunker (L2/L3)
+         * para persistencia entre recargas de página (M-023).
+         */
 
-        // Forja de Nueva Identidad (Si no existe L1/L2)
         const defaultGeoContext = GeoContextPayloadSchema.parse({
           countryIsoCode: 'XX',
           cityIataCode: 'UNK'
         });
 
-        // Delegación al Cerebro (Worker)
-        const rawPassport = await IdentityMutantBrain.forgePassport(defaultGeoContext);
+        // Delegación del cómputo pesado al Hilo Profundo (M-017)
+        const rawPassportMaterial = await IdentityMutantBrain.forgePassport(defaultGeoContext);
         
-        // Validación de ADN y Asignación L1
-        activeMutantPassport = MutantPassportIdentifierSchema.parse(rawPassport);
+        // Validación del ADN forjado
+        activeMutantPassport = MutantPassportIdentifierSchema.parse(rawPassportMaterial);
 
-        // Rastro Forense de Ignición (Fast-Path)
-        SovereignLogger.buffer({
+        // Registro de Éxito en el Rastro Forense
+        SovereignLogger.emit({
           severity: 'INFO',
-          apparatusIdentifier: 'IdentityMutantEngine',
-          operationCode: 'IDENTITY_FORGED',
-          semanticKey: 'ModularUnits.IdentityMutant.forgedSuccessfully',
-          forensicMetadata: { geoContext: defaultGeoContext }
+          apparatusIdentifier: 'IdentityMutantEngine' as unknown as IApparatusIdentifier,
+          operationCode: 'IDENTITY_IGNITED' as unknown as IOperationCode,
+          semanticKey: 'IdentityMutant.Grants.ForgedSuccessfully',
+          executionLatencyInMilliseconds: performance.now() - ignitionStartTime,
+          forensicMetadata: { 
+            geographicContext: defaultGeoContext,
+            identityAlgorithm: 'M-022-ZENITH'
+          }
         });
 
         return activeMutantPassport;
 
       } catch (caughtError) {
-        // En caso de fallo, liberamos el cerrojo para permitir reintentos
+        // Liberación de recursos ante fallo crítico
         activeMutantPassport = null;
         ignitionLock = null;
 
-        throw SovereignErrorRefinery.transmute({
-          uniqueErrorCode: SystemErrorCodeSchema.parse('RWC-ID-5001'), // Validación Nominal
+        /**
+         * @section MANIFIESTO 002
+         * Transmutación del fallo en rastro forense purificado.
+         */
+        throw ErrorRefineryLogic.transmute({
+          uniqueErrorCode: SystemErrorCodeSchema.parse('RWC-ID-5001'),
           severity: 'FATAL',
-          apparatusIdentifier: 'IdentityMutantEngine',
-          semanticKey: 'ModularUnits.IdentityMutant.ignitionFailed',
-          caughtError
+          apparatusIdentifier: 'IdentityMutantEngine' as unknown as IApparatusIdentifier,
+          semanticKey: 'IdentityMutant.Errors.IgnitionFailed',
+          caughtError,
+          informationPayloadSnapshot: { 
+            ignitionLatency: performance.now() - ignitionStartTime 
+          }
         });
       }
     })();
@@ -101,9 +121,18 @@ export const IdentityMutantEngine = {
 
   /**
    * @method getActivePassport
-   * @description Acceso síncrono O(1) para el Sistema Nervioso.
+   * @description Acceso síncrono O(1) a la identidad anclada en memoria L1.
    */
   getActivePassport: (): IMutantPassportIdentifier | null => {
     return activeMutantPassport;
+  },
+
+  /**
+   * @method deauthorizeIdentity
+   * @description Purgado de identidad para cumplimiento del "Derecho al Olvido" (ISO 27701).
+   */
+  deauthorizeIdentity: (): void => {
+    activeMutantPassport = null;
+    ignitionLock = null;
   }
-};
+} as const;

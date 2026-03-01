@@ -1,0 +1,10 @@
+{
+  "ComplianceCore": {
+    "Grants": {
+      "TokenGenerated": "Token de bioseguridad forjado exitosamente para acceso a hardware."
+    },
+    "Errors": {
+      "UnauthorizedAccess": "Violación de cumplimiento detectada: Acceso a hardware denegado por la puerta de bioseguridad."
+    }
+  }
+}

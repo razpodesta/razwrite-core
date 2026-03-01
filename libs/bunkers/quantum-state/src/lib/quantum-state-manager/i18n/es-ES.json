@@ -1,0 +1,13 @@
+{
+  "QuantumStateCore": {
+    "Integrity": {
+      "ValidationSuccess": "Rama de estado cuántico '{key}' validada exitosamente bajo la época {epoch}.",
+      "EpochRotation": "Época de estado rotada. Nueva frontera cronológica establecida."
+    },
+    "Errors": {
+      "AccessViolation": "Violación de aislamiento de memoria: Intento no autorizado de mutar la clave de estado '{key}'.",
+      "SyncCollapse": "Colapso cronológico: La época proporcionada no coincide con la línea de tiempo activa del sistema.",
+      "BufferSaturation": "Presión de memoria compartida crítica. Las operaciones atómicas pueden sufrir latencia."
+    }
+  }
+}

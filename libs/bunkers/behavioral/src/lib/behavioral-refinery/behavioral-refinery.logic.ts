@@ -1,87 +1,155 @@
 /**
  * @apparatus BehavioralRefineryLogic
- * @role Orquestador consciente de recursos para la captura de telemetría conductual.
- * @location libs/modular-units/behavioral-events/src/lib/behavioral-refinery/behavioral-refinery.logic.ts
+ * @role Orquestador de captura conductual con vinculación SDUI y vigilancia metabólica.
+ * @location libs/bunkers/behavioral/src/lib/behavioral-refinery/behavioral-refinery.logic.ts
  * @status <SEALED_PRODUCTION>
- * @version 1.2.0
+ * @version 9.2.3
  * @protocol OEDP-V8.5 Lattice
  * @hilo Surface-Pulse
+ * @structure NEXO
+ * @compliance ISO_25010 | ISO_27001 | ISO_27701
  */
 
 import * as Comlink from 'comlink';
-import { SyncOsmosisEngine } from '@razwritecore/unit-sync-osmosis';
+import {
+  SovereignLogger,
+  ApparatusIdentifierSchema,
+  OperationCodeSchema
+} from '@razwritecore/nsk-shared-logger';
+import { ErrorRefineryLogic, SystemErrorCodeSchema } from '@razwritecore/nsk-shared-error-engine';
+// Sello corrección TS2307: Sincronización con Fachada de Ósmosis 9.5.1
+import { OsmosisCoreLogic, PulseIdentifierSchema } from '@razwritecore/nsk-bunker-synchronization-osmosis';
 import { MetabolicScheduler } from '@razwritecore/nsk-shared-metabolic-scheduler';
-import { type IBehavioralBrain } from './behavioral-refinery.worker';
+import { type IBehavioralRefineryBrain } from './behavioral-refinery.worker';
 import { type IRawInteractionPoint } from './behavioral-refinery.schema';
+import { z } from 'zod';
 
-let brainProxy: Comlink.Remote<IBehavioralBrain> | null = null;
-let captureBuffer: IRawInteractionPoint[] = [];
-const BUFFER_FLUSH_LIMIT = 40;
+/**
+ * @section DIMENSIONES NOMINALES (M-005)
+ */
+type IApparatusIdentifier = z.infer<typeof ApparatusIdentifierSchema>;
+type IOperationCode = z.infer<typeof OperationCodeSchema>;
+
+// Estado volátil de la refinería
+let brainProxy: Comlink.Remote<IBehavioralRefineryBrain> | null = null;
+let interactionCaptureBuffer: IRawInteractionPoint[] = [];
+let lastInteractionAreaId: string | undefined = undefined;
+
+const BUFFER_FLUSH_THRESHOLD = 50;
 
 export const BehavioralRefineryLogic = {
   /**
    * @method igniteRefinery
-   * @description Activa la extracción bajo vigilancia del MetabolicScheduler.
+   * @description Inicializa la captura pasiva sincronizada con el refresco visual (60fps).
+   * @requirement M-037 (Mobile First: Passive Listeners)
+   * @returns Función de des-comisionado (Cleanup).
    */
-  igniteRefinery: (): void => {
-    if (typeof window === 'undefined') return;
+  igniteRefinery: (): (() => void) => {
+    if (typeof window === 'undefined') return () => {};
 
-    // 1. Inicialización del Cerebro (Deep-Pulse)
-    const worker = new Worker(new URL('./behavioral-refinery.worker.ts', import.meta.url), { type: 'module' });
-    brainProxy = Comlink.wrap<IBehavioralBrain>(worker);
+    const ignitionStartTime = performance.now();
 
-    // 2. Registro de Listener Pasivo con Vigilancia Metabólica
-    let isWaitingForNextFrame = false;
+    // 1. Ignición del Hilo Secundario (Deep-Pulse) via RPC
+    const nativeWorker = new Worker(
+      new URL('./behavioral-refinery.worker.ts', import.meta.url),
+      { type: 'module' }
+    );
+    brainProxy = Comlink.wrap<IBehavioralRefineryBrain>(nativeWorker);
 
-    window.addEventListener('mousemove', (event: MouseEvent) => {
-      // M-015: Suspensión inmediata en modo de emergencia energética
-      const activeMetabolicMode = MetabolicScheduler.getCurrentMode();
-      if (activeMetabolicMode === 'EMERGENCY' || activeMetabolicMode === 'HIBERNATE') return;
+    let isFrameLocked = false;
 
-      if (isWaitingForNextFrame) return;
-      isWaitingForNextFrame = true;
+    const handleInteractionStream = (event: MouseEvent) => {
+      // 2. Vigilancia Metabólica Preventiva (ISO 25010)
+      const energyMode = MetabolicScheduler.getCurrentMode();
+      if (energyMode === 'EMERGENCY' || energyMode === 'HIBERNATE') return;
 
+      if (isFrameLocked) return;
+      isFrameLocked = true;
+
+      // 3. Captura Zero-Jank sincronizada con el Viewport
       window.requestAnimationFrame(() => {
-        captureBuffer.push({
+        // Vinculación con el Manifiesto SDUI (M-009)
+        const targetElement = event.target as HTMLElement;
+        const areaId = targetElement?.closest('[data-sdui-id]')?.getAttribute('data-sdui-id');
+        if (areaId) lastInteractionAreaId = areaId;
+
+        interactionCaptureBuffer.push({
           coordinateX: event.clientX,
           coordinateY: event.clientY,
-          timestampUnix: Date.now()
+          timestampInMilliseconds: Date.now()
         });
 
-        if (captureBuffer.length >= BUFFER_FLUSH_LIMIT) {
-          BehavioralRefineryLogic.flushToBrain();
+        if (interactionCaptureBuffer.length >= BUFFER_FLUSH_THRESHOLD) {
+          BehavioralRefineryLogic.dispatchToDeepPulse();
         }
-        isWaitingForNextFrame = false;
+        isFrameLocked = false;
       });
-    }, { passive: true });
+    };
+
+    window.addEventListener('mousemove', handleInteractionStream, { passive: true });
+
+    SovereignLogger.emit({
+      severity: 'INFO',
+      apparatusIdentifier: 'BehavioralRefinery' as unknown as IApparatusIdentifier,
+      operationCode: 'REFINERY_IGNITED' as unknown as IOperationCode,
+      semanticKey: 'BehavioralRefinery.Grants.IgnitionSuccess',
+      executionLatencyInMilliseconds: performance.now() - ignitionStartTime
+    });
+
+    return () => {
+      window.removeEventListener('mousemove', handleInteractionStream);
+      nativeWorker.terminate();
+      interactionCaptureBuffer = [];
+      brainProxy = null;
+    };
   },
 
   /**
-   * @method flushToBrain
-   * @description Delegación de carga al Worker.
+   * @method dispatchToDeepPulse
+   * @private
+   * @description Delega el análisis cinético al Worker para proteger el Surface-Pulse.
    */
-  flushToBrain: async (): Promise<void> => {
-    if (!brainProxy || captureBuffer.length === 0) return;
+  dispatchToDeepPulse: async (): Promise<void> => {
+    if (!brainProxy || interactionCaptureBuffer.length === 0) return;
 
-    const informationBatch = [...captureBuffer];
-    captureBuffer = [];
+    const snapshotBatch = [...interactionCaptureBuffer];
+    const areaIdentifier = lastInteractionAreaId;
+
+    interactionCaptureBuffer = [];
+    lastInteractionAreaId = undefined;
 
     try {
-      const refinedPulse = await brainProxy.analyzeMovementPatterns(informationBatch);
+      const refinedPulse = await brainProxy.analyzeMovementPatterns(snapshotBatch);
 
       if (refinedPulse) {
-        // M-018: Inyección en la membrana de ósmosis para transporte inteligente
-        SyncOsmosisEngine.enqueuePulse({
-          pulseIdentifier: crypto.randomUUID() as any,
-          qualityOfServiceTier: 3, // QoS BEHAVIORAL
-          targetVaultEndpoint: '/api/v1/telemetry/behavioral-flux',
-          opaquePayload: refinedPulse,
-          creationTimestampUnix: Date.now()
+        // Enriquecimiento con contexto SDUI (M-009)
+        const enrichedPulse = {
+          ...refinedPulse,
+          interactionMetadata: {
+            ...refinedPulse.interactionMetadata,
+            interactionAreaIdentifier: areaIdentifier
+          }
+        };
+
+        // M-018: Inyección en la membrana de ósmosis (QoS 3)
+        // Sello corrección TS2307: Uso de OsmosisCoreLogic (Fachada nivelada 9.5.1)
+        OsmosisCoreLogic.enqueuePulse({
+          pulseIdentifier: PulseIdentifierSchema.parse(crypto.randomUUID()),
+          qualityOfServiceTier: 3, // BEHAVIORAL
+          targetVaultPath: '/api/v1/telemetry/behavioral',
+          opaquePayload: enrichedPulse,
+          creationTimestampInMilliseconds: Date.now(),
+          metabolicModeAtCreation: MetabolicScheduler.getCurrentMode()
         });
       }
     } catch (caughtError) {
-      // Los fallos en telemetría no deben detener la UI; se descartan tras el rastro forense.
-      console.warn('RWC-BEHAVIORAL-FLUSH-FAILED', caughtError);
+      throw ErrorRefineryLogic.transmute({
+        uniqueErrorCode: SystemErrorCodeSchema.parse('RWC-BEH-9001'),
+        severity: 'ERROR',
+        apparatusIdentifier: 'BehavioralRefinery',
+        semanticKey: 'BehavioralRefinery.Errors.RefinementCollapse',
+        caughtError
+      });
     }
   }
-};
+} as const;

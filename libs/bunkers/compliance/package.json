@@ -1,18 +1,18 @@
 {
-    "name":  "@razwritecore/nsk-bunker-compliance",
-    "version":  "1.0.0",
-    "private":  true,
-    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
-    "description":  "[ROLE: BIOTHECTICAL_GATEWAY] Puerta de bioseguridad legal. Gestiona la tokenización de permisos de hardware y auditoría de privacidad ISO 27701.",
-    "type":  "module",
-    "sideEffects":  false,
-    "main":  "./src/index.ts",
-    "dependencies":  {
-                         "tslib":  "^2.3.0",
-                         "@razwritecore/nsk-shared-logger":  "workspace:*",
-                         "@razwritecore/nsk-shared-crypto":  "workspace:*"
-                     },
-    "peerDependencies":  {
-                             "zod":  "^3.24.1"
-                         }
+  "name": "@razwritecore/nsk-bunker-compliance",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: BIOTHECTICAL_GATEWAY] Puerta de bioseguridad legal. Gestiona la tokenización de permisos de hardware y auditoría de privacidad ISO 27701.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-shared-crypto": "workspace:*",
+    "zod": "^3.24.1"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0"
+  }
 }

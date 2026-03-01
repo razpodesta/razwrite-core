@@ -1,19 +1,22 @@
 {
-    "name":  "@razwritecore/nsk-bunker-quantum-state",
-    "version":  "1.0.0",
-    "private":  true,
-    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
-    "description":  "[ROLE: ATOMIC_STATE_MANAGER] Gestión de la verdad inmutable, sincronización Zero-Copy y emisión de señales reactivas de latencia cero.",
-    "type":  "module",
-    "sideEffects":  false,
-    "main":  "./src/index.ts",
-    "dependencies":  {
-                         "tslib":  "^2.3.0",
-                         "@preact/signals-react":  "^2.0.0",
-                         "@razwritecore/nsk-shared-nervous-system":  "workspace:*"
-                     },
-    "peerDependencies":  {
-                             "zod":  "^3.24.1",
-                             "react":  "^19.0.0"
-                         }
+  "name": "@razwritecore/nsk-bunker-quantum-state",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: ATOMIC_STATE_MANAGER] Gestión de la verdad inmutable, sincronización Zero-Copy y emisión de señales reactivas ISO 25010.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "dependencies": {
+    "zod": "^3.24.2",
+    "@preact/signals-react": "^2.0.0",
+    "@razwritecore/nsk-shared-nervous-system": "workspace:*",
+    "@razwritecore/nsk-shared-logger": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  }
 }

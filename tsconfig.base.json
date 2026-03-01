@@ -1,50 +1,26 @@
-/* [RUTA RELATIVA: tsconfig.base.json] */
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    /* 1. NÚCLEO DE POTENCIA (Targeting) */
-    "target": "ESNext",
-    "module": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker", "WebWorker.ImportScripts"],
-    "moduleResolution": "Bundler",
-    "jsx": "react-jsx",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "useDefineForClassFields": true,
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "target": "es2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["esnext", "dom", "dom.iterable", "WebWorker"],
     "skipLibCheck": true,
-    "isolatedModules": true,
-
-    /* 2. DIRECTIVA SUPREMA DE RIGOR (M-000, M-005, M-030) */
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "useUnknownInCatchVariables": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noPropertyAccessFromIndexSignature": false,
-
-    /* 3. OPTIMIZACIÓN DE PERFORMANCE (M-013) */
-    "incremental": true,
-    "composite": true,
-    "tsBuildInfoFile": "dist/.tsbuildinfo",
-    "resolveJsonModule": true,
-    /* noEmit: true en la base es correcto para chequeos globales,
-       pero las librerías deben sobrescribirlo si son referenciadas. */
-    "noEmit": true,
-
-    /* 4. MAPEO DE LA CELOSÍA (The Sovereign Roads - V8.12) */
+    "skipDefaultLibCheck": true,
     "baseUrl": ".",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "paths": {
-      /* APPS (Capa 4 - Superficie) */
-      "@razwritecore/nsk-app-renderer-shell": ["apps/nsk-app-renderer-shell/src/index.ts"],
-      "@razwritecore/nsk-app-vault-admin": ["apps/nsk-app-vault-admin/src/index.ts"],
-
-      /* SHARED (Capa 0 - Fundamentos Isomórficos) */
       "@razwritecore/nsk-shared-logger": ["libs/shared/logger/src/index.ts"],
       "@razwritecore/nsk-shared-error-engine": ["libs/shared/error-engine/src/index.ts"],
       "@razwritecore/nsk-shared-nervous-system": ["libs/shared/nervous-system/src/index.ts"],
@@ -55,14 +31,10 @@
       "@razwritecore/nsk-shared-offline-mirage": ["libs/shared/offline-mirage/src/index.ts"],
       "@razwritecore/nsk-shared-omniscience-analytics": ["libs/shared/omniscience-analytics/src/index.ts"],
       "@razwritecore/nsk-shared-binary-bridge": ["libs/shared/binary-bridge/src/index.ts"],
-
-      /* HARDWARE (Capa 1 - Refinerías de Extracción) */
       "@razwritecore/nsk-hardware-geographic": ["libs/hardware/geographic/src/index.ts"],
       "@razwritecore/nsk-hardware-biometric": ["libs/hardware/biometric/src/index.ts"],
       "@razwritecore/nsk-hardware-motion": ["libs/hardware/motion/src/index.ts"],
       "@razwritecore/nsk-hardware-iot-proximity": ["libs/hardware/iot-proximity/src/index.ts"],
-
-      /* MODULAR UNITS (Capa 2 - Inteligencia y Lógica) */
       "@razwritecore/nsk-unit-identity-mutant": ["libs/bunkers/identity/src/index.ts"],
       "@razwritecore/nsk-unit-persistence": ["libs/bunkers/persistence/src/index.ts"],
       "@razwritecore/nsk-unit-synchronization-osmosis": ["libs/bunkers/synchronization-osmosis/src/index.ts"],
@@ -71,11 +43,9 @@
       "@razwritecore/nsk-unit-behavioral": ["libs/bunkers/behavioral/src/index.ts"],
       "@razwritecore/nsk-unit-polymorphic-qr": ["libs/bunkers/polymorphic-qr/src/index.ts"],
       "@razwritecore/nsk-unit-viral-incentive": ["libs/bunkers/viral-incentive/src/index.ts"],
-
-      /* INTEGRATIONS (Capa 3 - Puentes de Diplomacia) */
       "@razwritecore/nsk-integration-financial-transaction": ["libs/integrations/financial-transaction/src/index.ts"],
       "@razwritecore/nsk-integration-sentinel-tether": ["libs/integrations/sentinel-tether/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp", "dist"]
 }

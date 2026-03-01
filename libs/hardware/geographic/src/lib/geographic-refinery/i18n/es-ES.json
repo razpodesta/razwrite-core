@@ -1,0 +1,14 @@
+{
+  "GeographicRefinery": {
+    "Errors": {
+      "UnsupportedEnvironment": "RWC-GEO-001: La geolocalización no es compatible con este entorno.",
+      "PermissionDenied": "RWC-GEO-002: El usuario denegó el acceso al contexto geográfico.",
+      "PositionUnavailable": "RWC-GEO-003: Señal de satélite perdida o posición no disponible.",
+      "Timeout": "RWC-GEO-004: Tiempo de espera agotado en la extracción geográfica."
+    },
+    "Status": {
+      "Refining": "Refinando coordenadas geográficas en contexto regional...",
+      "Success": "Contexto geográfico truncado y sellado exitosamente."
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "Infrastructure": {
+    "Sentinel": {
+      "TransmissionEnqueued": "Paquete forense encolado para transmisión segura.",
+      "TransmissionError": "Error al establecer el cordón con el Neural Sentinel."
+    }
+  }
+}

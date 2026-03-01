@@ -1,0 +1,14 @@
+{
+  "KineticMotionRefinery": {
+    "Errors": {
+      "Unsupported": "RWC-MOT-001: Los sensores cinéticos (Acelerómetro/Giroscopio) no son compatibles con este entorno.",
+      "PermissionDenied": "RWC-MOT-002: El acceso a los sensores de movimiento fue denegado por el sistema operativo.",
+      "EmergencyMode": "RWC-MOT-003: Escaneo cinético restringido por protocolo de emergencia energética.",
+      "InitializationFailed": "RWC-MOT-004: Error al activar el cerebro de la refinería inercial."
+    },
+    "Status": {
+      "IgnitionSuccess": "Refinería inercial activada. Monitoreando intenciones físicas.",
+      "GestureDetected": "Gesto físico refinado: {gestureType}."
+    }
+  }
+}

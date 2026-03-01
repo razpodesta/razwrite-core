@@ -1,14 +1,23 @@
-/* [RUTA RELATIVA: libs/shared/crypto/tsconfig.lib.json] */
+/**
+ * @apparatus SharedCryptoInfrastructure
+ * @role Configuración de compilación para los motores de cifrado y hashing nativo.
+ * @location libs/shared/crypto/tsconfig.lib.json
+ * @status <SEALED_PRODUCTION>
+ * @version 9.1.0
+ * @protocol OEDP-V8.5 Lattice
+ */
 {
-  "extends": "../../../tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-    "declaration": true,
+    "rootDir": "src",
+    "types": ["node"],
     "composite": true,
+    "declaration": true,
     "noEmit": false,
-    "tsBuildInfoFile": "../../../dist/out-tsc/tsbuildinfo/nsk-shared-crypto.tsbuildinfo",
-    "types": ["node"]
+    "tsBuildInfoFile": "../../../dist/out-tsc/libs/shared/crypto/tsconfig.lib.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "references": []
 }

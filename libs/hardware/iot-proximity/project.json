@@ -1,7 +1,7 @@
 {
-  "name": "hw-iot-proximity",
+  "name": "nsk-hardware-iot-proximity",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/hardware-refineries/iot-proximity/src",
+  "sourceRoot": "libs/hardware/iot-proximity/src",
   "projectType": "library",
   "tags": [
     "layer:extraction-refinery",
@@ -14,10 +14,10 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/hardware-refineries/iot-proximity",
-        "main": "libs/hardware-refineries/iot-proximity/src/index.ts",
-        "tsConfig": "libs/hardware-refineries/iot-proximity/tsconfig.lib.json",
-        "assets": ["libs/hardware-refineries/iot-proximity/*.md"],
+        "outputPath": "dist/libs/hardware/iot-proximity",
+        "main": "libs/hardware/iot-proximity/src/index.ts",
+        "tsConfig": "libs/hardware/iot-proximity/tsconfig.lib.json",
+        "assets": ["libs/hardware/iot-proximity/*.md"],
         "clean": true
       }
     },

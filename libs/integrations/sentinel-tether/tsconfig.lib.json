@@ -3,7 +3,13 @@
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
     "declaration": true,
+    "emitDeclarationOnly": false,
+    "composite": true,
+    "noEmit": false,
+    "tsBuildInfoFile": "../../../dist/libs/integrations/sentinel-tether/sentinel-tether.tsbuildinfo",
+    "rootDir": "src",
     "types": ["node"]
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
 }

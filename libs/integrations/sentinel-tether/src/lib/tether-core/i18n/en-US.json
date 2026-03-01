@@ -1,0 +1,8 @@
+{
+  "Infrastructure": {
+    "Sentinel": {
+      "TransmissionEnqueued": "Forensic bundle enqueued for secure transmission.",
+      "TransmissionError": "Failed to establish tether with Neural Sentinel."
+    }
+  }
+}

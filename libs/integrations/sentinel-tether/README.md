@@ -1,37 +1,30 @@
 /**
- * @apparatus SentinelForensicTether (NSK-ADAPTER-TETHER)
- * @role Adaptador de Infraestructura para Comunicación forense con el Neural Sentinel.
- * @location libs/infrastructure-adapters/sentinel-forensic-tether/README.md
- * @status <SEALED_PRODUCTION>
- * @version 1.1.0
+ * @apparatus SentinelTetherAdapter
+ * @role Constitución del Cordón Umbilical Forense y Transmisión de Materia Oscura.
+ * @location libs/integrations/sentinel-tether/README.md
+ * @status <FORGING_LOGIC>
+ * @version 1.0.0
  * @protocol OEDP-V8.5 Lattice
- * @iso 27001 (Seguridad de la Comunicación)
- * @iso 27701 (Protección de PII en Tránsito)
+ * @compliance ISO-27001 | Zero-Knowledge-Transport
  */
 
-# 🔌 SENTINEL FORENSIC TETHER
+# 📡 ADAPTADOR DE INFRAESTRUCTURA: SENTINEL TETHER
 
-## 📜 DECLARACIÓN DE MISIÓN
-El `SentinelForensicTether` es el cordón umbilical que une al RazWrite Core con su inteligencia auditora superior. Su responsabilidad única es asegurar que el rastro forense y la telemetría de auto-sanación viajen por túneles cifrados y opacos, garantizando que ninguna inteligencia ajena pueda interceptar o manipular la salud sistémica.
+## 1. VISIÓN HOLÍSTICA (THE UMBILICAL CORD)
+El `SentinelTetherAdapter` es el único aparato autorizado para establecer el túnel de comunicación asíncrono entre el **Kernel Local** y el **Neural Sentinel** (Hugging Face Space). Su función es el empaquetado, cifrado y despacho de la telemetría refinada bajo la doctrina de **Materia Oscura**.
 
-## 🧠 LÓGICA DE ÉLITE (ZENITH V8.5)
+## 2. MECANISMO DE TRANSPORTE (DARK MATTER PROTOCOL)
+Alineado con el Manifiesto 026, el Tether opera en el **Deep-Pulse** (Web Worker):
+- **Cifrado Translucido:** Envuelve los pulsos en paquetes JWE antes de tocar la red pública.
+- **Handshake de Supervivencia:** Utiliza protocolos de "Último Suspiro" para asegurar que los errores críticos (FATAL) sean transmitidos incluso ante el colapso del shell.
 
-### 1. Doctrina de Materia Oscura
-Este adaptador nunca envía datos planos. Todo cargamento forense es transmutado en un paquete JWE (JSON Web Encryption). Incluso si la conexión TLS es comprometida, el contenido permanece indescifrable sin las llaves maestras residentes en el Sentinel.
+## 3. INTEGRACIÓN CON LA REFINERÍA (M-002 / M-021)
+Recibe cargamentos del `BehavioralRefinery` y el `ErrorRefinery`, inyectando el `MutantPassportIdentifier` y el `CorrelationID` para permitir la reconstrucción forense en el auditor neuronal sin exponer la identidad real del usuario.
 
-### 2. Clasificación QoS de Diagnóstico
-El tether utiliza los niveles de QoS para priorizar la transmisión:
-- **Prioridad 0 (VITAL):** Errores críticos y alertas de seguridad. Traspaso instantáneo.
-- **Prioridad 3 (BEHAVIORAL):** Telemetría de micro-gestos. Espera a periodos de inactividad.
-
-### 3. Sello de Origen Mutante
-Cada ráfaga de datos es firmada con el `mutantPassportIdentifier`. Esto permite al Sentinel validar que la telemetría proviene de un organismo auténtico y no es un ataque de inyección sintética.
-
-## 🏗️ ANATOMÍA LEGO (M-008)
-- **ADN (.schema):** Contratos de paquetes forenses cifrados.
-- **NEXO (.logic):** Orquestador de túneles y firma de rastro.
-- **DIPLOMACIA:** Interfaz de comunicación con el clúster de ósmosis.
+## 4. ESPECIFICACIONES PROYECTADAS (ZENITH)
+- **Shadow Dispatch:** Capacidad de enviar telemetría señuelo (decoy) si se detecta un intento de interceptación de red.
+- **Neural Feedback:** Túnel de retorno para recibir "Sombras de Diagnóstico" que alteran la verbosidad de los búnkeres locales en tiempo real.
 
 ---
-**© 2026 MetaShark Tech**  
-*Autoridad: Raz Podestá*
+Firma de Autoridad:
+Raz Podestá - Arquitecto Jefe

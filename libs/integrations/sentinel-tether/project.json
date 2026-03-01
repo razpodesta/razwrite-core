@@ -1,32 +1,28 @@
 {
-    "name":  "adapter-sentinel-tether",
-    "$schema":  "../../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot":  "libs/infrastructure-adapters/sentinel-forensic-tether/src",
-    "projectType":  "library",
-    "tags":  [
-                 "layer:adapter",
-                 "domain:system-core",
-                 "iso:27001",
-                 "env:deep-pulse"
-             ],
-    "targets":  {
-                    "build":  {
-                                  "executor":  "@nx/js:tsc",
-                                  "outputs":  [
-                                                  "{options.outputPath}"
-                                              ],
-                                  "options":  {
-                                                  "outputPath":  "dist/libs/infrastructure-adapters/sentinel-forensic-tether",
-                                                  "main":  "libs/infrastructure-adapters/sentinel-forensic-tether/src/index.ts",
-                                                  "tsConfig":  "libs/infrastructure-adapters/sentinel-forensic-tether/tsconfig.lib.json",
-                                                  "assets":  [
-                                                                 "libs/infrastructure-adapters/sentinel-forensic-tether/*.md"
-                                                             ],
-                                                  "clean":  true
-                                              }
-                              },
-                    "lint":  {
-                                 "executor":  "@nx/eslint:lint"
-                             }
-                }
+  "name": "adapter-sentinel-tether",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/integrations/sentinel-tether/src",
+  "projectType": "library",
+  "tags": [
+    "layer:infrastructure-adapter",
+    "domain:system-core",
+    "iso:27001",
+    "env:deep-pulse"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/integrations/sentinel-tether",
+        "main": "libs/integrations/sentinel-tether/src/index.ts",
+        "tsConfig": "libs/integrations/sentinel-tether/tsconfig.lib.json",
+        "assets": ["libs/integrations/sentinel-tether/*.md"],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
 }

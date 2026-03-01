@@ -1,12 +1,32 @@
+/**
+ * @apparatus OsmosisInfrastructure
+ * @role Configuração de compilação moderna e ruteamento de dependências para a Membrana.
+ * @location libs/bunkers/synchronization-osmosis/tsconfig.lib.json
+ * @status <SEALED_PRODUCTION>
+ * @version 9.1.0
+ * @protocol OEDP-V8.5 Lattice
+ */
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
+    "rootDir": "src",
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "target": "esnext",
+    "types": ["node"],
+    "composite": true,
     "declaration": true,
-    "types": ["node"]
+    "noEmit": false,
+    "tsBuildInfoFile": "../../../dist/out-tsc/libs/bunkers/synchronization-osmosis/tsconfig.lib.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "references": [
+    { "path": "../../shared/logger" },
+    { "path": "../../shared/metabolic-scheduler" },
+    { "path": "../../shared/nervous-system" },
+    { "path": "../../shared/error-engine" },
+    { "path": "../../shared/matrix-neural-bridge" },
+    { "path": "../../shared/crypto" }
+  ]
 }

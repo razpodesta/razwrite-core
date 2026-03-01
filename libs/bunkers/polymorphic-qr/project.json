@@ -1,11 +1,12 @@
 {
-  "name": "unit-polymorphic-qr",
+  "name": "nsk-bunker-polymorphic-qr",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/modular-units/polymorphic-qr-engine/src",
+  "sourceRoot": "libs/bunkers/polymorphic-qr/src",
   "projectType": "library",
   "tags": [
     "layer:modular-unit",
     "domain:telemetry",
+    "iso:27001",
     "iso:25010",
     "env:deep-pulse"
   ],
@@ -14,15 +15,22 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/modular-units/polymorphic-qr-engine",
-        "main": "libs/modular-units/polymorphic-qr-engine/src/index.ts",
-        "tsConfig": "libs/modular-units/polymorphic-qr-engine/tsconfig.lib.json",
-        "assets": ["libs/modular-units/polymorphic-qr-engine/*.md"],
+        "outputPath": "dist/libs/bunkers/polymorphic-qr",
+        "main": "libs/bunkers/polymorphic-qr/src/index.ts",
+        "tsConfig": "libs/bunkers/polymorphic-qr/tsconfig.lib.json",
+        "assets": ["libs/bunkers/polymorphic-qr/*.md"],
         "clean": true
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../coverage/libs/bunkers/polymorphic-qr"
+      }
     }
   }
 }

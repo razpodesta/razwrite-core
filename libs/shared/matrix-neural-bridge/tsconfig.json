@@ -1,17 +1,15 @@
+/**
+ * @apparatus NeuralBridgeTSConfig
+ * @role Orquestrador de referências locais.
+ * @location libs/shared/matrix-neural-bridge/tsconfig.json
+ * @status <STABILIZED>
+ * @version 9.2.3
+ * @protocol OEDP-V8.5 Lattice
+ */
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "composite": true,
-    "declaration": true,
-    "tsBuildInfoFile": "../../../dist/libs/shared/matrix-neural-bridge/tsconfig.tsbuildinfo",
-    "types": ["node"]
+    /* M-038: Resolución transparente. Sin flags de compilación aquí. */
   },
   "files": [],
   "include": [],

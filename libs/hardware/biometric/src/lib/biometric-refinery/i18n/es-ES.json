@@ -1,0 +1,9 @@
+{
+  "Hardware": {
+    "Biometric": {
+      "VitalsCaptured": "Signos vitales de hardware capturados con éxito.",
+      "LowBatteryWarning": "Nivel de energía crítico detectado. Activando modo ECO.",
+      "NetworkChange": "Cambio en la presión de red detectado."
+    }
+  }
+}

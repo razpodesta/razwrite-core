@@ -1,12 +1,12 @@
 {
-  "name": "unit-viral-incentive",
+  "name": "nsk-bunker-viral-incentive",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/modular-units/viral-incentive/src",
+  "sourceRoot": "libs/bunkers/viral-incentive/src",
   "projectType": "library",
   "tags": [
     "layer:modular-unit",
     "domain:finance",
-    "iso:27001",
+    "iso:27701",
     "env:deep-pulse"
   ],
   "targets": {
@@ -14,15 +14,22 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/modular-units/viral-incentive",
-        "main": "libs/modular-units/viral-incentive/src/index.ts",
-        "tsConfig": "libs/modular-units/viral-incentive/tsconfig.lib.json",
-        "assets": ["libs/modular-units/viral-incentive/*.md"],
+        "outputPath": "dist/libs/bunkers/viral-incentive",
+        "main": "libs/bunkers/viral-incentive/src/index.ts",
+        "tsConfig": "libs/bunkers/viral-incentive/tsconfig.lib.json",
+        "assets": ["libs/bunkers/viral-incentive/*.md"],
         "clean": true
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../coverage/libs/bunkers/viral-incentive"
+      }
     }
   }
 }

@@ -1,0 +1,13 @@
+{
+  "ViralIncentiveEngine": {
+    "Propagation": {
+      "LinkGenerated": "Vetor de convite soberano forjado com sucesso. Atribuição opaca ativada.",
+      "RewardConfirmed": "Recompensa de rede processada com sucesso para o nó mutante."
+    },
+    "Errors": {
+      "IntegrityViolation": "Falha na verificação da árvore: O token de indicação foi manipulado.",
+      "CampaignExpired": "O vetor de propagação atingiu o seu limite cronológico.",
+      "SelfReferralBlocked": "Violação de biossegurança: Tentativa de autoindicação detectada e neutralizada."
+    }
+  }
+}

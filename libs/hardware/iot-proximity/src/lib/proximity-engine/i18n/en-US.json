@@ -1,0 +1,14 @@
+{
+  "ProximityEngine": {
+    "Errors": {
+      "Unsupported": "RWC-IOT-001: Proximity hardware (NFC/BLE) is not available on this device.",
+      "EmergencyMode": "RWC-IOT-002: Proximity scan aborted due to energy emergency protocol.",
+      "ReadError": "RWC-IOT-003: Critical error during physical sensor reading.",
+      "PermissionDenied": "RWC-IOT-004: User denied access permissions to the proximity sensor."
+    },
+    "Status": {
+      "Scanning": "Starting proximity scan...",
+      "TagDetected": "Hardware signal detected and successfully refined."
+    }
+  }
+}

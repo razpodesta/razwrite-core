@@ -1,39 +1,36 @@
 /**
- * @apparatus BioMetabolicRefinery (NSK-HW-BIO)
- * @role Refinería de Signos Vitales, Gestión Energética y Auditoría de Recursos de Hardware.
- * @location libs/hardware-refineries/bio/README.md
- * @status <STABILIZED>
+ * @apparatus BiometricRefinery
+ * @role Constitución de Extracción de Signos Vitales de Hardware y Capacidad Metabólica.
+ * @location libs/hardware/biometric/README.md
+ * @status <FORGING_LOGIC>
  * @version 1.0.0
  * @protocol OEDP-V8.5 Lattice
- * @iso 25010 (Eficiencia de Recursos)
+ * @compliance ISO-25010 | Hardware-Sovereignty
  */
 
-# 🔋 BIO-METABOLIC REFINERY
+# 🔋 REFINERÍA DE HARDWARE: BIOMETRIC (METABOLIC SENSOR)
 
-## 📜 DECLARACIÓN DE MISIÓN
-La `BioMetabolicRefinery` es el sistema sensorial encargado de monitorizar la salud física del dispositivo anfitrión. Su misión es proveer datos precisos sobre la disponibilidad de bio-energía (Batería) y capacidad de cómputo (RAM/CPU), permitiendo que el `MetabolicScheduler` tome decisiones ejecutivas para preservar la estabilidad del sistema bajo condiciones extremas.
+## 1. VISIÓN HOLÍSTICA (THE PULSE)
+La `BiometricRefinery` es el "Sistema Nervioso Periférico" del RazWrite Core. No solo gestiona la identidad física (Biometría), sino que actúa como el centinela de los recursos energéticos del dispositivo. Su misión es transmutar las señales crudas de batería, red y CPU en pulsos de inteligencia para el `MetabolicScheduler`.
 
-## 🧠 LÓGICA DE ÉLITE (ZENITH V8.5)
+## 2. EXTRACCIÓN SENSORIAL (REFINERY ROLE)
+Bajo el Manifiesto 025, este aparato opera en el hilo de superficie para acceder a las APIs de Project Fugu:
+- **Energy Context:** Nivel de carga y estado de salud de la batería.
+- **Network Pressure:** Latencia estimada y tipo de conexión (4G/5G/WiFi).
+- **Physical Identity:** Túnel de comunicación para WebAuthn y biometría local.
 
-### 1. Homeostasis Preventiva
-Este búnker detecta estados de "inanición energética". Si la batería cae por debajo del umbral crítico definido en el **Manifiesto 015**, la refinería dispara una señal de interrupción para que el núcleo detenga todos los procesos de telemetría conductual no vitales.
+## 3. MECANISMO DE BIOSEGURIDAD
+Los datos de hardware son considerados PII de segundo nivel. Este aparato garantiza:
+- **Deduplicación Atómica:** Solo emite un pulso si hay un cambio significativo en el estado metabólico (>2% batería o cambio de red).
+- **Cifrado de Origen:** Toda telemetría es sellada antes de ser inyectada en el `SovereignNervousSystem`.
 
-### 2. Clasificación de Rendimiento
-Analiza la memoria volátil y la concurrencia de hilos del hardware para clasificar el dispositivo en Tiers (`HIGH`, `MEDIUM`, `LOW`). Esto permite al **Atomic Lego Projector** decidir si inyectar búnkeres visuales con animaciones complejas o versiones simplificadas de alto rendimiento.
+## 4. IMPACTO SISTÉMICO (ZENITH)
+Los datos refinados aquí permiten al `AtomicSceneProjector` decidir si proyecta una escena en modo `PEAK` (alta fidelidad) o `ECO` (ahorro de recursos), garantizando la supervivencia de la sesión en condiciones críticas.
 
-### 3. Conciencia de Conectividad
-Monitoriza la latencia y el tipo de red efectiva. En escenarios de red degradada, la refinería ordena al `SyncOsmosisEngine` compactar los paquetes de datos con algoritmos de compresión agresivos.
+---
+Firma de Autoridad:
+Raz Podestá - Arquitecto Jefe
 
-## 🏗️ ANATOMÍA LEGO (M-008)
-- **ADN (.schema):** Contratos para snapshots de batería y capacidad de recursos.
-- **NEXO (.logic):** Adaptador isomórfico para BatteryManager y NetworkInformation APIs.
-- **CEREBRO (.worker):** [Reservado] Análisis de tendencias de consumo energético a largo plazo.
+---
 
-## 🛠️ PROTOCOLO DE CONSUMO (M-010)
-```typescript
-import { BioRefineryLogic } from '@razwritecore/nsk-hw-bio';
 
-const vitalSigns = await BioRefineryLogic.extractSystemVitalSigns();
-if (vitalSigns.batterySnapshot.chargeLevelPercentage < 15) {
-  // Activar protocolos de supervivencia
-}

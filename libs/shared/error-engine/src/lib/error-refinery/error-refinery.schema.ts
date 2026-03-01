@@ -1,9 +1,9 @@
 /**
  * @apparatus SovereignErrorDNA
- * @role Contratos de bioseguridad para transmutación de fallos y sanitización ISO 27701.
+ * @role Contratos de bioseguridade para transmutação de falhas e sanitização ISO 27701.
  * @location libs/shared/error-engine/src/lib/error-refinery/error-refinery.schema.ts
  * @status <STABILIZED>
- * @version 9.3.1
+ * @version 9.3.2
  * @protocol OEDP-V8.5 Lattice
  * @structure ADN
  * @compliance ISO_27701 | ISO_27001
@@ -22,24 +22,29 @@ export const SystemErrorCodeSchema = z
 
 /**
  * @section CARGAMENTO DE TRANSMUTACIÓN (INPUT)
- * M-010: Contrato único para la neutralización de excepciones.
+ * M-010: Contrato único para a neutralização de exceções.
  */
 export const ErrorTransmutationInputSchema = z.object({
   uniqueErrorCode: SystemErrorCodeSchema,
   severity: SeverityLevelSchema,
-  apparatusIdentifier: z.string().min(2).describe('Nombre del aparato donde ocurrió la anomalía.'),
-  semanticKey: z.string().optional().describe('Ruta absoluta en el diccionario Alma.'),
-  caughtError: z.unknown().describe('La excepción nativa capturada.'),
+  apparatusIdentifier: z.string().min(2).describe('Nome PascalCase do aparato de origem.'),
+
+  /** ✅ CURADO: semanticKey em conformidade com M-004 */
+  semanticKey: z.string()
+    .min(1)
+    .describe('Ruta absoluta no dicionário Alma (i18n).'),
+
+  caughtError: z.unknown().describe('A exceção nativa capturada pela aduana.'),
+
   informationPayloadSnapshot: z
     .record(z.string(), z.unknown())
     .optional()
-    .describe('Snapshot del Quantum-State en el momento del colapso (Adéndum 001-A).'),
+    .describe('Snapshot do Quantum-State no momento do colapso (Adéndum 001-A).'),
 }).readonly();
 
 /**
  * @section PAQUETE FORENSE (DARK MATTER)
- * M-002: Esquema de validación para transporte hacia el Neural Sentinel.
- * Este esquema permite al Auditor IA validar los pulsos recibidos.
+ * M-002: Esquema de validação para transporte comprimido para o Neural Sentinel.
  */
 export const ForensicErrorPacketSchema = z.object({
   o: z.number().int().describe('Operation OpCode (Matrix)'),

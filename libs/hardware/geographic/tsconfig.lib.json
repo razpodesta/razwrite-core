@@ -1,13 +1,20 @@
-
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-    "declaration": true,
+    "rootDir": "src",
     "types": ["node"],
-    "allowJs": true,
-    "esModuleInterop": true
+    "composite": true,
+    "declaration": true,
+    "noEmit": false,
+    "tsBuildInfoFile": "../../../dist/out-tsc/libs/hardware/geographic/tsconfig.lib.tsbuildinfo"
   },
   "exclude": ["src/**/*.spec.ts", "test-setup.ts"],
-  "include": ["src/**/*.ts", "../../hardware/geo/src/lib/geo-refinery.schema.ts", "../../hardware/geo/src/index.ts"]
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../../shared/logger" },
+    { "path": "../../shared/nervous-system" },
+    { "path": "../../shared/metabolic-scheduler" },
+    { "path": "../../bunkers/compliance" }
+  ]
 }

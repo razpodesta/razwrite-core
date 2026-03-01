@@ -1,1 +1,13 @@
-{"viral-incentive-engine":{}} 
+{
+  "ViralIncentiveEngine": {
+    "Propagation": {
+      "LinkGenerated": "Sovereign invitation vector successfully forged. Opaque attribution active.",
+      "RewardConfirmed": "Network reward successfully processed for the mutant node."
+    },
+    "Errors": {
+      "IntegrityViolation": "Tree verification failure: The referral token has been tampered with.",
+      "CampaignExpired": "The propagation vector has reached its chronological limit.",
+      "SelfReferralBlocked": "Biosecurity violation: Self-referral attempt detected and neutralized."
+    }
+  }
+}

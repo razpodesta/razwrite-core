@@ -1,42 +1,39 @@
 /**
- * @apparatus BioRefineryDNA
- * @role Contratos genéticos para el monitoreo de bio-energía y recursos de red.
- * @location libs/hardware-refineries/bio/src/lib/bio-refinery.schema.ts
- * @status <STABILIZED>
- * @version 1.0.0
+ * @apparatus BiometricRefineryDNA
+ * @role Contrato genético para señales vitales del hardware y estado metabólico.
+ * @location libs/hardware/biometric/src/lib/biometric-refinery/biometric-refinery.schema.ts
  * @protocol OEDP-V8.5 Lattice
  */
 
 import { z } from 'zod';
 
-/**
- * Snapshot de la bio-energía del dispositivo.
- */
-export const BatterySnapshotSchema = z.object({
-  chargeLevelPercentage: z.number().min(0).max(100),
-  isPowerPlugged: z.boolean(),
-  estimatedTimeRemainingMinutes: z.number().nullable(),
+// 1. Branding Nominal (M-005) - Erradicación de Primitivos
+export const BatteryLevelPercentageSchema = z.number().min(0).max(100).brand<'BatteryLevelPercentage'>();
+export const NetworkEffectiveTypeSchema = z.enum(['2g', '3g', '4g', 'slow-2g']).brand<'NetworkEffectiveType'>();
+export const DevicePerformanceTierSchema = z.enum(['LOW', 'MEDIUM', 'HIGH', 'ULTRA']).brand<'DevicePerformanceTier'>();
+export const TimestampUnixSchema = z.number().positive().brand<'TimestampUnix'>();
+
+// Inferencia de Tipos Soberanos
+export type IBatteryLevelPercentage = z.infer<typeof BatteryLevelPercentageSchema>;
+export type INetworkEffectiveType = z.infer<typeof NetworkEffectiveTypeSchema>;
+export type IDevicePerformanceTier = z.infer<typeof DevicePerformanceTierSchema>;
+export type ITimestampUnix = z.infer<typeof TimestampUnixSchema>;
+
+// 2. Esquemas de Cargamento Único (M-010)
+export const BiometricMetabolicPulseSchema = z.object({
+  batterySnapshot: z.object({
+    chargeLevelPercentage: BatteryLevelPercentageSchema,
+    isPowerPlugged: z.boolean(),
+    estimatedTimeRemainingMinutes: z.number().nullable(),
+  }),
+  resourceCapacity: z.object({
+    logicalCoreCount: z.number().min(1),
+    availableMemoryGigabytes: z.number().positive(),
+    devicePerformanceTier: DevicePerformanceTierSchema,
+  }),
+  networkEffectiveType: NetworkEffectiveTypeSchema,
+  timestampUnix: TimestampUnixSchema,
 }).readonly();
 
-/**
- * Análisis de la capacidad de procesamiento y memoria.
- */
-export const ResourceCapacitySchema = z.object({
-  logicalCoreCount: z.number().int().positive(),
-  availableMemoryGigabytes: z.number().positive().optional(),
-  devicePerformanceTier: z.enum(['HIGH', 'MEDIUM', 'LOW']),
-}).readonly();
-
-/**
- * El Pulso Vital consolidado para el Scheduler.
- */
-export const BioMetabolicPulseSchema = z.object({
-  batterySnapshot: BatterySnapshotSchema,
-  resourceCapacity: ResourceCapacitySchema,
-  networkEffectiveType: z.enum(['slow-2g', '2g', '3g', '4g', 'offline']),
-  timestampUnix: z.number().int(),
-}).readonly();
-
-export type IBatterySnapshot = z.infer<typeof BatterySnapshotSchema>;
-export type IResourceCapacity = z.infer<typeof ResourceCapacitySchema>;
-export type IBioMetabolicPulse = z.infer<typeof BioMetabolicPulseSchema>;
+// Inferencia de la Estructura de Pulso
+export type IBiometricMetabolicPulse = z.infer<typeof BiometricMetabolicPulseSchema>;

@@ -1,17 +1,12 @@
 {
   "name": "@razwritecore/nsk-shared-error-engine",
-  "version": "1.0.0",
-  "private": true,
-  "author": "Raz Podestá <MetaShark Tech>",
-  "description": "[ROLE: FORENSIC_REFINERY] Transmutador de excepciones en inteligencia forense multihilo bajo ISO 27001.",
+  "version": "9.4.1",
   "type": "module",
   "main": "./src/index.ts",
-  "sideEffects": false,
   "dependencies": {
-    "tslib": "^2.3.0"
+    "zod": "^3.25.76"
   },
   "peerDependencies": {
-    "zod": "^4.0.0",
     "@razwritecore/nsk-shared-logger": "workspace:*",
     "@razwritecore/nsk-shared-matrix-neural-bridge": "workspace:*"
   }

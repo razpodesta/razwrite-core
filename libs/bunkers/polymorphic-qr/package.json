@@ -1,17 +1,22 @@
 {
-    "name":  "@razwritecore/nsk-bunker-polymorphic-qr",
-    "version":  "1.0.0",
-    "private":  true,
-    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
-    "description":  "[ROLE: QR_VECTOR_ENGINE] Motor de generación de vectores de intención cifrados y respuesta cuántica (M-033).",
-    "type":  "module",
-    "sideEffects":  false,
-    "main":  "./src/index.ts",
-    "dependencies":  {
-                         "tslib":  "^2.3.0",
-                         "@razwritecore/nsk-shared-crypto":  "workspace:*"
-                     },
-    "peerDependencies":  {
-                             "zod":  "^3.24.1"
-                         }
+  "name": "@razwritecore/nsk-bunker-polymorphic-qr",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: QR_VECTOR_ENGINE] Motor de generación de vectores de intención cifrados y respuesta cuántica ISO 27001.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "dependencies": {
+    "zod": "^3.24.2",
+    "@razwritecore/nsk-shared-crypto": "workspace:*",
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-shared-error-engine": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  }
 }

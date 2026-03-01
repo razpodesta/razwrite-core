@@ -1,39 +1,29 @@
 {
-    "name":  "nsk-hw-geographic",
-    "projectType":  "library",
-    "sourceRoot":  "libs/hardware/geo/src",
-    "tags":  [
-                 "layer:extraction-refinery",
-                 "domain:telemetry",
-                 "iso:27701",
-                 "env:surface"
-             ],
-    "targets":  {
-                    "build":  {
-                                  "executor":  "@nx/js:tsc",
-                                  "outputs":  [
-                                                  "{options.outputPath}"
-                                              ],
-                                  "options":  {
-                                                  "outputPath":  "dist/libs/hardware/geo",
-                                                  "main":  "libs/hardware/geo/src/index.ts",
-                                                  "tsConfig":  "libs/hardware/geo/tsconfig.lib.json",
-                                                  "assets":  [
-                                                                 "libs/hardware/geo/*.md"
-                                                             ]
-                                              }
-                              },
-                    "lint":  {
-                                 "executor":  "@nx/eslint:lint"
-                             },
-                    "test":  {
-                                 "executor":  "@nx/jest:jest",
-                                 "outputs":  [
-                                                 "{workspaceRoot}/coverage/{projectRoot}"
-                                             ],
-                                 "options":  {
-                                                 "jestConfig":  "libs/hardware/geo/jest.config.ts"
-                                             }
-                             }
-                }
+  "name": "nsk-hardware-geographic",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/hardware/geographic/src",
+  "projectType": "library",
+  "tags": [
+    "layer:extraction-refinery",
+    "domain:geographic",
+    "iso:27701",
+    "iso:25010",
+    "env:surface"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/hardware/geographic",
+        "main": "libs/hardware/geographic/src/index.ts",
+        "tsConfig": "libs/hardware/geographic/tsconfig.lib.json",
+        "assets": ["libs/hardware/geographic/*.md"],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
 }

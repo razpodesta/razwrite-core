@@ -1,9 +1,9 @@
 {
-  "name": "unit-quantum-state",
+  "name": "nsk-bunker-quantum-state",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/modular-units/quantum-state/src",
+  "sourceRoot": "libs/bunkers/quantum-state/src",
   "projectType": "library",
-  "tags":[
+  "tags": [
     "layer:modular-unit",
     "domain:system-core",
     "iso:27001",
@@ -14,15 +14,22 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/modular-units/quantum-state",
-        "main": "libs/modular-units/quantum-state/src/index.ts",
-        "tsConfig": "libs/modular-units/quantum-state/tsconfig.lib.json",
-        "assets":["libs/modular-units/quantum-state/*.md"],
+        "outputPath": "dist/libs/bunkers/quantum-state",
+        "main": "libs/bunkers/quantum-state/src/index.ts",
+        "tsConfig": "libs/bunkers/quantum-state/tsconfig.lib.json",
+        "assets": ["libs/bunkers/quantum-state/*.md"],
         "clean": true
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../coverage/libs/bunkers/quantum-state"
+      }
     }
   }
 }

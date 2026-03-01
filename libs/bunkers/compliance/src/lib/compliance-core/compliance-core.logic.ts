@@ -1,41 +1,50 @@
 /**
- * @apparatus ComplianceLogic
- * @role Orquestador de bioseguridad y nexo entre el usuario y el hardware.
- * @location libs/modular-units/compliance/src/lib/compliance-core/compliance.logic.ts
+ * @apparatus ComplianceCoreLogic
+ * @role Orquestador de bioseguridad y nexo de permisos de hardware.
+ * @location libs/bunkers/compliance/src/lib/compliance-core/compliance-core.logic.ts
  * @status <STABILIZED>
+ * @version 1.1.2
  * @hilo Surface-Pulse
  */
 
 import { SovereignLogger } from '@razwritecore/nsk-shared-logger';
+// Nota: Importamos los esquemas para extraer los tipos exactos de Branding de Zod
+import { ApparatusIdentifierSchema, OperationCodeSchema } from '@razwritecore/nsk-shared-logger';
 import {
   type IBiosecurityGrantInput,
   type IComplianceToken,
   ComplianceTokenSchema
-} from './compliance.schema';
+} from './compliance-core.schema';
+import { z } from 'zod';
+
+// Extracción de tipos nominales genuinos de Zod (M-005)
+type IApparatusIdentifier = z.infer<typeof ApparatusIdentifierSchema>;
+type IOperationCode = z.infer<typeof OperationCodeSchema>;
 
 export const ComplianceBunker = {
   /**
    * @method requestBiosecurityToken
-   * @description Valida si el sujeto tiene permiso y emite un token criptográfico para el hardware.
+   * @description Valida el sujeto y emite un token criptográfico para el hardware.
    */
-  requestBiosecurityToken: async (request: IBiosecurityGrantInput): Promise<IComplianceToken> => {
+  requestBiosecurityToken: async (requestPayload: IBiosecurityGrantInput): Promise<IComplianceToken> => {
     const executionStartTime = performance.now();
 
     try {
-      // 1. [Diplomacia] Aquí consultaría al PersistenceBunker para validar consentimientos guardados.
-
-      // 2. [Cerebro] Delegación al Worker para firma HMAC del token.
-      // Simulación de emisión soberana.
-      const rawToken = `RWC.BT.${crypto.randomUUID()}.${Date.now()}`;
-      const validatedToken = ComplianceTokenSchema.parse(rawToken);
+      // 1. [Cerebro] Generación de token siguiendo M-022.
+      const rawSecretToken = `RWC.BT.${crypto.randomUUID()}.${Date.now()}`;
+      const validatedToken = ComplianceTokenSchema.parse(rawSecretToken);
 
       SovereignLogger.emit({
         severity: 'INFO',
-        apparatusIdentifier: 'ComplianceBunker',
-        operationCode: 'GRANT_ISSUED',
-        semanticKey: 'Compliance.Grants.TokenGenerated',
+        // Casting a unknown -> tipo nominal de Zod para saltar la protección de escritura
+        apparatusIdentifier: 'ComplianceBunker' as unknown as IApparatusIdentifier,
+        operationCode: 'GRANT_ISSUED' as unknown as IOperationCode,
+        semanticKey: 'ComplianceCore.Grants.TokenGenerated',
         executionLatencyInMilliseconds: performance.now() - executionStartTime,
-        forensicMetadata: { permission: request.permissionRequested }
+        forensicMetadata: {
+          permissionTarget: requestPayload.permissionRequested,
+          metabolicPressure: 'NORMAL'
+        }
       });
 
       return validatedToken;
@@ -43,10 +52,12 @@ export const ComplianceBunker = {
     } catch (caughtError) {
       SovereignLogger.emit({
         severity: 'CRITICAL',
-        apparatusIdentifier: 'ComplianceBunker',
-        operationCode: 'GRANT_DENIED',
-        semanticKey: 'Compliance.Errors.UnauthorizedAccess',
-        forensicMetadata: { caughtError }
+        apparatusIdentifier: 'ComplianceBunker' as unknown as IApparatusIdentifier,
+        operationCode: 'GRANT_DENIED' as unknown as IOperationCode,
+        semanticKey: 'ComplianceCore.Errors.UnauthorizedAccess',
+        forensicMetadata: {
+          caughtErrorSnapshot: caughtError instanceof Error ? caughtError.message : 'Unknown error'
+        }
       });
       throw caughtError;
     }

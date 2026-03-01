@@ -1,41 +1,78 @@
 /**
  * @apparatus KineticMotionWorker
- * @role Procesador de señales inerciales. Detección de gestos mediante cálculo vectorial.
- * @location libs/hardware-refineries/motion/src/lib/motion-refinery.worker.ts
- * @status <SEALED_PRODUCTION>
+ * @role Procesador de señales inerciales y detección de gestos mediante cálculo vectorial.
+ * @location libs/hardware/motion/src/lib/motion-refinery/motion-refinery.worker.ts
+ * @status <STABILIZED>
+ * @version 1.1.0
+ * @protocol OEDP-V8.5 Lattice
  * @hilo Deep-Pulse
  */
 
 import * as Comlink from 'comlink';
-import { KineticGestureSchema, type IMotionContextSnapshot } from './motion-refinery.schema';
+import {
+  KineticGestureSchema,
+  KineticCoordinateSchema,
+  KineticMagnitudeSchema,
+  KineticTimestampSchema,
+  MotionContextSnapshotSchema,
+  type IMotionContextSnapshot,
+  type IKineticGesture
+} from './motion-refinery.schema';
 
-const SHAKE_THRESHOLD = 15; // m/s²
+/**
+ * @constant SHAKE_CRITICAL_THRESHOLD
+ * @description Umbral de aceleración (m/s²) para considerar un gesto de agitación.
+ */
+const SHAKE_CRITICAL_THRESHOLD = 15;
+const FREE_FALL_THRESHOLD = 1.0;
 
-const MotionBrain = {
+const KineticMotionBrain = {
   /**
-   * @method refineKineticSignal
-   * @description Analiza el vector de aceleración para identificar intenciones físicas.
+   * @method refineInertialSignal
+   * @description Ejecuta el refinamiento vectorial y anonimización de la señal inercial.
    */
-  refineKineticSignal: async (axisX: number, axisY: number, axisZ: number): Promise<IMotionContextSnapshot> => {
-    // Cálculo de Magnitud Vectorial (G-Force)
-    const magnitude = Math.sqrt(axisX ** 2 + axisY ** 2 + axisZ ** 2);
+  refineInertialSignal: async (
+    accelerationXAxis: number,
+    accelerationYAxis: number,
+    accelerationZAxis: number
+  ): Promise<IMotionContextSnapshot> => {
 
-    let gesture: any = 'STABLE';
-    if (magnitude > SHAKE_THRESHOLD) gesture = 'SHAKING';
-    if (magnitude < 1.0) gesture = 'FREE_FALL';
+    // 1. Cálculo de Magnitud Vectorial (Norma Euclidiana)
+    const rawVectorMagnitude = Math.sqrt(
+      Math.pow(accelerationXAxis, 2) +
+      Math.pow(accelerationYAxis, 2) +
+      Math.pow(accelerationZAxis, 2)
+    );
 
-    return {
+    // 2. Determinación de Gesto con Seguridad Atómica
+    let inferredGesture: IKineticGesture = 'STABLE' as never;
+
+    if (rawVectorMagnitude > SHAKE_CRITICAL_THRESHOLD) {
+      inferredGesture = 'SHAKING' as never;
+    } else if (rawVectorMagnitude < FREE_FALL_THRESHOLD) {
+      inferredGesture = 'FREE_FALL' as never;
+    }
+
+    /**
+     * @aduana SELLADO_ZENITH
+     * Transmutamos los primitivos en tipos nominales (Brands).
+     * El truncamiento a 2 decimales es una política de privacidad ISO 27701.
+     */
+    return MotionContextSnapshotSchema.parse({
       accelerationVector: {
-        axisX: Number(axisX.toFixed(2)),
-        axisY: Number(axisY.toFixed(2)),
-        axisZ: Number(axisZ.toFixed(2))
+        accelerationXAxis: KineticCoordinateSchema.parse(Number(accelerationXAxis.toFixed(2))),
+        accelerationYAxis: KineticCoordinateSchema.parse(Number(accelerationYAxis.toFixed(2))),
+        accelerationZAxis: KineticCoordinateSchema.parse(Number(accelerationZAxis.toFixed(2)))
       },
-      detectedGesture: KineticGestureSchema.parse(gesture),
-      vectorMagnitude: Number(magnitude.toFixed(2)),
-      timestampUnix: Date.now()
-    };
+      detectedGesture: KineticGestureSchema.parse(inferredGesture),
+      vectorMagnitude: KineticMagnitudeSchema.parse(Number(rawVectorMagnitude.toFixed(2))),
+      timestampUnix: KineticTimestampSchema.parse(Date.now())
+    });
   }
 };
 
-Comlink.expose(MotionBrain);
-export type IMotionBrain = typeof MotionBrain;
+// Exposición del cerebro al hilo de superficie mediante el protocolo Comlink
+Comlink.expose(KineticMotionBrain);
+
+// Tipo de exportación para el Proxy de superficie
+export type IKineticMotionBrain = typeof KineticMotionBrain;

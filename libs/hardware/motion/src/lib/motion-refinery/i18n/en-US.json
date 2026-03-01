@@ -1,0 +1,14 @@
+{
+  "KineticMotionRefinery": {
+    "Errors": {
+      "Unsupported": "RWC-MOT-001: Kinetic sensors (Accelerometer/Gyroscope) are not supported in this environment.",
+      "PermissionDenied": "RWC-MOT-002: Motion sensor access was denied by the operating system.",
+      "EmergencyMode": "RWC-MOT-003: Kinetic scanning restricted due to energy emergency protocol.",
+      "InitializationFailed": "RWC-MOT-004: Failed to ignite the inertial refinery brain."
+    },
+    "Status": {
+      "IgnitionSuccess": "Inertial refinery ignited. Monitoring physical intentions.",
+      "GestureDetected": "Physical gesture refined: {gestureType}."
+    }
+  }
+}

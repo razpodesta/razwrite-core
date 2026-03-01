@@ -1,0 +1,17 @@
+{
+  "PolymorphicQREngine": {
+    "Generation": {
+      "VectorForged": "Vector de intención cuántica forjado y sellado exitosamente. Listo para proyección física.",
+      "MetadataValidationSuccess": "Configuración visual validada contra los tokens de diseño del inquilino."
+    },
+    "Scarcity": {
+      "ThresholdReached": "Respuesta cuántica neutralizada: Se ha alcanzado el umbral máximo de escaneos.",
+      "TemporalLimitExceeded": "Expiración de vector: La validez temporal de esta intención ha caducado."
+    },
+    "Errors": {
+      "CryptographicSealFailure": "Intento de violación de seguridad o colapso de cifrado: Error al sellar el material de intención.",
+      "InvalidVisualMetadata": "Fallo de renderizado: Los metadatos visuales no cumplen con los estándares de bioseguridad.",
+      "EdgeRoutingResolutionError": "Fallo de resolución en el borde: No se pudo determinar el contexto del inquilino para el vector solicitado."
+    }
+  }
+}

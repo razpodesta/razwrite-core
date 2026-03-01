@@ -1,10 +1,29 @@
+/**
+ * @apparatus QuantumStateInfrastructure
+ * @role Configuración de compilación y ruteo de arterias para el gestor de estado atómico.
+ * @location libs/bunkers/quantum-state/tsconfig.lib.json
+ * @status <SEALED_PRODUCTION>
+ * @version 9.2.0
+ * @protocol OEDP-V8.5 Lattice
+ */
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
+    "rootDir": "src",
+    "types": ["node"],
+    "composite": true,
     "declaration": true,
-    "types": ["node"]
+    "noEmit": false,
+    "tsBuildInfoFile": "../../../dist/out-tsc/libs/bunkers/quantum-state/tsconfig.lib.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
-  "exclude":["src/**/*.spec.ts", "src/**/*.test.ts"]
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "references": [
+    { "path": "../../shared/logger" },
+    { "path": "../../shared/nervous-system" },
+    { "path": "../../shared/error-engine" },
+    { "path": "../../shared/matrix-neural-bridge" },
+    { "path": "../../shared/metabolic-scheduler" }
+  ]
 }

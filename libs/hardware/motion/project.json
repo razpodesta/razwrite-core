@@ -1,11 +1,12 @@
 {
-  "name": "hw-motion",
+  "name": "nsk-hardware-motion",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/hardware-refineries/motion/src",
+  "sourceRoot": "libs/hardware/motion/src",
   "projectType": "library",
   "tags": [
     "layer:extraction-refinery",
     "domain:telemetry",
+    "iso:27701",
     "iso:25010",
     "env:surface"
   ],
@@ -14,10 +15,10 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/hardware-refineries/motion",
-        "main": "libs/hardware-refineries/motion/src/index.ts",
-        "tsConfig": "libs/hardware-refineries/motion/tsconfig.lib.json",
-        "assets": ["libs/hardware-refineries/motion/*.md"],
+        "outputPath": "dist/libs/hardware/motion",
+        "main": "libs/hardware/motion/src/index.ts",
+        "tsConfig": "libs/hardware/motion/tsconfig.lib.json",
+        "assets": ["libs/hardware/motion/*.md"],
         "clean": true
       }
     },

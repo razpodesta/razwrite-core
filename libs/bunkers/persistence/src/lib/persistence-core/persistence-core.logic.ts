@@ -1,149 +1,182 @@
 /**
- * @apparatus PersistenceBunkerLogic
- * @role Orquestador de Memoria Tricameral y Multihilo Real.
- * @location libs/modular-units/persistence/src/lib/persistence-core/persistence.logic.ts
+ * @apparatus PersistenceCoreLogic
+ * @role Orquestador de superficie para la Bóveda Tricameral (L1/L2/L3) y Proxy RPC.
+ * @location libs/bunkers/persistence/src/lib/persistence-core/persistence-core.logic.ts
  * @status <SEALED_PRODUCTION>
- * @version 8.7.0
+ * @version 9.0.0
  * @protocol OEDP-V8.5 Lattice
  * @hilo Surface-Pulse
+ * @structure NEXO
+ * @compliance ISO_27001 | ISO_25010
  */
 
 import * as Comlink from 'comlink';
-import { SovereignLogger } from '@razwritecore/nsk-shared-logger';
-import { IdbAdapter } from './idb-adapter.logic';
 import {
-  PersistenceKeySchema,
+  SovereignLogger,
+  ApparatusIdentifierSchema,
+  OperationCodeSchema
+} from '@razwritecore/nsk-shared-logger';
+import { ErrorRefineryLogic, SystemErrorCodeSchema } from '@razwritecore/nsk-shared-error-engine';
+import { IndexedDbAdapterLogic } from './indexed-db-adapter.logic';
+import {
   VaultArtifactSchema,
-  type IPersistenceKey
-} from './persistence.schema';
-import type { IPersistenceRefinery } from './persistence.worker';
+  PersistenceWriteInputSchema,
+  type IPersistenceKey,
+  type IPersistenceWriteInput
+} from './persistence-core.schema';
+import type { IPersistenceCoreBrain } from './persistence-core.worker';
+import { z } from 'zod';
 
 /**
- * @context_prompt [LIA Legacy - AI-Audit]
- * DIRECTIVA: Implementación de Web Worker Proxy (Comlink).
- * JUSTIFICACIÓN: Se reemplazó la importación síncrona por una instancia real de Web Worker.
- * Se utiliza `new URL(...)` para garantizar la compatibilidad con el servidor de desarrollo
- * de Next.js y las compilaciones de producción de Nx.
- * IMPACTO: La encriptación AES-GCM ocurre ahora en un hilo dedicado (Deep-Pulse), liberando
- * el hilo principal para mantener los 60fps constantes.
+ * @section DIMENSIONES NOMINALES (M-005)
  */
+type IApparatusIdentifier = z.infer<typeof ApparatusIdentifierSchema>;
+type IOperationCode = z.infer<typeof OperationCodeSchema>;
 
-// Memoria L1 (Instantánea)
-const l1Cache = new Map<IPersistenceKey, unknown>();
-const pendingWrites = new Map<IPersistenceKey, unknown>();
-let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+/**
+ * @section MEMORIA CALIENTE Y ESTADO RPC
+ */
+const activeL1Memory = new Map<IPersistenceKey, unknown>();
+const pendingStorageBatch = new Map<IPersistenceKey, unknown>();
+let storageFlushTimer: ReturnType<typeof setTimeout> | null = null;
 
-// Referencia al Proxy del Worker (RPC)
-let workerApi: Comlink.Remote<IPersistenceRefinery> | null = null;
+// Referencia al Cerebro en el Hilo Profundo (Deep-Pulse)
+let persistenceBrainProxy: Comlink.Remote<IPersistenceCoreBrain> | null = null;
 
-export const PersistenceBunker = {
+export const PersistenceCoreLogic = {
 
   /**
-   * @method igniteVault
-   * @description Inicializa el Worker, la criptografía y el túnel con L2.
+   * @method ignitePersistenceVault
+   * @description Inicializa el Worker, desbloquea el cifrado y precalienta el metal.
+   * @requirement M-017 (Potencia Proyectada)
    */
-  igniteVault: async (entropy: string): Promise<void> => {
+  ignitePersistenceVault: async (entropySeedMaterial: string): Promise<void> => {
+    const ignitionStartTime = performance.now();
+
     try {
       if (typeof window === 'undefined') return;
 
-      // 1. Ignición del Hilo Secundario (Deep-Pulse)
+      // 1. Ignición del Hilo Secundario (RPC Proxy)
       const nativeWorker = new Worker(
-        new URL('./persistence.worker.ts', import.meta.url),
+        new URL('./persistence-core.worker.ts', import.meta.url),
         { type: 'module' }
       );
-      workerApi = Comlink.wrap<IPersistenceRefinery>(nativeWorker);
+      persistenceBrainProxy = Comlink.wrap<IPersistenceCoreBrain>(nativeWorker);
 
-      // 2. Desbloqueo de Bóveda mediante RPC
-      await workerApi.igniteSecureSession(entropy);
+      // 2. Desbloqueo Criptográfico de la Bóveda L2
+      await persistenceBrainProxy.igniteSecureSession(entropySeedMaterial);
 
-      // 3. Precalentamiento de IndexedDB
-      await IdbAdapter.openDb();
+      // 3. Verificación de Conexión con el Metal
+      await IndexedDbAdapterLogic.igniteConnection();
 
-      SovereignLogger.buffer({
-        severity: 'INFO',
-        apparatusIdentifier: 'PersistenceBunker',
-        operationCode: 'VAULT_IGNITED',
-        semanticKey: 'ModularUnits.Persistence.vaultUnlocked',
-        forensicMetadata: { threadingModel: 'COM_LINK_WORKER' }
-      });
-    } catch (caughtError) {
       SovereignLogger.emit({
-        severity: 'CRITICAL',
-        apparatusIdentifier: 'PersistenceBunker',
-        operationCode: 'VAULT_IGNITION_FAILED',
-        semanticKey: 'ModularUnits.Persistence.ignitionError',
-        forensicMetadata: { error: String(caughtError) }
+        severity: 'INFO',
+        apparatusIdentifier: 'PersistenceCore' as unknown as IApparatusIdentifier,
+        operationCode: 'VAULT_IGNITED' as unknown as IOperationCode,
+        semanticKey: 'Persistence.Grants.VaultUnlocked',
+        executionLatencyInMilliseconds: performance.now() - ignitionStartTime,
+        forensicMetadata: { protocol: 'RPC_COMLINK_AES_GCM' }
+      });
+
+    } catch (caughtError) {
+      throw ErrorRefineryLogic.transmute({
+        uniqueErrorCode: SystemErrorCodeSchema.parse('RWC-PER-5001'),
+        severity: 'FATAL',
+        apparatusIdentifier: 'PersistenceCore',
+        semanticKey: 'Persistence.Errors.IgnitionFailed',
+        caughtError
       });
     }
   },
 
   /**
-   * @method save
-   * @description Escritura optimista en L1 y encolado asíncrono para L2.
+   * @method saveInformation
+   * @description Escritura optimista en L1 y planificación de sellado asíncrono para L2.
+   * @requirement ISO_25010 (Eficiencia: Debounced Writes)
    */
-  save: (key: string, value: unknown): void => {
-    const validatedKey = PersistenceKeySchema.parse(key);
-    l1Cache.set(validatedKey, value);
-    pendingWrites.set(validatedKey, value);
-    scheduleFlush();
+  saveInformation: (requestPayload: IPersistenceWriteInput): void => {
+    const validated = PersistenceWriteInputSchema.parse(requestPayload);
+
+    // Sincronía L1 (Instantánea)
+    activeL1Memory.set(validated.targetKey, validated.informationMaterial);
+
+    // Encolado para L2 (Diferida)
+    pendingStorageBatch.set(validated.targetKey, validated.informationMaterial);
+
+    PersistenceCoreLogic.scheduleStorageFlush();
   },
 
   /**
-   * @method retrieve
-   * @description Lectura prioritaria L1 -> L2.
+   * @method retrieveInformation
+   * @description Recuperación jerárquica de datos L1 -> L2.
    */
-  retrieve: async <T>(key: string): Promise<T | null> => {
-    const validatedKey = PersistenceKeySchema.parse(key);
-
-    if (l1Cache.has(validatedKey)) {
-      return l1Cache.get(validatedKey) as T;
+  retrieveInformation: async <T>(targetKey: IPersistenceKey): Promise<T | null> => {
+    // 1. Prioridad L1 (Memoria Volátil < 1ms)
+    if (activeL1Memory.has(targetKey)) {
+      return activeL1Memory.get(targetKey) as T;
     }
 
-    if (!workerApi) return null;
+    if (!persistenceBrainProxy) return null;
 
     try {
-      const rawArtifact = await IdbAdapter.get(validatedKey);
+      // 2. Acceso a L2 (Disco Cifrado)
+      const rawArtifact = await IndexedDbAdapterLogic.retrieveArtifact(targetKey);
       if (!rawArtifact) return null;
 
-      const validArtifact = VaultArtifactSchema.parse(rawArtifact);
+      const validatedArtifact = VaultArtifactSchema.parse(rawArtifact);
 
-      // Descifrado delegado al Worker (Deep-Pulse)
-      const decrypted = await workerApi.restoreArtifact(validArtifact);
+      // Descifrado delegado al Cerebro (Deep-Pulse)
+      const decryptedData = await persistenceBrainProxy.restoreArtifact(validatedArtifact);
 
-      l1Cache.set(validatedKey, decrypted);
-      return decrypted as T;
+      // Hidratación de L1 para futuras peticiones
+      activeL1Memory.set(targetKey, decryptedData);
+
+      return decryptedData as T;
+
     } catch (caughtError) {
       SovereignLogger.emit({
         severity: 'ERROR',
-        apparatusIdentifier: 'PersistenceBunker',
-        operationCode: 'READ_FAILURE',
-        semanticKey: 'ModularUnits.Persistence.readError',
-        forensicMetadata: { key: validatedKey, errorDetails: String(caughtError) }
+        apparatusIdentifier: 'PersistenceCore' as unknown as IApparatusIdentifier,
+        operationCode: 'READ_FAILURE' as unknown as IOperationCode,
+        semanticKey: 'Persistence.Errors.ReadError',
+        forensicMetadata: { key: targetKey, caughtError: String(caughtError) }
       });
       return null;
     }
-  }
-};
+  },
 
-/**
- * @internal Vaciado de Buffer de Escritura (Multihilo)
- */
-function scheduleFlush() {
-  if (debounceTimer) clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(async () => {
-    if (pendingWrites.size === 0 || !workerApi) return;
+  /**
+   * @method scheduleStorageFlush
+   * @private
+   * @description Coordina el vaciado del buffer de escritura hacia el hilo profundo.
+   */
+  scheduleStorageFlush: (): void => {
+    if (storageFlushTimer) clearTimeout(storageFlushTimer);
 
-    const batch = new Map(pendingWrites);
-    pendingWrites.clear();
+    storageFlushTimer = setTimeout(async () => {
+      if (pendingStorageBatch.size === 0 || !persistenceBrainProxy) return;
 
-    for (const [key, value] of batch) {
-      try {
-        // Cifrado delegado al Worker (Deep-Pulse)
-        const artifact = await workerApi.refineArtifact(key, value);
-        await IdbAdapter.put(artifact);
-      } catch (writeError) {
-        console.error('RWC-PERSISTENCE-WRITE-FAIL', writeError);
+      const workingBatch = new Map(pendingStorageBatch);
+      pendingStorageBatch.clear();
+
+      for (const [key, material] of workingBatch) {
+        try {
+          // Delegación de Refinado (Cifrado + Integridad) al Worker
+          const artifact = await persistenceBrainProxy.refineArtifact(key, material);
+
+          // Persistencia en Disco
+          await IndexedDbAdapterLogic.saveArtifact(artifact);
+
+        } catch (caughtError) {
+          SovereignLogger.emit({
+            severity: 'CRITICAL',
+            apparatusIdentifier: 'PersistenceCore' as unknown as IApparatusIdentifier,
+            operationCode: 'BATCH_WRITE_FAILURE' as unknown as IOperationCode,
+            semanticKey: 'Persistence.Errors.WriteError',
+            forensicMetadata: { key, caughtError: String(caughtError) }
+          });
+        }
       }
-    }
-  }, 500);
-}
+    }, 500); // Ventana de agregación de 500ms (ISO 25010)
+  }
+} as const;

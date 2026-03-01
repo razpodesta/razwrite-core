@@ -1,14 +1,25 @@
-/* [RUTA RELATIVA: libs/shared/matrix-neural-bridge/tsconfig.lib.json] */
+/**
+ * @apparatus NeuralBridgeInfrastructure
+ * @role Configuração de compilação para emissão de contratos de tipos.
+ * @location libs/shared/matrix-neural-bridge/tsconfig.lib.json
+ * @status <STABILIZED>
+ * @version 9.2.3
+ */
 {
-  "extends": "../../../tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
+    "rootDir": "src",
+    "types": ["node"],
+    /* M-019: Sincronia com o motor ESM 2026 */
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    /* Saneamento: Desativado modo composite para evitar erro 6059 */
+    "composite": false,
     "declaration": true,
-    "composite": true,
-    "noEmit": false,
-    "tsBuildInfoFile": "../../../dist/out-tsc/tsbuildinfo/nsk-shared-matrix-neural-bridge.tsbuildinfo",
-    "types": ["node"]
+    "declarationMap": true,
+    "noEmit": false
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["src/**/*.spec.ts", "test.ts"]
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
 }

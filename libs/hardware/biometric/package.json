@@ -1,18 +1,19 @@
 {
-    "name":  "@razwritecore/nsk-hw-biometric",
-    "version":  "1.0.0",
-    "private":  true,
-    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
-    "description":  "[ROLE: BIOMETRIC_REFINERY] Refinería de signos vitales del hardware y estado metabólico del dispositivo físico.",
-    "type":  "module",
-    "sideEffects":  false,
-    "main":  "./src/index.ts",
-    "dependencies":  {
-                         "tslib":  "^2.8.1"
-                     },
-    "peerDependencies":  {
-                             "zod":  "^3.24.2",
-                             "@razwritecore/nsk-shared-logger":  "workspace:*",
-                             "@razwritecore/nsk-shared-metabolic-scheduler":  "workspace:*"
-                         }
+  "name": "@razwritecore/nsk-hardware-biometric",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: BIOMETRIC_REFINERY] Refinería de biosensores y estado metabólico. Cumplimiento ISO 27701.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "peerDependencies": {
+    "zod": "^3.24.2",
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-shared-metabolic-scheduler": "workspace:*",
+    "@razwritecore/nsk-shared-matrix-neural-bridge": "workspace:*"
+  }
 }

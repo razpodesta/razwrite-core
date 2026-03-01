@@ -2,11 +2,18 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "rootDir": "src",
+    "types": ["node"],
+    "composite": true,
     "declaration": true,
-    "types": ["node"]
+    "noEmit": false,
+    "tsBuildInfoFile": "../../../dist/out-tsc/libs/bunkers/persistence/tsconfig.lib.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "references": [
+    { "path": "../../shared/crypto" },
+    { "path": "../../shared/logger" },
+    { "path": "../../shared/error-engine" }
+  ]
 }

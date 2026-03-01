@@ -1,19 +1,9 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "jsx": "react-jsx",
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "composite": true,
-    "declaration": true,
-    "tsBuildInfoFile": "../../../dist/libs/shared/logger/tsconfig.tsbuildinfo",
-    "types": ["node"]
+    /* M-038: Resolución transparente de dependencias vía paths raiz */
+    "composite": false,
+    "declaration": true
   },
   "files": [],
   "include": [],

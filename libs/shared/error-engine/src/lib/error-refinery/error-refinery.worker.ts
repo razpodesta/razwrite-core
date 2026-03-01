@@ -1,9 +1,9 @@
 /**
  * @apparatus SovereignErrorWorker
- * @role Motor de sanitización profunda (Scrubbing) y neutralización de fugas de identidad.
+ * @role Motor de sanitização profunda (Scrubbing) e neutralização de fugas de identidade.
  * @location libs/shared/error-engine/src/lib/error-refinery/error-refinery.worker.ts
  * @status <SEALED_PRODUCTION>
- * @version 9.3.0
+ * @version 9.3.1
  * @protocol OEDP-V8.5 Lattice
  * @hilo Deep-Pulse
  * @metabolism PEAK
@@ -13,7 +13,7 @@
 
 /**
  * @section MATRIZ DE PURGA PII (M-004)
- * Reglas de inmutabilidad para la neutralización de datos sensibles en el rastro forense.
+ * Regras de inmutabilidade para a neutralização de dados sensíveis no rastro forense.
  */
 const PII_SANITIZATION_RULES = [
   { pattern: /([a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+)/g, token: '[REDACTED_JWT]' },
@@ -25,12 +25,12 @@ const PII_SANITIZATION_RULES = [
 
 /**
  * @function executeForensicScrubbing
- * @description Purifica el rastro de error eliminando rutas físicas y datos de usuario.
+ * @description Purifica o rastro de erro eliminando rotas físicas e dados de usuário civis.
  */
 export function executeForensicScrubbing(rawTrace: string): string {
   let sanitizedTrace = rawTrace;
 
-  // 1. Scrubbing de Patrones PII
+  // 1. Scrubbing de Patrones PII (M-002)
   for (const rule of PII_SANITIZATION_RULES) {
     sanitizedTrace = sanitizedTrace.replace(rule.pattern, rule.token);
   }
@@ -38,7 +38,7 @@ export function executeForensicScrubbing(rawTrace: string): string {
   // 2. Ofuscación de Topología y Reducción de Masa Atómica
   return sanitizedTrace
     .split('\n')
-    .slice(0, 10) // Limitación de profundidad para optimización de bus
+    .slice(0, 10) // Otimização de bus: limitamos a profundidade do rastro
     .map((line) => line.trim())
     .join(' | ')
     .replace(/\\/g, '/')

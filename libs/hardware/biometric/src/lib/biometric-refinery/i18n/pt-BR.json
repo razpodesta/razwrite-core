@@ -1,0 +1,11 @@
+{
+  "Hardware": {
+    "Biometric": {
+      "VitalsCaptured": "Sinais vitais do hardware capturados com sucesso.",
+      "LowBatteryWarning": "Nível de energia crítico detectado. Ativando modo ECO.",
+      "NetworkChange": "Mudança na pressão da rede detectada.",
+      "BiometricAuthSuccess": "Identidade física verificada via hardware.",
+      "BiometricAuthFailed": "Falha na verificação da identidade física."
+    }
+  }
+}

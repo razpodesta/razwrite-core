@@ -1,0 +1,10 @@
+{
+  "IdentityMutant": {
+    "Grants": {
+      "ForgedSuccessfully": "Sovereign Mutant Passport forged and successfully anchored to L1."
+    },
+    "Errors": {
+      "IgnitionFailed": "Identity ignition collapse: Failed to forge deterministic passport."
+    }
+  }
+}

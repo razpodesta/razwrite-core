@@ -1,20 +1,27 @@
-/* [RUTA RELATIVA: libs/shared/metabolic-scheduler/tsconfig.lib.json] */
+/**
+ * @apparatus MetabolicSchedulerInfrastructure
+ * @role Configuración de compilación y ruteo de arterias para el Gobernador de Energía.
+ * @location libs/shared/metabolic-scheduler/tsconfig.lib.json
+ * @status <SEALED_PRODUCTION>
+ * @version 9.1.0
+ * @protocol OEDP-V8.5 Lattice
+ */
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-    "declaration": true,
+    "rootDir": "src",
+    "types": ["node"],
     "composite": true,
+    "declaration": true,
     "noEmit": false,
-    /* tsBuildInfoFile único para evitar colisiones de memoria en el compilador */
-    "tsBuildInfoFile": "../../../dist/out-tsc/tsbuildinfo/nsk-shared-metabolic-scheduler.tsbuildinfo",
-    "types": ["node"]
+    "tsBuildInfoFile": "../../../dist/out-tsc/libs/shared/metabolic-scheduler/tsconfig.lib.tsbuildinfo"
   },
-  /* DIPLOMACIA DE REFERENCIAS: El Scheduler requiere reportar al Logger y consultar la Matrix */
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
   "references": [
     { "path": "../logger" },
-    { "path": "../matrix-neural-bridge" }
-  ],
-  "include": ["src/**/*.ts"],
-  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts", "jest.config.ts"]
+    { "path": "../matrix-neural-bridge" },
+    { "path": "../error-engine" }
+  ]
 }

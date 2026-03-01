@@ -1,23 +1,34 @@
 {
-  "name": "persistence",
+  "name": "nsk-bunker-persistence",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/modular-units/persistence/src",
+  "sourceRoot": "libs/bunkers/persistence/src",
   "projectType": "library",
   "tags": [
     "layer:modular-unit",
-    "role:memory-vault",
+    "domain:system-core",
     "iso:27001",
-    "domain:system-core"
+    "env:deep-pulse"
   ],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/modular-units/persistence",
-        "main": "libs/modular-units/persistence/src/index.ts",
-        "tsConfig": "libs/modular-units/persistence/tsconfig.lib.json",
-        "assets": ["libs/modular-units/persistence/*.md"]
+        "outputPath": "dist/libs/bunkers/persistence",
+        "main": "libs/bunkers/persistence/src/index.ts",
+        "tsConfig": "libs/bunkers/persistence/tsconfig.lib.json",
+        "assets": ["libs/bunkers/persistence/*.md"],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../coverage/libs/bunkers/persistence"
       }
     }
   }

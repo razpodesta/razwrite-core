@@ -1,29 +1,35 @@
 {
-    "name":  "nsk-bunker-identity-mutant",
-    "$schema":  "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot":  "modular-units/identity-mutant-engine/src",
-    "projectType":  "library",
-    "tags":  [
-                 "layer:modular-unit",
-                 "domain:identity",
-                 "iso:27701",
-                 "env:deep-pulse"
-             ],
-    "targets":  {
-                    "build":  {
-                                  "executor":  "@nx/js:tsc",
-                                  "outputs":  [
-                                                  "{options.outputPath}"
-                                              ],
-                                  "options":  {
-                                                  "outputPath":  "dist/modular-units/identity-mutant-engine",
-                                                  "main":  "modular-units/identity-mutant-engine/src/index.ts",
-                                                  "tsConfig":  "modular-units/identity-mutant-engine/tsconfig.lib.json",
-                                                  "assets":  [
-                                                                 "modular-units/identity-mutant-engine/*.md"
-                                                             ],
-                                                  "clean":  true
-                                              }
-                              }
-                }
+  "name": "nsk-bunker-identity",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/bunkers/identity/src",
+  "projectType": "library",
+  "tags": [
+    "layer:modular-unit",
+    "domain:identity",
+    "iso:27701",
+    "env:deep-pulse"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/bunkers/identity",
+        "main": "libs/bunkers/identity/src/index.ts",
+        "tsConfig": "libs/bunkers/identity/tsconfig.lib.json",
+        "assets": ["libs/bunkers/identity/*.md"],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../coverage/libs/bunkers/identity"
+      }
+    }
+  }
 }

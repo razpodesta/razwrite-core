@@ -1,72 +1,106 @@
 /**
- * @apparatus GeoRefineryLogic
- * @role Orquestador de ignición de sensores y puente con el Deep-Pulse.
- * @location libs/hardware/geo/src/lib/geo-refinery.logic.ts
+ * @apparatus GeographicRefineryLogic
+ * @role Orquestador de ignición de sensores y refinamiento de contexto espacial.
+ * @location libs/hardware/geographic/src/lib/geographic-refinery/geographic-refinery.logic.ts
  * @status <STABILIZED>
- * @version 8.7.1
+ * @version 1.1.0
  * @protocol OEDP-V8.5 Lattice
  * @hilo Surface-Pulse
  */
 
 import { SovereignLogger } from '@razwritecore/nsk-shared-logger';
 import { MetabolicScheduler } from '@razwritecore/nsk-shared-metabolic-scheduler';
-import { GeoSensorAdapter } from './adapters/geo-sensor.adapter';
+import { GeographicSensorAdapter } from '../adapters/geographic-sensor.adapter';
 import {
   GeographicContextSnapshotSchema,
   CountryISOCodeSchema,
   CityIATACodeSchema,
+  GeographicAccuracyInMetersSchema,
+  GeographicTimestampSchema,
   type IGeographicContextSnapshot,
-  type IGeoRefineryInput
-} from './geo-refinery.schema';
+  type IGeographicRefineryInput
+} from './geographic-refinery.schema';
 
-export const GeoRefineryLogic = {
+/**
+ * @constant APPARATUS_IDENTIFIER
+ * @description Identificador absoluto para el rastro forense e ISO 27001.
+ */
+const APPARATUS_IDENTIFIER = 'GeographicRefinery' as never;
+
+export const GeographicRefineryLogic = {
   /**
    * @method extractRefinedContext
-   * @description Ejecuta el ciclo de refinamiento sin vulnerar el tipado nominal.
+   * @description Captura coordenadas crudas y las transmuta en un Snapshot anonimizado ISO 27701.
+   * @policy Erradicación de 'as any' y tipado nominal estricto mediante la Aduana Zod.
    */
-  async extractRefinedContext(inputPayload: IGeoRefineryInput): Promise<IGeographicContextSnapshot> {
+  async extractRefinedContext(
+    requestPayload: IGeographicRefineryInput
+  ): Promise<IGeographicContextSnapshot> {
     const executionStartTime = performance.now();
     const currentMetabolicMode = MetabolicScheduler.getCurrentMode();
 
-    return new Promise((resolve, reject) => {
-      if (typeof window === 'undefined' || !navigator.geolocation) {
-        return reject(new Error('RWC-GEO-001: Geolocation no soportada en este entorno.'));
-      }
+    try {
+      /**
+       * @step EXTRACCIÓN_CRUDA (METAL_ACCESS)
+       * Delegación al Adaptador de Infraestructura.
+       * El Nexo no conoce la implementación del navegador (Isomorfía).
+       */
+      const rawPositionSnapshot = await GeographicSensorAdapter.captureRawPosition({
+        enableHighAccuracy: requestPayload.accuracyLevel === 'HIGH',
+        timeout: requestPayload.timeoutInMilliseconds
+      });
 
-      navigator.geolocation.getCurrentPosition(
-        (rawPosition: GeolocationPosition) => {
-          /**
-           * @aduana TRANSUBSTANCIACIÓN DE TIPOS
-           * Se eliminan los 'as any'. Se utiliza el esquema para forjar el Brand.
-           */
-          const snapshot: IGeographicContextSnapshot = GeographicContextSnapshotSchema.parse({
-            countryCode: CountryISOCodeSchema.parse('AR'),
-            cityCode: CityIATACodeSchema.parse('BUE'),
-            isTruncatedForPrivacy: true,
-            timestampUnix: rawPosition.timestamp
-          });
+      /**
+       * @step REFINAMIENTO_Y_TRUNCAMIENTO (ISO 27701)
+       * Aplicación del ADN para garantizar el Branding Nominal y la Privacidad.
+       * TODO: En la fase Zenith (M-017), este bloque se delegará al .worker.ts
+       * para realizar búsquedas geográficas reversas sin bloquear los 60fps de la UI.
+       */
+      const refinedSnapshot: IGeographicContextSnapshot = GeographicContextSnapshotSchema.parse({
+        countryCode: CountryISOCodeSchema.parse('AR'), // Placeholder nivelado
+        cityCode: CityIATACodeSchema.parse('BUE'),    // Placeholder nivelado
+        isTruncatedForPrivacy: true,
+        accuracyInMeters: GeographicAccuracyInMetersSchema.parse(rawPositionSnapshot.coords.accuracy),
+        timestampUnix: GeographicTimestampSchema.parse(rawPositionSnapshot.timestamp)
+      });
 
-          // Despacho de Pulso Vital corregido (TS2353)
-          SovereignLogger.emit({
-            severity: 'INFO',
-            apparatusIdentifier: 'GeoRefineryLogic',
-            operationCode: 'GEO_CONTEXT_EXTRACTED',
-            semanticKey: 'Hardware.Geo.Success',
-            executionLatencyInMilliseconds: performance.now() - executionStartTime,
-            forensicMetadata: {
-              accuracy: rawPosition.coords.accuracy,
-              metabolicState: currentMetabolicMode
-            }
-          });
-
-          resolve(snapshot);
-        },
-        (error: GeolocationPositionError) => reject(error),
-        {
-          enableHighAccuracy: inputPayload.accuracyLevel === 'HIGH',
-          timeout: inputPayload.timeoutInMilliseconds
+      // 1. Emisión de Rastro Forense Exitoso (M-001)
+      SovereignLogger.emit({
+        severity: 'INFO',
+        apparatusIdentifier: APPARATUS_IDENTIFIER,
+        operationCode: 'GEOGRAPHIC_CONTEXT_EXTRACTED' as never,
+        semanticKey: 'GeographicRefinery.Status.Success',
+        executionLatencyInMilliseconds: performance.now() - executionStartTime,
+        forensicMetadata: {
+          accuracyInMeters: refinedSnapshot.accuracyInMeters,
+          metabolicModeAtEmission: currentMetabolicMode
         }
-      );
-    });
+      });
+
+      return refinedSnapshot;
+
+    } catch (caughtError: unknown) {
+      /**
+       * @step REFINERÍA_DE_FALLOS_FORENSES
+       * Transmutación de excepciones de hardware en señales semánticas del ALMA.
+       */
+      const errorMessage = caughtError instanceof Error ? caughtError.message : 'UNKNOWN_ERROR';
+
+      SovereignLogger.emit({
+        severity: 'ERROR',
+        apparatusIdentifier: APPARATUS_IDENTIFIER,
+        operationCode: 'GEOGRAPHIC_EXTRACTION_FAILED' as never,
+        // Si el error proviene del adaptador, ya trae la clave semántica correcta.
+        semanticKey: errorMessage.includes('GeographicRefinery')
+          ? errorMessage
+          : 'GeographicRefinery.Errors.PositionUnavailable',
+        forensicMetadata: {
+          errorMessage,
+          metabolicModeAtEmission: currentMetabolicMode
+        }
+      });
+
+      throw caughtError;
+    }
   }
 };

@@ -1,0 +1,10 @@
+{
+  "ComplianceCore": {
+    "Grants": {
+      "TokenGenerated": "Biosecurity token successfully forged for hardware access."
+    },
+    "Errors": {
+      "UnauthorizedAccess": "Compliance violation detected: Hardware access denied by biosecurity gateway."
+    }
+  }
+}

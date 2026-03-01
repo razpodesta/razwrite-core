@@ -1,18 +1,23 @@
 {
-    "name":  "@razwritecore/nsk-bunker-persistence",
-    "version":  "1.0.0",
-    "private":  true,
-    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
-    "description":  "[ROLE: MEMORY_VAULT] Bóveda Tricameral (L1/L2/L3) con cifrado AES-GCM en reposo.",
-    "type":  "module",
-    "sideEffects":  false,
-    "main":  "./src/index.ts",
-    "dependencies":  {
-                         "tslib":  "^2.3.0"
-                     },
-    "peerDependencies":  {
-                             "zod":  "^3.24.1",
-                             "@razwritecore/nsk-shared-logger":  "workspace:*",
-                             "@razwritecore/nsk-shared-crypto":  "workspace:*"
-                         }
+  "name": "@razwritecore/nsk-bunker-persistence",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: MEMORY_VAULT] Bóveda Tricameral (L1/L2/L3) con cifrado AES-GCM en reposo y gestión binaria.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "dependencies": {
+    "comlink": "^4.4.1",
+    "@razwritecore/nsk-shared-crypto": "workspace:*",
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-shared-error-engine": "workspace:*",
+    "zod": "^3.24.2"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  }
 }

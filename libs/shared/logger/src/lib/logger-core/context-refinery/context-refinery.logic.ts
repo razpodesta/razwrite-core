@@ -1,19 +1,25 @@
 /**
  * @apparatus ContextRefineryLogic
- * @role Gestor de estado isomórfico con validación de bioseguridad en tiempo de ejecución.
+ * @role Gestor de estado isomórfico com validação de biosegurança em tempo de execução.
  * @location libs/shared/logger/src/lib/logger-core/context-refinery/context-refinery.logic.ts
  * @status <STABILIZED>
- * @version 9.0.1
+ * @version 9.0.2
  * @protocol OEDP-V8.5 Lattice
  * @hilo Surface-Pulse | Acid-Pulse
  * @structure NEXO
+ * @compliance ISO_25010 | ISO_27001
  */
 
 import { AsyncLocalStorage } from 'node:async_hooks';
+
+/**
+ * @section Sincronia_NodeNext
+ * M-019: Inserção do rastro .js para resolução de módulos em ambiente ESM de 2026.
+ */
 import {
   type ISovereignExecutionContext,
   SovereignExecutionContextSchema,
-} from './context-refinery.schema';
+} from './context-refinery.schema.js';
 
 /**
  * @section DETECCIÓN DE ENTORNO (M-004)
@@ -24,73 +30,83 @@ const isNodeRuntimeEnvironment =
   process.versions.node != null;
 
 /**
- * @interface IGlobalSovereignContext
- * Extensión tipada de globalThis para evitar contaminación de espacio de nombres.
+ * @interface ISovereignGlobalScope
+ * @description Extensão tipada para o escopo global (Window ou Node Global).
  */
-interface IGlobalSovereignContext {
+interface ISovereignGlobalScope {
   __SOVEREIGN_ACTIVE_CONTEXT__?: ISovereignExecutionContext;
 }
 
 /**
  * @class SurfaceContextStorageAdapter
- * @description Implementación para navegadores basada en la persistencia del hilo de ejecución único.
+ * @description Implementação para navegadores (Surface-Pulse) baseada na memória global do fio único.
  */
 class SurfaceContextStorageAdapter {
   /**
    * @method getStore
-   * @description Recupera el contexto activo de la memoria global del navegador.
+   * @description Recupera o contexto ativo da memória global sem casting inseguro.
    */
   public getStore(): ISovereignExecutionContext | undefined {
-    return (globalThis as unknown as IGlobalSovereignContext)
-      .__SOVEREIGN_ACTIVE_CONTEXT__;
+    const globalContextSource = globalThis as unknown as ISovereignGlobalScope;
+    return globalContextSource.__SOVEREIGN_ACTIVE_CONTEXT__;
   }
 
   /**
    * @method run
-   * @description Ejecuta un flujo de lógica bajo un contexto validado por la Aduana de ADN.
+   * @description Executa um fluxo sob um contexto validado pela Aduana de ADN.
    */
   public run<T>(
     contextPayload: ISovereignExecutionContext,
     executionCallback: () => T
   ): T {
-    // 1. Aduana de Bioseguridad (M-005) - Resolución de error TS 2304/6133
-    const validatedContext = SovereignExecutionContextSchema.parse(contextPayload);
+    // Aduana de Biosegurança (M-005)
+    const validatedExecutionContext = SovereignExecutionContextSchema.parse(contextPayload);
 
-    // 2. Inyección de Contexto
-    (globalThis as unknown as IGlobalSovereignContext).__SOVEREIGN_ACTIVE_CONTEXT__ =
-      validatedContext;
+    // Injeção de Contexto no rastro global
+    (globalThis as unknown as ISovereignGlobalScope).__SOVEREIGN_ACTIVE_CONTEXT__ =
+      validatedExecutionContext;
 
     try {
       return executionCallback();
     } finally {
-      // Nota: En el navegador, el contexto persiste durante el ciclo de vida del evento/render.
+      // No navegador, o contexto é mantido para correlação de micro-gestos
     }
   }
 }
 
 /**
  * @class NodeContextStorageAdapter
- * @description Wrapper para AsyncLocalStorage que garantiza el cumplimiento del ADN.
+ * @description Implementação para servidores e SSR (Acid-Pulse) baseada em ganchos assíncronos nativos.
  */
 class NodeContextStorageAdapter {
+  /** @section Biosegurança_de_Memória */
   private readonly storageInstance = new AsyncLocalStorage<ISovereignExecutionContext>();
 
+  /**
+   * @method getStore
+   * @description Recupera o contexto do balde assíncrono ativo.
+   */
   public getStore(): ISovereignExecutionContext | undefined {
     return this.storageInstance.getStore();
   }
 
+  /**
+   * @method run
+   * @description Isola a execução sob um rastro forense inalterável.
+   */
   public run<T>(
     contextPayload: ISovereignExecutionContext,
     executionCallback: () => T
   ): T {
-    const validatedContext = SovereignExecutionContextSchema.parse(contextPayload);
-    return this.storageInstance.run(validatedContext, executionCallback);
+    const validatedExecutionContext = SovereignExecutionContextSchema.parse(contextPayload);
+    return this.storageInstance.run(validatedExecutionContext, executionCallback);
   }
 }
 
 /**
  * @section FACHADA DE CONTEXTO (M-010)
- * Exportación del Objeto Orquestador Constante adaptado al entorno de ejecución.
+ * Exportação do Objeto Orquestrador adaptado dinamicamente ao ambiente de execução.
+ * Garante que o Logger consuma a mesma API em qualquer hilo (Isomorfismo).
  */
 export const ContextRefinery = isNodeRuntimeEnvironment
   ? new NodeContextStorageAdapter()

@@ -1,18 +1,18 @@
 {
-    "name":  "@razwritecore/nsk-hw-iot-proximity",
-    "version":  "1.0.0",
-    "private":  true,
-    "author":  "Raz Podestá \u003cMetaShark Tech\u003e",
-    "description":  "[ROLE: PROXIMITY_REFINERY] Puente de hardware para protocolos de corto alcance (NFC/BLE) y validación de presencia física.",
-    "type":  "module",
-    "sideEffects":  false,
-    "main":  "./src/index.ts",
-    "dependencies":  {
-                         "tslib":  "^2.3.0",
-                         "@razwritecore/nsk-shared-logger":  "workspace:*",
-                         "@razwritecore/nsk-bunker-compliance":  "workspace:*"
-                     },
-    "peerDependencies":  {
-                             "zod":  "^3.24.1"
-                         }
+  "name": "@razwritecore/nsk-hardware-iot-proximity",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Raz Podestá <MetaShark Tech>",
+  "description": "[ROLE: PROXIMITY_REFINERY] Puente de hardware para protocolos de corto alcance (NFC/BLE) y validación de presencia física.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "peerDependencies": {
+    "zod": "^3.24.2",
+    "@razwritecore/nsk-shared-logger": "workspace:*",
+    "@razwritecore/nsk-bunker-compliance": "workspace:*"
+  }
 }

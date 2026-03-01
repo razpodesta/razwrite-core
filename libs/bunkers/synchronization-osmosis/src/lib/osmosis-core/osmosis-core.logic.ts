@@ -1,156 +1,206 @@
 /**
- * @apparatus SyncOsmosisEngine
- * @role Membrana semi-permeable. Controla el flujo de datos basados en Presión Metabólica (APD).
- * @location libs/modular-units/sync-osmosis/src/lib/osmosis-core/osmosis-core.logic.ts
+ * @apparatus OsmosisCoreLogic
+ * @role Orquestador de la membrana semi-permeable para la gestión de presión de datos.
+ * @location libs/bunkers/synchronization-osmosis/src/lib/osmosis-core/osmosis-core.logic.ts
  * @status <SEALED_PRODUCTION>
- * @version 8.6.1
+ * @version 9.2.0
  * @protocol OEDP-V8.5 Lattice
+ * @hilo Surface-Pulse
+ * @structure NEXO
+ * @compliance ISO_25010 | ISO_27001
  */
 
-import { SovereignLogger } from '@razwritecore/nsk-shared-logger';
+import * as Comlink from 'comlink';
+import {
+  SovereignLogger,
+  ApparatusIdentifierSchema,
+  OperationCodeSchema
+} from '@razwritecore/nsk-shared-logger';
 import { MetabolicScheduler } from '@razwritecore/nsk-shared-metabolic-scheduler';
-import { AdaptiveTransport } from './adaptive-transport.logic';
-import { 
-  type IOsmoticPulse, 
-  OsmoticPulseSchema 
+import { ErrorRefineryLogic, SystemErrorCodeSchema } from '@razwritecore/nsk-shared-error-engine';
+import {
+  type IOsmoticPulse,
+  type IOsmosisConfiguration,
+  OsmoticPulseSchema,
+  OsmosisConfigurationSchema
 } from './osmosis-core.schema';
+import { type IOsmosisCoreBrain } from './osmosis-core.worker';
+import { AdaptiveTransportLogic } from './adaptive-transport.logic';
+import { z } from 'zod';
 
 /**
- * @context_prompt [LIA Legacy - AI-Audit]
- * DIRECTIVA: Inyección de Límite de Contrapresión y Limpieza de Linter.
- * JUSTIFICACIÓN: 
- * 1. Se eliminaron tipos inferidos redundantes (TS Lint).
- * 2. Se instrumentó el `SovereignLogger` para reportar ignición y desbordamiento.
- * 3. Se estableció un límite físico de 500 items por cola para evitar OOM (Out Of Memory) 
- *    si el dispositivo pierde conexión por periodos prolongados.
- * IMPACTO: Estabilidad de RAM garantizada en escenarios offline extremos.
+ * @section DIMENSIONES NOMINALES (M-005)
+ * Casting de bioseguridad para el rastro forense del Sistema Nervioso.
  */
+type IApparatusIdentifier = z.infer<typeof ApparatusIdentifierSchema>;
+type IOperationCode = z.infer<typeof OperationCodeSchema>;
 
-// Límite de seguridad para evitar desbordamiento de memoria
+// Límite físico para evitar desbordamiento de RAM (Backpressure)
 const MAX_QUEUE_DEPTH = 500;
 
-// Esclusas de Memoria (Buckets)
-const membraneQueues = {
+// Esclusas de Memoria (Buckets por QoS)
+const osmoticQueues = {
   VITAL: [] as IOsmoticPulse[],      // QoS 0
   CRITICAL: [] as IOsmoticPulse[],   // QoS 1
   RESILIENT: [] as IOsmoticPulse[],  // QoS 2
   BEHAVIORAL: [] as IOsmoticPulse[]  // QoS 3
 };
 
+let brainProxy: Comlink.Remote<IOsmosisCoreBrain> | null = null;
 let drainIntervalTimer: ReturnType<typeof setInterval> | null = null;
-let isPageTerminatingState = false;
+let isSystemTerminating = false;
 
-/**
- * @section FACHADA SOBERANA
- */
-export const SyncOsmosisEngine = {
-  
+export const OsmosisCoreLogic = {
+
   /**
    * @method igniteMembrane
-   * @description Enciende el motor de ósmosis y se acopla a la terminación de la página.
+   * @description Inicializa el motor de ósmosis y activa el Cerebro asíncrono (Deep-Pulse).
+   * @requirement M-017 (Potencia Proyectada)
    */
-  igniteMembrane: (intervalMs = 5000): void => {
+  igniteMembrane: (configuration: IOsmosisConfiguration): void => {
     if (typeof window === 'undefined') return;
 
-    // Rastro Forense de Ignición
-    SovereignLogger.buffer({
-      severity: 'INFO',
-      apparatusIdentifier: 'SyncOsmosisEngine',
-      operationCode: 'OSMOSIS_IGNITED',
-      semanticKey: 'ModularUnits.SyncOsmosis.membraneActive',
-      forensicMetadata: { intervalMs }
-    });
+    const validatedConfig = OsmosisConfigurationSchema.parse(configuration);
+    const ignitionStartTime = performance.now();
 
-    // Escucha el evento final de la página (supervivencia)
-    window.addEventListener('pagehide', () => {
-      isPageTerminatingState = true;
-      SyncOsmosisEngine.forceMembraneDrain(); // Vaciado de emergencia
-    });
+    try {
+      // 1. Ignición del Hilo Secundario (RPC Proxy)
+      const nativeWorker = new Worker(
+        new URL('./osmosis-core.worker.ts', import.meta.url),
+        { type: 'module' }
+      );
+      brainProxy = Comlink.wrap<IOsmosisCoreBrain>(nativeWorker);
 
-    if (!drainIntervalTimer) {
-      drainIntervalTimer = setInterval(executeMembraneDrain, intervalMs);
+      // 2. Protocolo de Supervivencia (M-035)
+      window.addEventListener('pagehide', () => {
+        isSystemTerminating = true;
+        OsmosisCoreLogic.forceImmediateDrain();
+      });
+
+      // 3. Activación del Latido de Vaciado
+      if (!drainIntervalTimer) {
+        drainIntervalTimer = setInterval(
+          () => OsmosisCoreLogic.executeOsmoticDrain(),
+          validatedConfig.drainIntervalInMilliseconds
+        );
+      }
+
+      if (validatedConfig.enableForensicLogging) {
+        SovereignLogger.emit({
+          severity: 'INFO',
+          apparatusIdentifier: 'OsmosisCore' as unknown as IApparatusIdentifier,
+          operationCode: 'MEMBRANE_ACTIVE' as unknown as IOperationCode,
+          semanticKey: 'Osmosis.Grants.IgnitionSuccess',
+          executionLatencyInMilliseconds: performance.now() - ignitionStartTime
+        });
+      }
+    } catch (caughtError) {
+      // Transmutación del colapso de ignición (M-002)
+      throw ErrorRefineryLogic.transmute({
+        uniqueErrorCode: SystemErrorCodeSchema.parse('RWC-OSM-5001'),
+        severity: 'FATAL',
+        apparatusIdentifier: 'OsmosisCore',
+        semanticKey: 'Osmosis.Errors.IgnitionFailed',
+        caughtError
+      });
     }
   },
 
   /**
    * @method enqueuePulse
-   * @description Absorbe un pulso de cualquier búnker y lo deposita en la esclusa correspondiente.
+   * @description Absorbe material telemétrico y lo clasifica según su QoS (M-015).
    */
   enqueuePulse: (pulsePayload: IOsmoticPulse): void => {
     const validatedPulse = OsmoticPulseSchema.parse(pulsePayload);
     let targetQueue: IOsmoticPulse[];
-    
+
     switch (validatedPulse.qualityOfServiceTier) {
-      case 0: targetQueue = membraneQueues.VITAL; break;
-      case 1: targetQueue = membraneQueues.CRITICAL; break;
-      case 2: targetQueue = membraneQueues.RESILIENT; break;
-      case 3: targetQueue = membraneQueues.BEHAVIORAL; break;
-      default: targetQueue = membraneQueues.BEHAVIORAL;
+      case 0: targetQueue = osmoticQueues.VITAL; break;
+      case 1: targetQueue = osmoticQueues.CRITICAL; break;
+      case 2: targetQueue = osmoticQueues.RESILIENT; break;
+      case 3: targetQueue = osmoticQueues.BEHAVIORAL; break;
+      default: targetQueue = osmoticQueues.BEHAVIORAL;
     }
 
-    // Protección de Contrapresión (Backpressure)
+    // Protección de Backpressure (Drop-Tail)
     if (targetQueue.length >= MAX_QUEUE_DEPTH) {
-      // Descartar el más antiguo (Drop-Tail) para hacer espacio
       targetQueue.shift();
-      
-      // Alerta silenciosa de pérdida de datos (Solo para QoS < 1)
-      if (validatedPulse.qualityOfServiceTier > 1) {
-        // No logueamos cada drop para no saturar, pero idealmente se incrementaría un contador métrico.
-      }
     }
 
     targetQueue.push(validatedPulse);
 
-    // VITAL ignora el intervalo y fuerza drenaje inmediato
+    // Los pulsos VITALES (QoS 0) fuerzan un drenaje instantáneo
     if (validatedPulse.qualityOfServiceTier === 0) {
-      executeMembraneDrain();
+      OsmosisCoreLogic.executeOsmoticDrain(true);
     }
   },
 
   /**
-   * @method forceMembraneDrain
-   * @description Purgado manual forzado (ej. durante el Logout o PageHide).
+   * @method executeOsmoticDrain
+   * @private
+   * @description Algoritmo de Presión de Datos (APD) basado en el modo metabólico.
+   * @fix_error TS2305: Sincronización con el facade 'MetabolicScheduler'.
    */
-  forceMembraneDrain: (): void => {
-    executeMembraneDrain(true);
-  }
-};
+  executeOsmoticDrain: async (bypassMetabolism = false): Promise<void> => {
+    // Sello corrección TS2305: Uso de MetabolicScheduler (Interface nivelada)
+    const energyMode = MetabolicScheduler.getCurrentMode();
 
-/**
- * @internal Algoritmo de Presión de Datos (APD)
- */
-async function executeMembraneDrain(bypassMetabolism = false): Promise<void> {
-  const currentMode = MetabolicScheduler.getCurrentMode();
+    // 1. Drenaje VITAL y CRÍTICO (Prioridad Absoluta)
+    await OsmosisCoreLogic.flushBucket(osmoticQueues.VITAL);
+    await OsmosisCoreLogic.flushBucket(osmoticQueues.CRITICAL);
 
-  // 1. Drenaje VITAL y CRÍTICO (Nunca se bloquean)
-  await drainBucket(membraneQueues.VITAL);
-  await drainBucket(membraneQueues.CRITICAL);
-
-  // 2. Drenaje RESILIENTE (Bloqueado en EMERGENCY)
-  if (bypassMetabolism || currentMode !== 'EMERGENCY') {
-    await drainBucket(membraneQueues.RESILIENT);
-  }
-
-  // 3. Drenaje CONDUCTUAL (Solo permitido en estados ricos en energía)
-  if (bypassMetabolism || ['PEAK', 'BALANCED'].includes(currentMode)) {
-    await drainBucket(membraneQueues.BEHAVIORAL);
-  }
-}
-
-/**
- * @internal Operador de Esclusa
- */
-async function drainBucket(queue: IOsmoticPulse[]): Promise<void> {
-  while (queue.length > 0) {
-    const pulse = queue[0]; // Miramos el primero sin sacarlo aún
-    
-    const deliverySuccess = await AdaptiveTransport.dispatchPayload(pulse, isPageTerminatingState);
-    
-    if (deliverySuccess) {
-      queue.shift(); // Removemos solo si el servidor acusó recibo
-    } else {
-      // Si la red falla, abortamos el vaciado de esta esclusa y esperamos al próximo ciclo
-      break; 
+    // 2. Drenaje RESILIENTE (Bloqueado en modo de emergencia energética)
+    if (bypassMetabolism || energyMode !== 'EMERGENCY') {
+      await OsmosisCoreLogic.flushBucket(osmoticQueues.RESILIENT);
     }
+
+    // 3. Drenaje CONDUCTUAL (Solo permitido en estados de alta fidelidad o carga AC)
+    if (bypassMetabolism || energyMode === 'PEAK') {
+      await OsmosisCoreLogic.flushBucket(osmoticQueues.BEHAVIORAL);
+    }
+  },
+
+  /**
+   * @method flushBucket
+   * @private
+   * @description Procesa una esclusa delegando el refinado cinético al Cerebro (Worker).
+   */
+  flushBucket: async (queue: IOsmoticPulse[]): Promise<void> => {
+    if (queue.length === 0 || !brainProxy) return;
+
+    try {
+      const snapshotBatch = [...queue];
+
+      // Delegación al Hilo Profundo para refinado masivo (Deduplicación/ZTM)
+      const refinedBatchBuffer = await brainProxy.refineAndPackageBatch(snapshotBatch);
+
+      if (refinedBatchBuffer) {
+        // Despacho vía transporte adaptativo binario
+        const success = await AdaptiveTransportLogic.dispatchPayload(
+          refinedBatchBuffer,
+          isSystemTerminating
+        );
+
+        if (success) {
+          queue.length = 0; // Vaciado atómico tras confirmación de red
+        }
+      }
+    } catch (caughtError) {
+      SovereignLogger.emit({
+        severity: 'ERROR',
+        apparatusIdentifier: 'OsmosisCore' as unknown as IApparatusIdentifier,
+        operationCode: 'DRAIN_FAILURE' as unknown as IOperationCode,
+        semanticKey: 'Osmosis.Errors.BatchRefinementFailed',
+        forensicMetadata: { caughtErrorSnapshot: String(caughtError) }
+      });
+    }
+  },
+
+  /**
+   * @method forceImmediateDrain
+   * @description Vaciado de emergencia ante des-comisionado de página (M-035).
+   */
+  forceImmediateDrain: (): void => {
+    OsmosisCoreLogic.executeOsmoticDrain(true);
   }
-}
+} as const;

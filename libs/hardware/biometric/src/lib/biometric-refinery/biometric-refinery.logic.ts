@@ -1,60 +1,71 @@
 /**
- * @apparatus BioRefineryLogic
+ * @apparatus BiometricRefineryLogic
  * @role Orquestador de biosensores y traductor de señales de hardware.
- * @location libs/hardware-refineries/bio/src/lib/bio-refinery.logic.ts
+ * @location libs/hardware/biometric/src/lib/biometric-refinery/biometric-refinery.logic.ts
  * @status <STABILIZED>
  * @hilo Surface-Pulse
  */
 
 import { SovereignLogger } from '@razwritecore/nsk-shared-logger';
-import { BioMetabolicPulseSchema, type IBioMetabolicPulse } from './bio-refinery.schema';
+import {
+  BiometricMetabolicPulseSchema,
+  type IBiometricMetabolicPulse,
+  BatteryLevelPercentageSchema,
+  NetworkEffectiveTypeSchema,
+  DevicePerformanceTierSchema
+} from './biometric-refinery.schema';
 
-export const BioRefineryLogic = {
+export const BiometricRefineryLogic = {
   /**
    * @method extractSystemVitalSigns
-   * @description Captura el estado térmico y energético actual del dispositivo anfitrión.
+   * @description Captura el estado térmico y energético mediante APIs de superficie.
    */
-  extractSystemVitalSigns: async (): Promise<IBioMetabolicPulse> => {
-    const hardwareContext = navigator as any; // Navigator extendido isomórficamente
+  extractSystemVitalSigns: async (): Promise<IBiometricMetabolicPulse> => {
+    const executionStartTime = performance.now();
+    const hardwareContext = navigator as any;
 
-    // 1. Extracción de Bio-Energía (Si el hardware lo permite)
-    let batteryData = { chargeLevelPercentage: 100, isPowerPlugged: true, estimatedTimeRemainingMinutes: null };
+    // 1. Extracción de Bio-Energía
+    let charge = 100;
+    let plugged = true;
+    let remaining = null;
 
     if (hardwareContext.getBattery) {
       try {
-        const batteryManager = await hardwareContext.getBattery();
-        batteryData = {
-          chargeLevelPercentage: batteryManager.level * 100,
-          isPowerPlugged: batteryManager.charging,
-          estimatedTimeRemainingMinutes: batteryManager.dischargingTime === Infinity ? null : batteryManager.dischargingTime / 60
-        };
-      } catch (caughtError) {
-        // Fallo silencioso en navegadores restrictivos
-      }
+        const battery = await hardwareContext.getBattery();
+        charge = battery.level * 100;
+        plugged = battery.charging;
+        remaining = battery.dischargingTime === Infinity ? null : battery.dischargingTime / 60;
+      } catch { /* Failsafe */ }
     }
 
-    // 2. Extracción de Capacidad de Cómputo
-    const resourceData = {
-      logicalCoreCount: hardwareContext.hardwareConcurrency || 2,
-      availableMemoryGigabytes: hardwareContext.deviceMemory || 4,
-      devicePerformanceTier: (hardwareContext.deviceMemory && hardwareContext.deviceMemory > 4) ? 'HIGH' : 'MEDIUM'
-    };
-
-    // 3. Sellado y Validación de ADN
-    const vitalPulse = BioMetabolicPulseSchema.parse({
-      batterySnapshot: batteryData,
-      resourceCapacity: resourceData,
-      networkEffectiveType: hardwareContext.connection?.effectiveType || '4g',
+    // 2. Validación de ADN con Branding
+    const vitalPulse = BiometricMetabolicPulseSchema.parse({
+      batterySnapshot: {
+        chargeLevelPercentage: BatteryLevelPercentageSchema.parse(charge),
+        isPowerPlugged: plugged,
+        estimatedTimeRemainingMinutes: remaining
+      },
+      resourceCapacity: {
+        logicalCoreCount: hardwareContext.hardwareConcurrency || 2,
+        availableMemoryGigabytes: hardwareContext.deviceMemory || 4,
+        devicePerformanceTier: DevicePerformanceTierSchema.parse(
+          (hardwareContext.deviceMemory && hardwareContext.deviceMemory > 4) ? 'HIGH' : 'MEDIUM'
+        )
+      },
+      networkEffectiveType: NetworkEffectiveTypeSchema.parse(
+        hardwareContext.connection?.effectiveType || '4g'
+      ),
       timestampUnix: Date.now()
     });
 
-    // 4. Rastro Forense Metabólico
-    SovereignLogger.buffer({
+    // 3. Rastro Forense (M-001)
+    SovereignLogger.emit({
       severity: 'INFO',
-      apparatusIdentifier: 'BioRefinery',
-      operationCode: 'VITALS_EXTRACTED',
-      semanticKey: 'Hardware.Bio.VitalsCaptured',
-      forensicMetadata: { battery: batteryData.chargeLevelPercentage, net: vitalPulse.networkEffectiveType }
+      apparatusIdentifier: 'BiometricRefinery' as never,
+      operationCode: 'VITALS_EXTRACTED' as never,
+      semanticKey: 'Hardware.Biometric.VitalsCaptured',
+      executionLatencyInMilliseconds: performance.now() - executionStartTime,
+      forensicMetadata: { battery: charge, net: vitalPulse.networkEffectiveType }
     });
 
     return vitalPulse;

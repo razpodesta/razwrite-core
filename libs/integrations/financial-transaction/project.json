@@ -3,32 +3,15 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/integrations/financial-transaction/src",
   "projectType": "library",
-  "tags": [
-    "layer:infrastructure-adapter",
-    "domain:finance",
-    "iso:27001",
-    "env:acid"
-  ],
+  "tags": ["layer:infrastructure-adapter", "domain:finance", "iso:27001", "env:acid"],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/integrations/financial-transaction",
         "main": "libs/integrations/financial-transaction/src/index.ts",
         "tsConfig": "libs/integrations/financial-transaction/tsconfig.lib.json",
-        "assets": ["libs/integrations/financial-transaction/*.md"],
-        "clean": true
-      }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
-    "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{options.reportsDirectory}"],
-      "options": {
-        "reportsDirectory": "../../../coverage/libs/integrations/financial-transaction"
+        "assets": ["libs/integrations/financial-transaction/*.md"]
       }
     }
   }

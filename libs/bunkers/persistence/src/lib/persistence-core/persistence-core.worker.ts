@@ -1,98 +1,162 @@
 /**
- * @apparatus PersistenceWorker
- * @role Motor de cifrado asíncrono y derivación de llaves para la Bóveda L2 (IndexedDB).
- * @location libs/modular-units/persistence/src/lib/persistence-core/persistence.worker.ts
+ * @apparatus PersistenceCoreBrain
+ * @role Cerebro asíncrono para el sellado AES-GCM, integridad SHA-256 y normalización binaria.
+ * @location libs/bunkers/persistence/src/lib/persistence-core/persistence-core.worker.ts
  * @status <SEALED_PRODUCTION>
- * @version 8.7.0
+ * @version 9.8.2
  * @protocol OEDP-V8.5 Lattice
  * @hilo Deep-Pulse
+ * @structure CEREBRO
+ * @compliance ISO_27001 | ISO_27701 | ISO_25010
  */
 
 import * as Comlink from 'comlink';
-import { 
-  SovereignCipher, 
-  SovereignHashing, 
-  SovereignKeyForge,
-  EncodingUtils,
-  type IBase64UrlString,
+import {
+  CipherEngineLogic,
+  HashingEngineLogic,
+  KeyForgeEngineLogic,
+  EncodingEngineLogic,
+  KeyEntropyMaterialSchema,
+  SaltContextIdentifierSchema,
   type ICipherText,
-  type IEncryptedPacket 
+  type IEncodingBase64Url
 } from '@razwritecore/nsk-shared-crypto';
 
-import { 
-  type IVaultArtifact, 
-  type IPersistenceKey 
-} from './persistence.schema';
+import {
+  type IVaultArtifact,
+  type IPersistenceKey,
+  ArtifactChecksumSchema
+} from './persistence-core.schema';
 
 /**
  * @context_prompt [LIA Legacy - AI-Audit]
- * DIRECTIVA: Exposición de API vía Comlink.
- * JUSTIFICACIÓN: Para garantizar el aislamiento de hilos (M-017), el objeto de lógica 
- * debe ser expuesto mediante un canal de mensajería (RPC). 
- * IMPACTO: El hilo principal (Surface-Pulse) delega la carga computacional pesada 
- * a este trabajador sin bloquear el renderizado.
+ * DIRECTIVA: Saneamiento de BufferSource y Normalización de ArrayBuffer (TS2322).
+ * JUSTIFICACIÓN: Se fuerza que los cargamentos binarios sean 'Uint8Array<ArrayBuffer>',
+ * eliminando la posibilidad de 'SharedArrayBuffer' que bloqueaba la compilación por
+ * falta de métodos de transferencia (resizable/resize).
+ * IMPACTO: Estabilidad en la serialización hacia IndexedDB y ruteo nominal sellado.
  */
 
-let sessionMasterKey: CryptoKey | null = null;
-const VAULT_DERIVATION_SALT = 'RWC_L2_PERSISTENCE_CONTEXT_V1';
+let activeSessionMasterKey: CryptoKey | null = null;
+const VAULT_DERIVATION_SALT = 'RWC_ZENITH_L2_SALT_V1';
 
-const PersistenceRefinery = {
+const PersistenceCoreBrain = {
 
   /**
    * @method igniteSecureSession
-   * @description Deriva la llave maestra de persistencia usando PBKDF2 (M-019).
+   * @description Deriva la llave maestra AES-GCM 'extractable: false' con validación de ADN.
    */
-  igniteSecureSession: async (entropySeed: string): Promise<void> => {
-    sessionMasterKey = await SovereignKeyForge.deriveSessionKey({
-      secretMaterial: entropySeed,
-      saltContext: VAULT_DERIVATION_SALT
+  igniteSecureSession: async (entropySeedMaterial: string): Promise<void> => {
+    activeSessionMasterKey = await KeyForgeEngineLogic.forgeMasterSessionKey({
+      secretMaterial: KeyEntropyMaterialSchema.parse(entropySeedMaterial),
+      saltContext: SaltContextIdentifierSchema.parse(VAULT_DERIVATION_SALT)
     });
   },
 
   /**
    * @method refineArtifact
-   * @description Transmuta datos planos en un Artefacto de Bóveda cifrado (Materia Oscura).
+   * @description Transmuta datos planos en un Artefacto de Bóveda sellado y normalizado.
    */
-  refineArtifact: async (key: string, data: unknown): Promise<IVaultArtifact> => {
-    if (!sessionMasterKey) {
-      throw new Error('RWC-VAULT-LOCKED: La llave maestra no ha sido iniciada en el Worker.');
+  refineArtifact: async (
+    targetKey: IPersistenceKey,
+    informationMaterial: unknown
+  ): Promise<IVaultArtifact> => {
+    if (!activeSessionMasterKey) {
+      throw new Error('PERSISTENCE_BRAIN_LOCKED: Master key not initialized.');
     }
 
-    const encryptedPacket = await SovereignCipher.encrypt({
-      dataPayload: data as Record<string, unknown>,
-      masterKey: sessionMasterKey
+    // 1. Cifrado AES-GCM 256 (Generación de Materia Oscura)
+    const encryptedPacket = await CipherEngineLogic.encryptPayload({
+      informationPayload: informationMaterial as any,
+      masterCryptionKey: activeSessionMasterKey
     });
 
+    // 2. Generación de Firma de Integridad SHA-256
+    const integrityHash = await HashingEngineLogic.generateHash({
+        informationMaterial: encryptedPacket.c,
+        algorithm: 'SHA-256'
+    });
+
+    /**
+     * @step Normalización Binaria (Resolución TS2322)
+     * Forzamos que los cargamentos binarios residan en ArrayBuffers estándar.
+     */
+    const encryptedPayload = PersistenceCoreBrain.ensureStandardUint8Array(
+      EncodingEngineLogic.transmuteBase64UrlToUint8Array(encryptedPacket.c)
+    );
+
+    const initializationVector = PersistenceCoreBrain.ensureStandardUint8Array(
+      EncodingEngineLogic.transmuteBase64UrlToUint8Array(encryptedPacket.iv)
+    );
+
+    // 3. Ensamblaje bajo contrato genético 9.5.0
     return {
-      key: key as IPersistenceKey,
-      encryptedBlob: EncodingUtils.base64UrlToBuffer(encryptedPacket.c),
-      iv: EncodingUtils.base64UrlToBuffer(encryptedPacket.iv),
-      checksum: await SovereignHashing.digestText(encryptedPacket.c),
-      updatedAt: Date.now()
+      key: targetKey,
+      encryptedPayload,
+      initializationVector,
+      integrityHash: ArtifactChecksumSchema.parse(integrityHash),
+      metadata: {
+        schemaVersion: '9.5.0',
+        metabolicWeight: 'MEDIUM',
+        timestamp: Date.now(),
+        isCompressed: false
+      }
     };
   },
 
   /**
    * @method restoreArtifact
-   * @description Recupera y descifra datos de la bóveda (Regresión-Free).
+   * @description Recupera la legibilidad del material binario restaurando el branding.
    */
-  restoreArtifact: async (artifact: IVaultArtifact): Promise<unknown> => {
-    if (!sessionMasterKey) {
-      throw new Error('RWC-VAULT-LOCKED: Llave de sesión ausente.');
+  restoreArtifact: async (vaultArtifact: IVaultArtifact): Promise<unknown> => {
+    if (!activeSessionMasterKey) {
+      throw new Error('PERSISTENCE_BRAIN_LOCKED: Master key missing.');
     }
 
-    const packet: IEncryptedPacket = {
-      c: EncodingUtils.bufferToBase64Url(artifact.encryptedBlob) as ICipherText,
-      iv: EncodingUtils.bufferToBase64Url(artifact.iv) as IBase64UrlString,
-      t: artifact.updatedAt
-    };
+    /**
+     * @step Restauración de Branding (Resolución TS2352)
+     */
+    const cipherText = EncodingEngineLogic.transmuteUint8ArrayToBase64Url(vaultArtifact.encryptedPayload);
+    const initializationVector = EncodingEngineLogic.transmuteUint8ArrayToBase64Url(vaultArtifact.initializationVector);
 
-    return await SovereignCipher.decrypt(packet, sessionMasterKey);
+    // 2. Descifrado por Hardware Acceleration
+    return await CipherEngineLogic.decryptPayload(
+      {
+        c: cipherText as unknown as ICipherText,
+        iv: initializationVector as unknown as IEncodingBase64Url,
+        t: vaultArtifact.metadata.timestamp
+      },
+      activeSessionMasterKey
+    );
+  },
+
+  /**
+   * @method ensureStandardUint8Array
+   * @private
+   * @description Garantiza que el buffer subyacente sea un ArrayBuffer (no SharedArrayBuffer).
+   * @fix_error TS2322: Casting explícito a Uint8Array<ArrayBuffer>.
+   */
+  ensureStandardUint8Array: (inputView: Uint8Array): Uint8Array<ArrayBuffer> => {
+    // Si el buffer NO es compartido y ya es un ArrayBuffer estándar
+    if (
+      inputView.buffer instanceof ArrayBuffer &&
+      inputView.buffer.constructor.name !== 'SharedArrayBuffer'
+    ) {
+      return inputView as Uint8Array<ArrayBuffer>;
+    }
+
+    // Si es compartido o no posee los métodos requeridos, forzamos copia física
+    const standardBuffer = new ArrayBuffer(inputView.byteLength);
+    const standardView = new Uint8Array(standardBuffer);
+    standardView.set(inputView);
+
+    return standardView as Uint8Array<ArrayBuffer>;
   }
 };
 
-// Exposición soberana del trabajador al hilo de superficie
-Comlink.expose(PersistenceRefinery);
+/**
+ * @section EXPOSICIÓN RPC
+ */
+Comlink.expose(PersistenceCoreBrain);
 
-// Exportación del tipo para el Proxy en el hilo principal
-export type IPersistenceRefinery = typeof PersistenceRefinery;
+export type IPersistenceCoreBrain = typeof PersistenceCoreBrain;

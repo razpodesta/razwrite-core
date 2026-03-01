@@ -1,0 +1,13 @@
+{
+  "QuantumStateCore": {
+    "Integrity": {
+      "ValidationSuccess": "Quantum state branch '{key}' successfully validated under epoch {epoch}.",
+      "EpochRotation": "State epoch rotated. New chronological boundary established."
+    },
+    "Errors": {
+      "AccessViolation": "Memory isolation breach: Unauthorized attempt to mutate state key '{key}'.",
+      "SyncCollapse": "Chronological collapse: The provided epoch does not match the active system timeline.",
+      "BufferSaturation": "Shared memory pressure critical. Atomic operations may suffer latency."
+    }
+  }
+}

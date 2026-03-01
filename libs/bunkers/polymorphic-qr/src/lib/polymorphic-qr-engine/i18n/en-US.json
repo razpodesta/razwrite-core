@@ -1,1 +1,17 @@
-{"polymorphic-qr-engine":{}} 
+{
+  "PolymorphicQREngine": {
+    "Generation": {
+      "VectorForged": "Quantum intention vector successfully forged and sealed. Ready for physical projection.",
+      "MetadataValidationSuccess": "Visual configuration validated against tenant design tokens."
+    },
+    "Scarcity": {
+      "ThresholdReached": "Quantum response neutralized: Maximum scan threshold has been reached.",
+      "TemporalLimitExceeded": "Vector expiration: The temporal validity of this intention has lapsed."
+    },
+    "Errors": {
+      "CryptographicSealFailure": "Security breach attempt or encryption collapse: Failed to seal the intention material.",
+      "InvalidVisualMetadata": "Rendering failure: Visual metadata does not comply with biosecurity standards.",
+      "EdgeRoutingResolutionError": "Edge resolution failure: Unable to determine the tenant context for the requested vector."
+    }
+  }
+}

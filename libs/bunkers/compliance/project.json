@@ -1,7 +1,7 @@
 {
-  "name": "unit-compliance",
+  "name": "nsk-bunker-compliance",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/modular-units/compliance/src",
+  "sourceRoot": "libs/bunkers/compliance/src",
   "projectType": "library",
   "tags": [
     "layer:modular-unit",
@@ -14,15 +14,22 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/modular-units/compliance",
-        "main": "libs/modular-units/compliance/src/index.ts",
-        "tsConfig": "libs/modular-units/compliance/tsconfig.lib.json",
-        "assets": ["libs/modular-units/compliance/*.md"],
+        "outputPath": "dist/libs/bunkers/compliance",
+        "main": "libs/bunkers/compliance/src/index.ts",
+        "tsConfig": "libs/bunkers/compliance/tsconfig.lib.json",
+        "assets": ["libs/bunkers/compliance/*.md"],
         "clean": true
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../coverage/libs/bunkers/compliance"
+      }
     }
   }
 }

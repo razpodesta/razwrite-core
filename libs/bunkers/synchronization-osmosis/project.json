@@ -1,32 +1,36 @@
 {
-    "name":  "nsk-bunker-synchronization-osmosis",
-    "$schema":  "../../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot":  "libs/modular-units/sync-osmosis/src",
-    "projectType":  "library",
-    "tags":  [
-                 "layer:modular-unit",
-                 "domain:system-core",
-                 "iso:27001",
-                 "env:deep-pulse"
-             ],
-    "targets":  {
-                    "build":  {
-                                  "executor":  "@nx/js:tsc",
-                                  "outputs":  [
-                                                  "{options.outputPath}"
-                                              ],
-                                  "options":  {
-                                                  "outputPath":  "dist/libs/modular-units/sync-osmosis",
-                                                  "main":  "libs/modular-units/sync-osmosis/src/index.ts",
-                                                  "tsConfig":  "libs/modular-units/sync-osmosis/tsconfig.lib.json",
-                                                  "assets":  [
-                                                                 "libs/modular-units/sync-osmosis/*.md"
-                                                             ],
-                                                  "clean":  true
-                                              }
-                              },
-                    "lint":  {
-                                 "executor":  "@nx/eslint:lint"
-                             }
-                }
+  "name": "nsk-bunker-synchronization-osmosis",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/bunkers/synchronization-osmosis/src",
+  "projectType": "library",
+  "tags": [
+    "layer:modular-unit",
+    "domain:system-core",
+    "iso:27001",
+    "iso:25010",
+    "env:deep-pulse"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/bunkers/synchronization-osmosis",
+        "main": "libs/bunkers/synchronization-osmosis/src/index.ts",
+        "tsConfig": "libs/bunkers/synchronization-osmosis/tsconfig.lib.json",
+        "assets": ["libs/bunkers/synchronization-osmosis/*.md"],
+        "clean": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../coverage/libs/bunkers/synchronization-osmosis"
+      }
+    }
+  }
 }

@@ -1,0 +1,14 @@
+{
+  "GeographicRefinery": {
+    "Errors": {
+      "UnsupportedEnvironment": "RWC-GEO-001: Geolocation is not supported in this environment.",
+      "PermissionDenied": "RWC-GEO-002: Access to geographic context was denied by the user.",
+      "PositionUnavailable": "RWC-GEO-003: Satellite signal lost or position unavailable.",
+      "Timeout": "RWC-GEO-004: Geographic extraction timed out."
+    },
+    "Status": {
+      "Refining": "Refining geographic coordinates into regional context...",
+      "Success": "Geographic context successfully truncated and sealed."
+    }
+  }
+}
